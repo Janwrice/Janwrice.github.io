@@ -1,6 +1,6 @@
 ## HelloWorld/你好世界
 
-[editor on GitHub](https://m.bilibili.com/space/266593795) to maintain and preview the content for your website in Markdown files.
+@[Bilibili](https://m.bilibili.com/space/266593795)
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
