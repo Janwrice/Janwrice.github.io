@@ -1,4 +1,5 @@
-# [**Janwrice**](https://github.com/Janwrice) 相信自己 一往无前
+# [**Janwrice**](https://github.com/Janwrice) 
+# 相信自己 一往无前
 
 #### 这里是 *Janwrice* 的博客
 
