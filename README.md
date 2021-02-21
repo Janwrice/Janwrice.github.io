@@ -1,38 +1,16 @@
-# [Janwrice](https://github.com/Janwrice) 相信自己 一往无前
+# [**Janwrice**](https://github.com/Janwrice) 相信自己 一往无前
 
-#### 这里是Janwrice的博客
+#### _这里是Janwrice的博客_
 
 欢迎到Bilibili关注我! #[Bilibili](https://m.bilibili.com/space/266593795)
 QQ:2168197068
 
-### Markdown
+### Minecraft
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+这里收集了大部分的Minecraft安卓端版本
 
 ```markdown
-Syntax highlighted code ;;;;;;;;block
+# 百度网盘下载:
 
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+- 链接:https://pan.baidu.com/s/12P-WD0FbFDrv0Yt5iC4DTQ 提取码:66mi
 ```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Janwrice/Janwrice.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
