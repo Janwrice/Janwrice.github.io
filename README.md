@@ -1,6 +1,6 @@
 # Janwrice 相信自己 一往无前
 
-@[Bilibili](https://m.bilibili.com/space/266593795)
+@[Bilibili](https://m.bilibili.com/space/266593795) @[QQ](https://qm.qq.com/cgi-bin/qm/qr?k=j03SfUvKHaljh_XieHfDHM25M1cQsBKp&noverify=0)
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
