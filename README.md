@@ -2,4 +2,4 @@
 ### **相信自己 一往无前**
 欢迎到Bilibili关注我! #[Bilibili](https://m.bilibili.com/space/266593795)
 QQ:2168197068  
-[**随便逛逛**](https://github.com/Janwrice/helloworld.html)?
+[**随便逛逛**](https://janwrice.github.io/helloworld.html)?
