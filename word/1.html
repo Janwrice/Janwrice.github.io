@@ -39,6 +39,7 @@
 <h2 id="1"><strong>0x01 游戏"后台"的生成:</strong></h2>
       <h3>0x01 雷的生成:</h3>
       <pre>
+      <code>
 srand((unsigned)time(NULL) + iWhile);//当前时间戳作种子生成随机数
 for (int Site = 0; Site < mineNumer; Site++) {
 	Mine[Site][0] = rand() % (boardHeighthSize - 1) + 1;//雷的行下标
@@ -48,6 +49,7 @@ for (int Site = 0; Site < mineNumer; Site++) {
 	}//检测新雷位置是否与旧雷重复并为Board数组赋值
 	else Site--;
 }
+</code>
       </pre>
 
       <footer class="site-footer">
