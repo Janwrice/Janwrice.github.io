@@ -42,34 +42,34 @@
       <p>在我这样一个四线城市,可能只有我会对这页内容感兴趣并把它实现了</p>
 <h3 id="123"><strong>实现过程:</strong></h3>
       <p>上面的算法写的很清晰,我们把这些变量设出来,并执行对应的操作就可以了
-      <footer class="site-footer">
         <pre>
-#include<stdio.h>
+#include&ltstdio.h&gt
 
 int main(){
         double a11, a12, b1, a21, a22, b2, m, a221, x, y;
-				printf("请输入方程中a11的值\n");
-				scanf("%lf", &a11);
-				printf("请输入方程中a12的值\n");
-				scanf("%lf", &a12);
-				printf("请输入方程中b1的值\n");
-				scanf("%lf", &b1);
-				printf("请输入方程中a21的值\n");
-				scanf("%lf", &a21);
-				printf("请输入方程中a22的值\n");
-				scanf("%lf", &a22);
-				printf("请输入方程中b2的值\n");
-				scanf("%lf", &b2);
-				m = a21 / a11;
-				a221 = a22 - (m * a12);
-				double b21 = b2 - (m * b1);
-				y = b21 / a221;
-				x = (b1 - (a12 * y)) / a11;
-				printf("x=%lf\n", x);
-				printf("y=%lf\n", y);
+	printf("请输入方程中a11的值\n");
+	scanf("%lf", &a11);
+	printf("请输入方程中a12的值\n");
+	scanf("%lf", &a12);
+	printf("请输入方程中b1的值\n");
+	scanf("%lf", &b1);
+	printf("请输入方程中a21的值\n");
+	scanf("%lf", &a21);
+	printf("请输入方程中a22的值\n");
+	scanf("%lf", &a22);
+	printf("请输入方程中b2的值\n");
+	scanf("%lf", &b2);
+	m = a21 / a11;
+	a221 = a22 - (m * a12);
+	double b21 = b2 - (m * b1);
+	y = b21 / a221;
+	x = (b1 - (a12 * y)) / a11;
+	printf("x=%lf\n", x);
+	printf("y=%lf\n", y);
 }
         </pre>
         <p>这个程序确实没什么技术含量,但却实实在在的给了我一种成就感,让我领略了编程的魅力</p>
+	<footer class="site-footer">
         <span class="site-footer-credits">项目地址:<a href="https://github.com/Janwrice/C-Solve">解方程</a>.</span>
       </footer>
     </section>
