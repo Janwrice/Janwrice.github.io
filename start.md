@@ -1,6 +1,7 @@
-layout: post
-title: "文章标题"
-date:   2024-1-27
-tags: [tag1, tag2]
-comments: true
-author: xxx
+---
+layout: default
+title: "Welcome to My Site"
+---
+
+<!-- 页面正文部分 -->
+This is the homepage of my awesome site.
