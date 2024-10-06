@@ -2,6 +2,8 @@
 layout: default
 title: "Janwrice's SecretBase"
 ---
-
-<!-- 页面正文部分 -->
-This is the homepage of my awesome site.
+      _            _      __      _             
+     (_)___ _ ___ | | /| / /____ (_)____ ___    
+    / // _ `// _ \| |/ |/ // __// // __// -_)   
+ __/ / \_,_//_//_/|__/|__//_/  /_/ \__/ \__/    
+|___/                                           
