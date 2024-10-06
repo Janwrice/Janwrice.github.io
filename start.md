@@ -2,6 +2,7 @@
 layout: default
 title: "Janwrice's SecretBase"
 ---
+#### 你发现了什么？
 # 这里是 Janwrice 的秘密基地
 2024.09.07
 ### [**Kate 编辑器使用教程**](https://linux.do/t/topic/199225/8)
