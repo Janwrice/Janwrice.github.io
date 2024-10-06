@@ -13,7 +13,7 @@ title: "Janwrice's SecretBase"
 |___/                                        
 -->
 2024.10.06
-### [Linux 设置开机启动项](https://janwrice.github.io/learn/linux/set_startup_items)
+### [**Linux 设置开机启动项**](https://janwrice.github.io/learn/linux/set_startup_items)
 2024.09.07
 ### [**Kate 编辑器使用教程**](https://linux.do/t/topic/199225/8)
 ### [**在 联想小新 Pro16 上使用 Linux**](https://linux.do/t/topic/199149/26)
