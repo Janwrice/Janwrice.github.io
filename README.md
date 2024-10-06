@@ -1,2 +1,2 @@
 # [**Janwrice**](https://janwrice.github.io/start)'s Blog
-### **相信自己 一往无前**
+## 你好啊，这里是 Janwrice 的博客页!
