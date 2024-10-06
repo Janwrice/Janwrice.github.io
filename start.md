@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Janwrice's secret base"
+title: "Janwrice's SecretBase"
 ---
 
 <!-- 页面正文部分 -->
