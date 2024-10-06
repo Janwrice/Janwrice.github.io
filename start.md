@@ -3,5 +3,7 @@ layout: default
 title: "Janwrice's SecretBase"
 ---
 2024.09.07
-### [**Kate 编辑器使用教程**](https://janwrice.github.io/article/how_to_use_the_kate_editor)
-### [**在 联想小新 Pro16 上使用 Linux**](https://janwrice.github.io/article/How_to_use_Linux_on_Lenovo_Xiaoxin_Pro16)
+### [**Kate 编辑器使用教程**](https://linux.do/t/topic/199225/8)
+### [**在 联想小新 Pro16 上使用 Linux**](https://linux.do/t/topic/199149/26)
+2022.12.02
+### [**关于Apks的一切**](https://www.bilibili.com/video/BV1Xe4y1M7v9)
