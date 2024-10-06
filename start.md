@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Welcome to My Site"
+title: "Janwrice's secret base"
 ---
 
 <!-- 页面正文部分 -->
