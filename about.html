@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于 - Janwrice</title>
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-main {
+            padding: 60px;
+        }
+
+        .page-title {
+            margin-bottom: 48px;
+        }
+
+        .resume-section {
+            margin-bottom: 48px;
+        }
+
+        .resume-section h2 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue);
+            display: inline-block;
+        }
+
+        .resume-section p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--black);
+        }
+
+        .resume-section .item {
+            margin-bottom: 24px;
+        }
+
+        .resume-section .item-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        .resume-section .item-subtitle {
+            font-size: 14px;
+            color: var(--gray);
+            margin-top: 4px;
+            text-decoration: none;
+        }
+
+        .item-subtitle:hover {
+            color: var(--blue);
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            padding: 6px 16px;
+            background-color: var(--blue-light);
+            color: var(--blue-dark);
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content-main {
+                padding: 24px 16px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand"><span>J</span>anwrice</a>
+        <div class="navbar-right">
+            <ul class="navbar-links">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="blog.html">博客</a></li>
+                <li><a href="about.html" class="active">关于</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="page-layout">
+        <div class="content-main">
+            <h1 class="page-title">关于<span>我</span></h1>
+
+            <div class="resume-section">
+                <h2>简介</h2>
+                <p>你好，我是 Janwrice，热爱编程与开源，喜欢探索底层技术。目前在学习和研究系统编程、Web 开发等领域。平时也会在 Bilibili 上分享一些技术相关的内容。</p>
+            </div>
+
+            <div class="resume-section">
+                <h2>技能</h2>
+                <div class="skill-tags">
+                    <span class="skill-tag">Rust</span>
+                    <span class="skill-tag">TypeScript</span>
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">C/C++</span>
+                    <span class="skill-tag">React</span>
+                    <span class="skill-tag">Node.js</span>
+                    <span class="skill-tag">Linux</span>
+                    <span class="skill-tag">Git</span>
+                    <span class="skill-tag">Docker</span>
+                </div>
+            </div>
+
+            <div class="resume-section">
+                <h2>链接</h2>
+                <div class="item">
+                    <div class="item-title">GitHub</div>
+                    <a href="https://github.com/Janwrice" target="_blank" rel="noopener" class="item-subtitle">github.com/Janwrice</a>
+                </div>
+                <div class="item">
+                    <div class="item-title">Bilibili</div>
+                    <a href="https://space.bilibili.com/266593795" target="_blank" rel="noopener" class="item-subtitle">space.bilibili.com/266593795</a>
+                </div>
+            </div>
+        </div>
+        <aside class="sidebar">
+            <span class="sidebar-title">最近文章</span>
+            <ul class="sidebar-post-list" id="recent-posts"></ul>
+        </aside>
+    </div>
+    <script src="posts.js"></script>
+    <script src="sidebar.js"></script>
+    <script src="theme.js"></script>
+    <script src="mobile-nav.js"></script>
+</body>
+</html>

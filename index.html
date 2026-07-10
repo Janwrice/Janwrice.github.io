@@ -2,363 +2,121 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>粒子 HELLO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Janwrice's Blog</title>
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
+    <link rel="stylesheet" href="styles.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background: #0b0d15;
-            min-height: 100vh;
+        .content-main {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+        }
+
+        .hero {
+            flex: 0 0 75vh;
+            display: flex;
             align-items: center;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            overflow: hidden;
+            justify-content: center;
         }
-        canvas {
-            display: block;
-            width: 100vw;
-            height: 100vh;
-            object-fit: contain;
-            background: radial-gradient(circle at center, #141824 0%, #090b10 100%);
-            cursor: default;
-            box-shadow: 0 0 60px rgba(0, 20, 40, 0.6);
-        }
-        /* 简约水印 — 可有可无，仅作点缀 */
-        .credit {
-            position: fixed;
-            bottom: 18px;
-            right: 24px;
-            color: rgba(255, 255, 255, 0.08);
-            font-size: 14px;
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 800;
+            color: var(--black);
             letter-spacing: 2px;
-            font-weight: 300;
-            pointer-events: none;
-            user-select: none;
-            z-index: 10;
         }
-        @media (max-width: 600px) {
-            .credit {
-                display: none;
+
+        .hero h1 span {
+            color: var(--blue);
+        }
+
+        .external-links {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            padding: 0 60px;
+        }
+
+        .external-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 16px;
+            font-weight: 500;
+            padding: 10px 24px;
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .external-links a:hover {
+            color: var(--blue);
+            border-color: var(--blue);
+            background-color: var(--blue-light);
+        }
+
+        /* ── 移动端 ── */
+        @media (max-width: 768px) {
+            .hero {
+                flex: 0 0 auto;
+                min-height: 30vh;
+                padding-top: 20px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+                letter-spacing: 1px;
+            }
+
+            .external-links {
+                flex: 1;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                padding: 0 16px 40px;
+                justify-content: flex-end;
+            }
+
+            .external-links a {
+                justify-content: center;
+                padding: 12px 20px;
             }
         }
+
     </style>
 </head>
 <body>
-    <canvas id="particleCanvas"></canvas>
-    <div class="credit">✦ 粒子 HELLO</div>
-
-    <script>
-        (function() {
-            const canvas = document.getElementById('particleCanvas');
-            const ctx = canvas.getContext('2d');
-
-            // ---------- 尺寸自适应 ----------
-            let width, height, centerX, centerY, scale;
-
-            function resize() {
-                width = window.innerWidth;
-                height = window.innerHeight;
-                canvas.width = width;
-                canvas.height = height;
-                centerX = width / 2;
-                centerY = height / 2;
-                // 基础缩放：以宽度为基准，保持视觉大小适中
-                scale = Math.min(width, height) / 600; 
-                // 限制最大缩放避免过于巨大 (但基本不会)
-                if (scale > 2.2) scale = 2.2;
-                if (scale < 0.6) scale = 0.6;
-            }
-            window.addEventListener('resize', () => {
-                resize();
-                // 文字点阵需要重新计算 (因为canvas尺寸变了)
-                generateTextPoints();
-                // 粒子位置基于点阵重新初始化 (保留随机偏移但位置重置)
-                initParticles();
-            });
-
-            // ---------- 文字点阵生成 (HELLO) ----------
-            let textPoints = []; // 存储 {x, y} 归一化坐标 (0~1 范围)
-            const TEXT_STRING = 'HELLO';
-            const FONT_SIZE_RATIO = 0.48; // 相对于画布较小边的比例
-
-            function generateTextPoints() {
-                // 离屏canvas绘制文字获取像素数据
-                const offscreen = document.createElement('canvas');
-                const offCtx = offscreen.getContext('2d');
-                
-                // 使用一个合理的尺寸来采样 (宽高比与主canvas一致，但固定像素)
-                const baseSize = 400;
-                const aspect = width / height;
-                let offW, offH;
-                if (aspect > 1) {
-                    offW = baseSize * aspect;
-                    offH = baseSize;
-                } else {
-                    offW = baseSize;
-                    offH = baseSize / aspect;
-                }
-                offscreen.width = Math.floor(offW);
-                offscreen.height = Math.floor(offH);
-                
-                // 清空并绘制白色文字
-                offCtx.fillStyle = '#000';
-                offCtx.fillRect(0, 0, offscreen.width, offscreen.height);
-                
-                // 计算字号：基于offH 与 文字长度
-                const fontSize = Math.min(offscreen.width / (TEXT_STRING.length * 0.7), offscreen.height * 0.7);
-                offCtx.textAlign = 'center';
-                offCtx.textBaseline = 'middle';
-                offCtx.font = `bold ${fontSize}px "Segoe UI", "Arial Black", "Helvetica", sans-serif`;
-                offCtx.fillStyle = '#fff';
-                offCtx.shadowColor = 'transparent';
-                offCtx.fillText(TEXT_STRING, offscreen.width/2, offscreen.height/2);
-                
-                // 提取像素
-                const imageData = offCtx.getImageData(0, 0, offscreen.width, offscreen.height);
-                const data = imageData.data;
-                
-                // 采样步长：控制粒子密度 (根据屏幕尺寸调整)
-                const step = Math.max(2, Math.floor(Math.min(offscreen.width, offscreen.height) / 120));
-                const points = [];
-                
-                // 遍历像素，收集亮度大于阈值的点 (归一化坐标)
-                const threshold = 128;
-                for (let y = 0; y < offscreen.height; y += step) {
-                    for (let x = 0; x < offscreen.width; x += step) {
-                        const index = (y * offscreen.width + x) * 4;
-                        // 亮度 (灰度)
-                        const r = data[index];
-                        const g = data[index + 1];
-                        const b = data[index + 2];
-                        const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
-                        if (brightness > threshold) {
-                            // 归一化坐标 (0~1)
-                            const nx = x / offscreen.width;
-                            const ny = y / offscreen.height;
-                            points.push({ x: nx, y: ny });
-                        }
-                    }
-                }
-                
-                // 如果点数太少，降低步长重试 (应急)
-                if (points.length < 50) {
-                    // 更密集采样
-                    const fineStep = Math.max(1, Math.floor(Math.min(offscreen.width, offscreen.height) / 180));
-                    for (let y = 0; y < offscreen.height; y += fineStep) {
-                        for (let x = 0; x < offscreen.width; x += fineStep) {
-                            const index = (y * offscreen.width + x) * 4;
-                            const r = data[index];
-                            const g = data[index + 1];
-                            const b = data[index + 2];
-                            const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
-                            if (brightness > threshold) {
-                                const nx = x / offscreen.width;
-                                const ny = y / offscreen.height;
-                                points.push({ x: nx, y: ny });
-                            }
-                        }
-                    }
-                }
-                
-                textPoints = points;
-            }
-
-            // ---------- 粒子系统 ----------
-            let particles = [];
-            const PARTICLE_COUNT_MULTIPLIER = 1.2; // 密度乘数
-
-            // 粒子对象结构
-            class Particle {
-                constructor(targetX, targetY) {
-                    // 目标位置 (归一化坐标)
-                    this.targetX = targetX;
-                    this.targetY = targetY;
-                    
-                    // 实际位置 (添加随机偏移，形成散开效果)
-                    const spread = 0.4; 
-                    this.x = targetX + (Math.random() - 0.5) * spread;
-                    this.y = targetY + (Math.random() - 0.5) * spread;
-                    
-                    // 尺寸 & 颜色 (微变化)
-                    this.size = 1.0 + Math.random() * 1.8;
-                    // 随机亮度/色调 (白-青-紫)
-                    const hue = 200 + Math.random() * 40; // 蓝紫色调
-                    this.color = `hsl(${hue}, 80%, ${60 + Math.random() * 30}%)`;
-                    
-                    // 随机速度因子 (用于动画流动)
-                    this.vx = (Math.random() - 0.5) * 0.008;
-                    this.vy = (Math.random() - 0.5) * 0.008;
-                    
-                    // 微小相位偏移
-                    this.phase = Math.random() * Math.PI * 2;
-                }
-                
-                // 更新位置，朝向目标移动 (弹性+轻微波动)
-                update(time, centerX, centerY, scale) {
-                    // 将归一化目标转为实际像素坐标 (基于当前画布尺寸)
-                    const pixelTargetX = centerX + (this.targetX - 0.5) * scale * 600;
-                    const pixelTargetY = centerY + (this.targetY - 0.5) * scale * 600;
-                    
-                    // 当前实际坐标
-                    const currentX = centerX + (this.x - 0.5) * scale * 600;
-                    const currentY = centerY + (this.y - 0.5) * scale * 600;
-                    
-                    // 弹性回归 (带轻微惯性)
-                    const dx = pixelTargetX - currentX;
-                    const dy = pixelTargetY - currentY;
-                    const easing = 0.045; 
-                    
-                    // 增加一些流动感 (正弦扰动)
-                    const flowX = Math.sin(time * 0.0005 + this.phase) * 0.0012;
-                    const flowY = Math.cos(time * 0.0007 + this.phase * 1.3) * 0.0012;
-                    
-                    // 更新归一化坐标 (让粒子在归一化空间移动)
-                    this.x += dx * easing / (scale * 600) + flowX;
-                    this.y += dy * easing / (scale * 600) + flowY;
-                    
-                    // 边界约束 (防止跑飞)
-                    this.x = Math.min(1.0, Math.max(0.0, this.x));
-                    this.y = Math.min(1.0, Math.max(0.0, this.y));
-                }
-                
-                // 绘制
-                draw(ctx, centerX, centerY, scale) {
-                    const px = centerX + (this.x - 0.5) * scale * 600;
-                    const py = centerY + (this.y - 0.5) * scale * 600;
-                    
-                    // 根据距离中心点的远近微调大小 (增加立体感)
-                    const distFactor = 0.8 + 0.4 * Math.sin(this.x * 12 + this.y * 8);
-                    const size = this.size * (0.8 + 0.4 * distFactor);
-                    
-                    ctx.beginPath();
-                    ctx.arc(px, py, size * 0.9, 0, Math.PI * 2);
-                    
-                    // 发光效果 (柔和)
-                    const gradient = ctx.createRadialGradient(px, py, 0, px, py, size * 2.2);
-                    gradient.addColorStop(0, this.color);
-                    gradient.addColorStop(0.5, this.color);
-                    gradient.addColorStop(1, 'rgba(40, 60, 120, 0)');
-                    
-                    ctx.fillStyle = gradient;
-                    ctx.shadowColor = 'rgba(180, 200, 255, 0.3)';
-                    ctx.shadowBlur = 12;
-                    ctx.fill();
-                    
-                    // 核心亮点
-                    ctx.shadowBlur = 0;
-                    ctx.beginPath();
-                    ctx.arc(px, py, size * 0.35, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-                    ctx.fill();
-                }
-            }
-
-            // 初始化粒子 (基于 textPoints)
-            function initParticles() {
-                if (textPoints.length === 0) {
-                    // 如果还没有点阵，先生成
-                    generateTextPoints();
-                }
-                
-                // 根据点阵数量生成粒子
-                const targetCount = Math.floor(textPoints.length * PARTICLE_COUNT_MULTIPLIER);
-                particles = [];
-                
-                // 如果点阵很少，增加复制随机点 (但通常不会)
-                if (textPoints.length < 30) {
-                    // 应急：生成一些随机点组成HELLO的轮廓 (但一般不会触发)
-                    for (let i = 0; i < 300; i++) {
-                        const randX = 0.1 + Math.random() * 0.8;
-                        const randY = 0.1 + Math.random() * 0.8;
-                        particles.push(new Particle(randX, randY));
-                    }
-                } else {
-                    // 从点阵中随机抽取 (可重复，增加密度)
-                    for (let i = 0; i < targetCount; i++) {
-                        const idx = Math.floor(Math.random() * textPoints.length);
-                        const p = textPoints[idx];
-                        particles.push(new Particle(p.x, p.y));
-                    }
-                }
-            }
-
-            // ---------- 动画循环 ----------
-            let animationId = null;
-            let startTime = performance.now();
-
-            function drawParticles(time) {
-                // 清除画布 (透明以显示背景渐变)
-                ctx.clearRect(0, 0, width, height);
-                
-                // 绘制背景光晕 (增强粒子发光感)
-                const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, Math.max(width, height) * 0.7);
-                gradient.addColorStop(0, 'rgba(30, 50, 80, 0.2)');
-                gradient.addColorStop(0.5, 'rgba(10, 20, 40, 0.1)');
-                gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-                ctx.fillStyle = gradient;
-                ctx.fillRect(0, 0, width, height);
-                
-                // 更新并绘制所有粒子
-                for (let p of particles) {
-                    p.update(time, centerX, centerY, scale);
-                    p.draw(ctx, centerX, centerY, scale);
-                }
-                
-                // 额外叠加一层朦胧光晕 (让文字更聚合)
-                ctx.shadowBlur = 0;
-                ctx.globalCompositeOperation = 'lighter';
-                ctx.globalAlpha = 0.03;
-                ctx.fillStyle = '#aac0ff';
-                ctx.beginPath();
-                ctx.arc(centerX, centerY, Math.min(width, height) * 0.3, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.globalAlpha = 1.0;
-                ctx.globalCompositeOperation = 'source-over';
-                
-                // 继续下一帧
-                animationId = requestAnimationFrame(drawParticles);
-            }
-
-            // ---------- 启动 ----------
-            function start() {
-                resize();
-                generateTextPoints();
-                initParticles();
-                if (animationId) cancelAnimationFrame(animationId);
-                // 记录开始时间，用于动画流动
-                startTime = performance.now();
-                drawParticles(startTime);
-            }
-
-            // 防连点 / 页面可见性变化重新调整 (但仅重绘)
-            document.addEventListener('visibilitychange', () => {
-                if (!document.hidden) {
-                    // 页面重新可见时，刷新粒子位置 (但不会重置位置)
-                    // 可以重新生成点阵以防尺寸变化 (但resize已经做了)
-                    // 轻量刷新
-                }
-            });
-
-            // 鼠标/触摸 交互：轻微影响粒子流动？ 不加复杂交互，保持简洁
-
-            // 启动一切
-            start();
-
-            // 开发者工具调整时保持适配
-            window.addEventListener('orientationchange', () => {
-                setTimeout(() => {
-                    resize();
-                    generateTextPoints();
-                    initParticles();
-                }, 200);
-            });
-
-        })();
-    </script>
+    <nav class="navbar">
+        <a href="#" class="navbar-brand"><span>J</span>anwrice</a>
+        <div class="navbar-right">
+            <ul class="navbar-links">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="blog.html">博客</a></li>
+                <li><a href="about.html">关于</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="page-layout">
+        <div class="content-main">
+            <div class="hero">
+                <h1><span>J</span>anwrice's&nbsp;Blog</h1>
+            </div>
+            <div class="external-links">
+                <a href="https://github.com/Janwrice" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://space.bilibili.com/266593795" target="_blank" rel="noopener">Bilibili</a>
+            </div>
+        </div>
+        <aside class="sidebar">
+            <span class="sidebar-title">最近文章</span>
+            <ul class="sidebar-post-list" id="recent-posts"></ul>
+        </aside>
+    </div>
+    <script src="posts.js"></script>
+    <script src="sidebar.js"></script>
+    <script src="theme.js"></script>
+    <script src="mobile-nav.js"></script>
 </body>
 </html>

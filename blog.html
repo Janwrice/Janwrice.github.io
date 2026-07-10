@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客 - Janwrice's Blog</title>
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-main {
+            padding: 60px;
+        }
+
+        .post-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post-list li {
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .post-list a {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-decoration: none;
+            color: var(--black);
+            font-size: 17px;
+            font-weight: 500;
+            padding: 24px 0;
+            transition: all 0.2s;
+        }
+
+        .post-list a:hover {
+            color: var(--blue);
+            padding-left: 12px;
+        }
+
+        .post-list .post-date {
+            font-size: 14px;
+            color: var(--gray);
+            font-weight: 400;
+            white-space: nowrap;
+            margin-left: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .content-main {
+                padding: 24px 16px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand"><span>J</span>anwrice</a>
+        <div class="navbar-right">
+            <ul class="navbar-links">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="blog.html" class="active">博客</a></li>
+                <li><a href="about.html">关于</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="page-layout">
+        <div class="content-main">
+            <h1 class="page-title">全部<span>文章</span></h1>
+            <ul class="post-list" id="all-posts"></ul>
+        </div>
+        <aside class="sidebar">
+            <span class="sidebar-title">最近文章</span>
+            <ul class="sidebar-post-list" id="recent-posts"></ul>
+        </aside>
+    </div>
+    <script src="posts.js"></script>
+    <script src="sidebar.js"></script>
+    <script src="theme.js"></script>
+    <script src="mobile-nav.js"></script>
+</body>
+</html>
