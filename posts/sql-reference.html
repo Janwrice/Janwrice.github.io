@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL 全面参考指南 - Janwrice's Blog</title>
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .content-main {
+            padding: 40px 60px 60px;
+        }
+
+        .post-header {
+            margin-bottom: 40px;
+        }
+
+        .post-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--black);
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .post-meta {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .post-body {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--black);
+        }
+
+        .post-body h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--black);
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue-light);
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 32px 0 12px;
+        }
+
+        .post-body p {
+            margin: 12px 0;
+        }
+
+        .post-body blockquote {
+            margin: 16px 0;
+            padding: 12px 20px;
+            border-left: 4px solid var(--blue);
+            background-color: var(--blue-light);
+            color: var(--black);
+            font-size: 15px;
+        }
+
+        .post-body blockquote p {
+            margin: 4px 0;
+        }
+
+        .post-body pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px 24px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 16px 0;
+        }
+
+        .post-body code {
+            font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Consolas", monospace;
+        }
+
+        .post-body :not(pre) > code {
+            background-color: var(--inline-code-bg);
+            color: var(--inline-code-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .post-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        .post-body th,
+        .post-body td {
+            padding: 10px 14px;
+            text-align: left;
+            border: 1px solid var(--gray-light);
+        }
+
+        .post-body th {
+            background-color: var(--blue-light);
+            color: var(--blue-dark);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .post-body td {
+            background-color: var(--white);
+        }
+
+        .post-body ul,
+        .post-body ol {
+            margin: 12px 0;
+            padding-left: 28px;
+        }
+
+        .post-body li {
+            margin: 6px 0;
+        }
+
+        .post-body strong {
+            color: var(--blue-dark);
+        }
+
+        .post-body a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .post-body a:hover {
+            text-decoration: underline;
+        }
+
+        .post-body hr {
+            border: none;
+            border-top: 1px solid var(--gray-light);
+            margin: 48px 0;
+        }
+
+        .toc-sidebar {
+            position: sticky;
+            top: 64px;
+            height: calc(100vh - 64px);
+            overflow-y: auto;
+        }
+
+        .toc-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .toc-nav a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 14px;
+            font-weight: 400;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .toc-nav a:hover {
+            color: var(--blue);
+            background-color: var(--blue-light);
+        }
+
+        .toc-nav a.active {
+            color: var(--blue);
+            border-left-color: var(--blue);
+            background-color: var(--blue-light);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .content-main {
+                padding: 24px 16px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="../index.html" class="navbar-brand"><span>J</span>anwrice</a>
+        <div class="navbar-right">
+            <ul class="navbar-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../blog.html" class="active">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="page-layout">
+        <div class="content-main">
+            <div class="post-header">
+                <h1 class="post-title">SQL 全面参考指南</h1>
+                <span class="post-meta">2026-07-10</span>
+            </div>
+            <div class="post-body">
+
+                <h2 id="toc-sql-order">1. SQL 执行顺序（核心心法）</h2>
+
+                <blockquote>
+                    <p><strong>这是最重要的概念。写SQL时脑中必须始终有这个顺序。</strong></p>
+                </blockquote>
+
+                <pre>书写顺序（你写的）           实际执行顺序（引擎跑的）
+─────────────────────      ─────────────────────────
+SELECT     ← 6             FROM        ← 1
+FROM       ← 1             JOIN        ← 2
+JOIN       ← 2             ON          ← 3
+ON         ← 3             WHERE       ← 4
+WHERE      ← 4             GROUP BY    ← 5
+GROUP BY   ← 5             HAVING      ← 6
+HAVING     ← 6             SELECT      ← 7  (计算表达式、别名)
+ORDER BY   ← 7             DISTINCT    ← 8
+LIMIT      ← 8             ORDER BY    ← 9
+                           LIMIT       ← 10
+
+窗口函数：在 SELECT 阶段计算（介于 HAVING 之后、ORDER BY 之前）。</pre>
+
+                <p><strong>关键推论：</strong></p>
+                <ul>
+                    <li><code>WHERE</code> 中不能用 <code>SELECT</code> 中定义的别名（WHERE 先执行）</li>
+                    <li><code>ORDER BY</code> 中可以用别名（ORDER BY 后执行）</li>
+                    <li><code>HAVING</code> 中不能用 <code>SELECT</code> 的别名（但MySQL做了扩展允许）</li>
+                    <li>聚合函数 <code>COUNT/SUM/AVG/MAX/MIN</code> 在 <code>GROUP BY</code> 阶段计算</li>
+                </ul>
+
+                <hr>
+
+                <h2 id="toc-basic-query">2. 基础查询</h2>
+
+                <h3>2.1 基本SELECT</h3>
+
+                <pre>-- 去重
+SELECT DISTINCT column1, column2 FROM table;
+
+-- 别名（AS可省略）
+SELECT col AS alias_name FROM table;
+
+-- 限制返回行数
+-- MySQL / PostgreSQL: LIMIT
+SELECT * FROM table LIMIT 10 OFFSET 20;  -- 跳过20行，取10行
+
+-- SQL Server / Oracle 12c+: FETCH
+SELECT * FROM table ORDER BY col OFFSET 20 ROWS FETCH NEXT 10 ROWS ONLY;</pre>
+
+                <h3>2.2 WHERE 过滤</h3>
+
+                <pre>-- 比较:  =  >  <  >=  <=  <>  !=
+-- 范围:  BETWEEN ... AND ...   (闭区间)
+-- 集合:  IN (val1, val2, ...)
+-- 模式:  LIKE 'pattern'       (% 任意多个字符, _ 单个字符)
+-- 空值:  IS NULL / IS NOT NULL
+-- 逻辑:  AND / OR / NOT       (注意括号控制优先级!)
+
+-- NULL 的注意事项：
+-- NULL 参与任何运算结果都是 NULL
+-- NULL = NULL  → NULL (不是TRUE!)
+-- 需要用 IS NULL 判断</pre>
+
+                <h3>2.3 ORDER BY</h3>
+
+                <pre>-- 多列排序
+SELECT * FROM employees ORDER BY department ASC, salary DESC;
+
+-- 用数字引用SELECT列（不推荐）
+SELECT name, salary FROM t ORDER BY 2 DESC;  -- 按第2列salary排序</pre>
+
+                <hr>
+
+                <h2 id="toc-aggregation">3. 聚合与分组</h2>
+
+                <h3>3.1 聚合函数</h3>
+
+                <table>
+                    <tr><th>函数</th><th>用途</th><th>注意</th></tr>
+                    <tr><td><code>COUNT(*)</code></td><td>统计行数（含NULL）</td><td>最常用</td></tr>
+                    <tr><td><code>COUNT(col)</code></td><td>统计非NULL数量</td><td>忽略NULL</td></tr>
+                    <tr><td><code>COUNT(DISTINCT col)</code></td><td>统计去重非NULL数量</td><td></td></tr>
+                    <tr><td><code>SUM(col)</code></td><td>求和</td><td>忽略NULL</td></tr>
+                    <tr><td><code>AVG(col)</code></td><td>平均值</td><td>SUM/COUNT，忽略NULL</td></tr>
+                    <tr><td><code>MAX(col)</code> / <code>MIN(col)</code></td><td>最大/最小值</td><td>忽略NULL</td></tr>
+                    <tr><td><code>GROUP_CONCAT(col)</code></td><td>MySQL分组拼接</td><td><code>GROUP_CONCAT(name ORDER BY name SEPARATOR ',')</code></td></tr>
+                    <tr><td><code>STRING_AGG(col, ',')</code></td><td>PostgreSQL/标准SQL拼接</td><td></td></tr>
+                </table>
+
+                <h3>3.2 GROUP BY 与 HAVING</h3>
+
+                <pre>-- GROUP BY：将行分组，每组输出一行
+-- HAVING：过滤分组（WHERE 过滤原始行，HAVING 过滤聚合后的组）
+
+SELECT department, COUNT(*) AS cnt, AVG(salary) AS avg_sal
+FROM employees
+WHERE hire_date >= '2020-01-01'      -- 先过滤原始行
+GROUP BY department                    -- 再分组
+HAVING AVG(salary) > 50000            -- 再过滤分组
+ORDER BY cnt DESC;                    -- 最后排序</pre>
+
+                <p><strong>GROUP BY 重要规则：</strong></p>
+                <ul>
+                    <li>SELECT 中的非聚合列必须在 GROUP BY 中</li>
+                    <li>GROUP BY 可以用列号（不推荐）：<code>GROUP BY 1, 2</code></li>
+                </ul>
+
+                <hr>
+
+                <h2 id="toc-joins">4. 多表连接</h2>
+
+                <h3>4.1 JOIN 类型</h3>
+
+                <pre>INNER JOIN     ── 两表都匹配才保留    （交集）
+LEFT JOIN      ── 左表全保留，右表无匹配填NULL
+RIGHT JOIN     ── 右表全保留，左表无匹配填NULL
+FULL JOIN      ── 两表全保留           （并集，MySQL不直接支持）
+CROSS JOIN     ── 笛卡尔积            （慎用）
+NATURAL JOIN   ── 自动用同名列连接    （慎用，不明确）
+SELF JOIN      ── 表和自身连接</pre>
+
+                <pre>-- INNER JOIN
+SELECT e.name, d.name AS dept
+FROM employees e
+INNER JOIN departments d ON e.dept_id = d.id;
+
+-- LEFT JOIN（最常用来查"有没有"）
+SELECT e.name, o.order_id
+FROM customers c
+LEFT JOIN orders o ON c.id = o.customer_id;
+-- 如果 o.order_id IS NULL → 该客户没下过单
+
+-- 多表连接
+SELECT ...
+FROM a
+JOIN b ON a.id = b.a_id
+JOIN c ON b.id = c.b_id
+LEFT JOIN d ON c.id = d.c_id;</pre>
+
+                <h3>4.2 JOIN vs WHERE子查询</h3>
+
+                <pre>-- 查有订单的客户 — 两种写法
+-- JOIN:
+SELECT DISTINCT c.* FROM customers c JOIN orders o ON c.id = o.cust_id;
+
+-- 子查询（IN）:
+SELECT * FROM customers WHERE id IN (SELECT cust_id FROM orders);
+
+-- 子查询（EXISTS）:
+SELECT * FROM customers c WHERE EXISTS (SELECT 1 FROM orders o WHERE o.cust_id = c.id);
+-- 通常 EXISTS 比 IN 效率好（找到一条就停）</pre>
+
+                <h3>4.3 ON vs USING</h3>
+
+                <pre>-- ON: 任意条件的连接
+SELECT * FROM a JOIN b ON a.id = b.a_id AND a.status = 'active';
+
+-- USING: 当两表连接列同名时
+SELECT * FROM a JOIN b USING (id);  -- 结果中id列只出现一次</pre>
+
+                <hr>
+
+                <h2 id="toc-subquery">5. 子查询与CTE</h2>
+
+                <h3>5.1 子查询类型</h3>
+
+                <table>
+                    <tr><th>类型</th><th>位置</th><th>返回值</th><th>示例</th></tr>
+                    <tr><td>标量子查询</td><td>SELECT / WHERE</td><td>单个值</td><td><code>(SELECT MAX(sal) FROM emp)</code></td></tr>
+                    <tr><td>行子查询</td><td>WHERE</td><td>一行</td><td><code>WHERE (a,b) = (SELECT ...)</code></td></tr>
+                    <tr><td>列子查询</td><td>WHERE IN</td><td>一列多行</td><td><code>WHERE id IN (SELECT ...)</code></td></tr>
+                    <tr><td>表子查询</td><td>FROM</td><td>一张表</td><td><code>FROM (SELECT ...) AS t</code></td></tr>
+                    <tr><td>EXISTS</td><td>WHERE</td><td>布尔</td><td><code>WHERE EXISTS (SELECT 1 ...)</code></td></tr>
+                </table>
+
+                <pre>-- 标量子查询（必须返回一行一列，否则报错）
+SELECT name, salary,
+       (SELECT AVG(salary) FROM employees) AS company_avg
+FROM employees;
+
+-- 相关子查询：子查询引用外层列
+SELECT e.name, e.salary
+FROM employees e
+WHERE e.salary > (SELECT AVG(salary) FROM employees WHERE dept_id = e.dept_id);
+
+-- EXISTS / NOT EXISTS
+SELECT * FROM customers c
+WHERE EXISTS (SELECT 1 FROM orders o WHERE o.cust_id = c.id AND o.amount > 1000);
+
+SELECT * FROM customers c
+WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.cust_id = c.id);</pre>
+
+                <h3>5.2 CTE（公用表表达式）</h3>
+
+                <pre>-- 基本CTE：让复杂查询可读、可复用
+WITH dept_stats AS (
+    SELECT dept_id, AVG(salary) AS avg_sal, COUNT(*) AS cnt
+    FROM employees
+    GROUP BY dept_id
+),
+high_paid AS (
+    SELECT * FROM employees WHERE salary > 100000
+)
+SELECT e.name, e.salary, d.avg_sal
+FROM high_paid e
+JOIN dept_stats d ON e.dept_id = d.dept_id
+WHERE e.salary > d.avg_sal;
+
+-- 递归CTE（生成序列 / 树形结构）
+WITH RECURSIVE seq(n) AS (
+    SELECT 1
+    UNION ALL
+    SELECT n + 1 FROM seq WHERE n < 10
+)
+SELECT * FROM seq;  -- 1 到 10
+
+-- 树形结构（组织架构）
+WITH RECURSIVE org_tree AS (
+    SELECT id, name, manager_id, 1 AS level
+    FROM employees WHERE manager_id IS NULL
+    UNION ALL
+    SELECT e.id, e.name, e.manager_id, t.level + 1
+    FROM employees e
+    JOIN org_tree t ON e.manager_id = t.id
+)
+SELECT * FROM org_tree ORDER BY level, id;</pre>
+
+                <p><strong>何时用CTE vs 子查询：</strong></p>
+                <ul>
+                    <li>同一结果被多次引用 → CTE</li>
+                    <li>需要递归 → CTE</li>
+                    <li>让复杂查询分步骤、可读 → CTE</li>
+                    <li>简单一次性过滤 → 子查询即可</li>
+                </ul>
+
+                <hr>
+
+                <h2 id="toc-window">6. 窗口函数</h2>
+
+                <blockquote>
+                    <p><strong>窗口函数是SQL高级查询的核心，几乎所有"排名/累计/移动平均/环比"类问题都靠它。</strong></p>
+                </blockquote>
+
+                <h3>6.1 基本语法</h3>
+                <pre>SELECT 
+    column,
+    窗口函数() OVER (
+        PARTITION BY col1, col2   -- 分组（可选）
+        ORDER BY col3             -- 排序（部分函数必需）
+        ROWS/RANGE BETWEEN ...    -- 窗口帧（可选）
+    ) AS alias
+FROM table;</pre>
+
+                <h3>6.2 排名函数</h3>
+                <pre>-- ROW_NUMBER(): 唯一序号 (1,2,3,4...)
+-- RANK():       跳跃排名 (1,1,3,4...)
+-- DENSE_RANK(): 连续排名 (1,1,2,3...)
+-- NTILE(n):     分成n组，返回组号(1到n)
+
+SELECT name, salary,
+    ROW_NUMBER() OVER (ORDER BY salary DESC) AS row_num,
+    RANK()       OVER (ORDER BY salary DESC) AS rank_num,
+    DENSE_RANK() OVER (ORDER BY salary DESC) AS dense_num,
+    NTILE(4)     OVER (ORDER BY salary DESC) AS quartile
+FROM employees;
+
+-- 经典题：查每个部门工资第2高的员工
+WITH ranked AS (
+    SELECT *, DENSE_RANK() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS rnk
+    FROM employees
+)
+SELECT * FROM ranked WHERE rnk = 2;</pre>
+
+                <h3>6.3 偏移函数（LAG / LEAD）</h3>
+                <pre>-- LAG(col, offset, default):  往上取（看前面）
+-- LEAD(col, offset, default): 往下取（看后面）
+
+-- 每个员工和前一个入职的人比工资
+SELECT name, salary, hire_date,
+    LAG(salary) OVER (ORDER BY hire_date) AS prev_salary,
+    salary - LAG(salary) OVER (ORDER BY hire_date) AS diff
+FROM employees;
+
+-- 每天销售额和前一天比较（环比）
+SELECT sale_date, amount,
+    LAG(amount) OVER (ORDER BY sale_date) AS prev_day_amount,
+    amount - LAG(amount) OVER (ORDER BY sale_date) AS change
+FROM daily_sales;</pre>
+
+                <h3>6.4 聚合窗口函数</h3>
+                <pre>-- SUM / AVG / COUNT / MAX / MIN 都可以做窗口函数
+-- 加 ORDER BY → 累计效果
+
+-- 累计求和
+SELECT sale_date, amount,
+    SUM(amount) OVER (ORDER BY sale_date) AS cumulative
+FROM daily_sales;
+
+-- 移动平均（前2行+当前行+后2行）
+SELECT sale_date, amount,
+    AVG(amount) OVER (ORDER BY sale_date ROWS BETWEEN 2 PRECEDING AND 2 FOLLOWING) AS ma5
+FROM daily_sales;
+
+-- 每个部门内工资累计占比
+SELECT dept_id, name, salary,
+    SUM(salary) OVER (PARTITION BY dept_id ORDER BY salary) * 1.0 
+        / SUM(salary) OVER (PARTITION BY dept_id) AS cum_ratio
+FROM employees;</pre>
+
+                <h3>6.5 首末值函数</h3>
+                <pre>-- FIRST_VALUE(col): 窗口内第一个值
+-- LAST_VALUE(col):  窗口内最后一个值（注意帧范围！）
+-- NTH_VALUE(col, n): 窗口内第n个值
+
+SELECT dept_id, name, salary,
+    FIRST_VALUE(name) OVER (PARTITION BY dept_id ORDER BY salary DESC) AS top_earner
+FROM employees;</pre>
+
+                <h3>6.6 窗口帧</h3>
+                <pre>-- ROWS: 物理行为单位
+-- RANGE: 逻辑值为单位（ORDER BY列值相同视为同行）
+
+-- 常用帧：
+ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW   -- 从第一行到当前行
+ROWS BETWEEN 2 PRECEDING AND CURRENT ROW            -- 前2行+当前行
+ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING            -- 前1+当前+后1
+ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING  -- 整个分区</pre>
+
+                <hr>
+
+                <h2 id="toc-condition">7. 条件与分支</h2>
+
+                <h3>7.1 CASE WHEN</h3>
+                <pre>-- 两种写法：
+-- 搜索CASE（推荐，灵活）
+CASE WHEN condition1 THEN result1
+     WHEN condition2 THEN result2
+     ELSE default_result
+END
+
+-- 简单CASE
+CASE column WHEN value1 THEN result1
+            WHEN value2 THEN result2
+            ELSE default_result
+END
+
+-- 示例：成绩分级
+SELECT name, score,
+    CASE WHEN score >= 90 THEN 'A'
+         WHEN score >= 80 THEN 'B'
+         WHEN score >= 70 THEN 'C'
+         WHEN score >= 60 THEN 'D'
+         ELSE 'F'
+    END AS grade
+FROM students;
+
+-- CASE 在聚合中做条件统计（交叉表/透视）
+SELECT 
+    SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) AS completed_cnt,
+    SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) AS pending_cnt,
+    COUNT(*) AS total
+FROM orders;</pre>
+
+                <h3>7.2 COALESCE / NULLIF / IFNULL</h3>
+                <pre>-- COALESCE(val1, val2, ...) : 返回第一个非NULL值（标准SQL）
+SELECT name, COALESCE(phone, '无电话') AS phone FROM contacts;
+
+-- NULLIF(a, b): 如果 a=b 返回NULL，否则返回a（避免除零）
+SELECT amount / NULLIF(count, 0) AS avg_price FROM sales;
+
+-- IFNULL(a, b): MySQL特有，等同 COALESCE(a, b)
+-- NVL(a, b): Oracle中
+-- IF(score >= 60, '及格', '不及格'): MySQL特有（条件判断）</pre>
+
+                <hr>
+
+                <h2 id="toc-functions">8. 字符串/日期/数值函数</h2>
+
+                <h3>8.1 字符串函数（MySQL）</h3>
+
+                <table>
+                    <tr><th>函数</th><th>用途</th><th>示例</th></tr>
+                    <tr><td><code>CONCAT(a,b,...)</code></td><td>拼接字符串</td><td><code>CONCAT(first, ' ', last)</code></td></tr>
+                    <tr><td><code>CONCAT_WS(sep,...)</code></td><td>用分隔符拼接</td><td><code>CONCAT_WS('-', year, month, day)</code></td></tr>
+                    <tr><td><code>SUBSTRING(str,s,len)</code></td><td>截取</td><td><code>SUBSTRING('hello', 2, 3)</code> → 'ell'</td></tr>
+                    <tr><td><code>LEFT(str,n)</code> / <code>RIGHT(str,n)</code></td><td>左/右取n字符</td><td></td></tr>
+                    <tr><td><code>CHAR_LENGTH(str)</code></td><td>字符长度</td><td>推荐中文环境</td></tr>
+                    <tr><td><code>REPLACE(str,old,new)</code></td><td>替换</td><td></td></tr>
+                    <tr><td><code>UPPER</code> / <code>LOWER</code></td><td>大小写转换</td><td></td></tr>
+                    <tr><td><code>TRIM</code> / <code>LTRIM</code> / <code>RTRIM</code></td><td>去空格</td><td></td></tr>
+                    <tr><td><code>LPAD(str,len,pad)</code> / <code>RPAD</code></td><td>左/右填充</td><td><code>LPAD('5', 3, '0')</code> → '005'</td></tr>
+                    <tr><td><code>REGEXP</code> / <code>RLIKE</code></td><td>正则匹配</td><td><code>WHERE email REGEXP '^[a-z]+@'</code></td></tr>
+                </table>
+
+                <h3>8.2 日期函数（MySQL）</h3>
+                <pre>-- 当前时间
+NOW()            -- 2024-01-15 14:30:00
+CURDATE()        -- 2024-01-15
+CURTIME()        -- 14:30:00
+
+-- 提取部分
+YEAR(date), MONTH(date), DAY(date)
+HOUR(time), MINUTE(time), SECOND(time)
+DAYOFWEEK(date)  -- 1=周日, 2=周一...
+QUARTER(date)    -- 季度 1-4
+
+-- 日期运算
+DATE_ADD(date, INTERVAL n UNIT)   -- 加
+DATE_SUB(date, INTERVAL n UNIT)   -- 减
+DATEDIFF(d1, d2)                  -- 天数差: d1 - d2
+TIMESTAMPDIFF(UNIT, start, end)   -- 按单位算差
+
+-- 格式化
+DATE_FORMAT(date, '%Y-%m-%d')     -- 2024-01-15
+-- %Y 四位年, %y 两位年, %m 月, %d 日, %H 时, %i 分, %s 秒
+
+-- 示例：计算年龄
+SELECT TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) AS age FROM users;</pre>
+
+                <h3>8.3 数值函数</h3>
+                <table>
+                    <tr><th>函数</th><th>用途</th></tr>
+                    <tr><td><code>ROUND(x, d)</code></td><td>四舍五入到d位小数</td></tr>
+                    <tr><td><code>FLOOR(x)</code></td><td>向下取整</td></tr>
+                    <tr><td><code>CEIL(x)</code></td><td>向上取整</td></tr>
+                    <tr><td><code>TRUNCATE(x, d)</code></td><td>截断到d位（不四舍五入）</td></tr>
+                    <tr><td><code>ABS(x)</code></td><td>绝对值</td></tr>
+                    <tr><td><code>MOD(a, b)</code></td><td>取余</td></tr>
+                    <tr><td><code>POWER(x, y)</code></td><td>x的y次方</td></tr>
+                    <tr><td><code>SQRT(x)</code></td><td>平方根</td></tr>
+                    <tr><td><code>RAND()</code></td><td>随机数 0~1</td></tr>
+                </table>
+
+                <hr>
+
+                <h2 id="toc-setops">9. 集合运算与高级操作</h2>
+                <pre>-- UNION: 合并去重
+-- UNION ALL: 合并保留所有行（推荐）
+-- INTERSECT: 交集（MySQL 8.0不支持）
+-- EXCEPT: 差集（MySQL 8.0不支持）
+
+-- MySQL实现差集：用 LEFT JOIN ... IS NULL
+SELECT a.id FROM a LEFT JOIN b ON a.id = b.id WHERE b.id IS NULL;
+
+-- MySQL实现交集：用 INNER JOIN 或 IN
+SELECT DISTINCT a.id FROM a INNER JOIN b ON a.id = b.id;</pre>
+
+                <hr>
+
+                <h2 id="toc-index">10. 索引与性能</h2>
+
+                <table>
+                    <tr><th>索引类型</th><th>用途</th></tr>
+                    <tr><td><code>PRIMARY KEY</code></td><td>主键，唯一 + 非空</td></tr>
+                    <tr><td><code>UNIQUE INDEX</code></td><td>唯一索引，可有NULL</td></tr>
+                    <tr><td><code>INDEX</code></td><td>加速查询</td></tr>
+                    <tr><td><code>FULLTEXT INDEX</code></td><td>全文搜索</td></tr>
+                    <tr><td><code>COMPOSITE INDEX</code></td><td>复合索引（多列）</td></tr>
+                </table>
+
+                <pre>CREATE INDEX idx_name ON table(col1, col2);
+CREATE UNIQUE INDEX idx_name ON table(col);</pre>
+
+                <p><strong>复合索引的最左前缀原则：</strong></p>
+                <pre>-- 索引: (a, b, c)
+WHERE a=1               ✅ 用a
+WHERE a=1 AND b=2       ✅ 用a,b
+WHERE a=1 AND c=3       ✅ 用a（c不走索引）
+WHERE b=2               ❌ 跳过了a
+范围查询后失效: WHERE a=1 AND b>2 AND c=3 → a和b走索引，c不走</pre>
+
+                <pre>EXPLAIN SELECT ...;
+-- 关注: type（ALL全表扫描最差，const/ref/index较好）
+--       rows（扫描行数）
+--       key（使用的索引）
+--       Extra（Using filesort 需优化，Using index 最好）</pre>
+
+                <hr>
+
+                <h2 id="toc-dml">11. DML（增删改）</h2>
+                <pre>-- INSERT
+INSERT INTO table (col1, col2) VALUES (val1, val2);
+INSERT INTO table (col1, col2) VALUES (v1, v2), (v3, v4), (v5, v6);
+INSERT INTO table (col1, col2) SELECT c1, c2 FROM other_table;
+INSERT IGNORE INTO table ...;
+INSERT INTO table ... ON DUPLICATE KEY UPDATE col1 = VALUES(col1);
+
+-- UPDATE（务必加WHERE！）
+UPDATE table SET col1 = val1, col2 = val2 WHERE condition;
+UPDATE t1 JOIN t2 ON t1.id = t2.t1_id SET t1.col = t2.col WHERE condition;
+
+-- DELETE（务必加WHERE！）
+DELETE FROM table WHERE condition;
+DELETE t1 FROM t1 JOIN t2 ON t1.id = t2.t1_id WHERE condition;
+
+-- 事务
+START TRANSACTION;
+    SQL语句...
+COMMIT;           -- 提交
+ROLLBACK;         -- 回滚
+SAVEPOINT sp1;
+ROLLBACK TO sp1;</pre>
+
+                <hr>
+
+                <h2 id="toc-ddl">12. DDL（表结构定义）</h2>
+
+                <pre>CREATE TABLE employees (
+    id          INT PRIMARY KEY AUTO_INCREMENT,
+    name        VARCHAR(100) NOT NULL,
+    email       VARCHAR(200) UNIQUE,
+    dept_id     INT,
+    salary      DECIMAL(10, 2) DEFAULT 0.00,
+    hire_date   DATE,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    CONSTRAINT fk_dept FOREIGN KEY (dept_id) REFERENCES departments(id),
+    CONSTRAINT chk_salary CHECK (salary >= 0)
+);
+
+ALTER TABLE t ADD COLUMN col_name TYPE;
+ALTER TABLE t DROP COLUMN col_name;
+ALTER TABLE t RENAME COLUMN old TO new;
+ALTER TABLE t ADD INDEX idx_name(col);
+
+DROP TABLE t;        -- 删表（结构+数据都没了）
+TRUNCATE TABLE t;    -- 清空数据但保留结构（比DELETE快，不能回滚）</pre>
+
+                <hr>
+
+                <h2 id="toc-problems">13. 解题思考模型</h2>
+
+                <blockquote>
+                    <p><strong>面对一道SQL题目，按以下五步走。</strong></p>
+                </blockquote>
+
+                <h3>步骤1：识别数据实体和关系</h3>
+                <ul>
+                    <li>题目涉及几张表？分别是干什么的？</li>
+                    <li>表之间怎么关联？（外键是谁？）</li>
+                    <li>主键是什么？（每行是否唯一？）</li>
+                </ul>
+
+                <h3>步骤2：翻译需求为"数据操作"</h3>
+
+                <table>
+                    <tr><th>需求关键词</th><th>SQL操作</th></tr>
+                    <tr><td>"每个"/"按XX分类"</td><td>GROUP BY XX</td></tr>
+                    <tr><td>"排名"/"前N名"/"第N高"</td><td>窗口函数 ROW_NUMBER/RANK</td></tr>
+                    <tr><td>"是否存在"/"有没有"</td><td>EXISTS / NOT EXISTS / LEFT JOIN ... IS NULL</td></tr>
+                    <tr><td>"和前一天/上一期比"</td><td>LAG / LEAD</td></tr>
+                    <tr><td>"累计"</td><td>SUM() OVER (ORDER BY ...)</td></tr>
+                    <tr><td>"占比"</td><td>col / SUM() OVER (PARTITION BY ...)</td></tr>
+                    <tr><td>"连续N天/次"</td><td>ROW_NUMBER + 日期差 巧妙构造</td></tr>
+                    <tr><td>"同时包含A和B"</td><td>HAVING 中做条件计数</td></tr>
+                    <tr><td>"只包含A不包含B"</td><td>LEFT JOIN ... IS NULL 或 NOT EXISTS</td></tr>
+                    <tr><td>"条件计数"/"透视表"</td><td>CASE WHEN + SUM</td></tr>
+                    <tr><td>"每组取TOP N"</td><td>ROW_NUMBER + 子查询取 rnk&lt;=N</td></tr>
+                </table>
+
+                <h3>步骤3-5：骨架→粒度→打磨</h3>
+                <ul>
+                    <li>先搭 FROM + JOIN 骨架</li>
+                    <li>判断是否需要 GROUP BY（每组一行 vs 保留明细）</li>
+                    <li>按执行顺序过一遍：WHERE → GROUP BY → HAVING → SELECT → ORDER BY</li>
+                </ul>
+
+                <h3>核心解题套路</h3>
+
+                <p><strong>套路A：每组取Top N</strong></p>
+                <pre>WITH ranked AS (
+    SELECT *, ROW_NUMBER() OVER (PARTITION BY group_col ORDER BY value_col DESC) AS rn
+    FROM table
+)
+SELECT * FROM ranked WHERE rn <= N;</pre>
+
+                <p><strong>套路B：连续出现/连续天数</strong></p>
+                <pre>WITH numbered AS (
+    SELECT *, ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY date) AS rn
+    FROM logins
+),
+grouped AS (
+    SELECT *, DATE_SUB(date, INTERVAL rn DAY) AS grp
+    FROM numbered
+)
+SELECT user_id, MIN(date), MAX(date), COUNT(*) AS consecutive_days
+FROM grouped
+GROUP BY user_id, grp
+HAVING COUNT(*) >= N;</pre>
+
+                <p><strong>套路C：留存率/转化率</strong></p>
+                <pre>WITH first_day AS (
+    SELECT DISTINCT user_id, date FROM activity
+)
+SELECT COUNT(DISTINCT r.user_id) * 1.0 / COUNT(DISTINCT f.user_id) AS retention
+FROM first_day f
+LEFT JOIN first_day r ON f.user_id = r.user_id 
+    AND r.date = DATE_ADD(f.date, INTERVAL 1 DAY);</pre>
+
+                <p><strong>套路D：同时满足多个条件</strong></p>
+                <pre>SELECT student_id FROM enrollments
+WHERE course_id IN ('A', 'B')
+GROUP BY student_id
+HAVING COUNT(DISTINCT course_id) = 2;</pre>
+
+                <p><strong>套路E：中位数</strong></p>
+                <pre>WITH ranked AS (
+    SELECT *, ROW_NUMBER() OVER (ORDER BY value) AS rn,
+              COUNT(*) OVER () AS total
+    FROM table
+)
+SELECT AVG(value) FROM ranked
+WHERE rn BETWEEN total/2 AND total/2 + 1;</pre>
+
+                <p><strong>套路F：环比/同比</strong></p>
+                <pre>SELECT month, amount,
+    LAG(amount) OVER (ORDER BY month) AS prev_month,
+    (amount - LAG(amount) OVER (ORDER BY month)) * 1.0 
+        / NULLIF(LAG(amount) OVER (ORDER BY month), 0) AS mom_change
+FROM monthly_sales;</pre>
+
+                <h3>DEBUG 思考清单</h3>
+                <ol>
+                    <li><strong>JOIN类型对吗？</strong> 该 LEFT JOIN 的用了 INNER JOIN？</li>
+                    <li><strong>WHERE导致LEFT JOIN变INNER JOIN了吗？</strong> 对右表的条件放ON里别放WHERE里！</li>
+                    <li><strong>NULL值处理了吗？</strong></li>
+                    <li><strong>GROUP BY列够吗？</strong></li>
+                    <li><strong>WHERE和HAVING用反了吗？</strong></li>
+                    <li><strong>重复行导致COUNT不对吗？</strong> 该用 COUNT(DISTINCT) 还是 COUNT(*)？</li>
+                    <li><strong>整数除法了吗？</strong> 3/2=1 → 乘 1.0</li>
+                    <li><strong>LIMIT没加ORDER BY？</strong> 结果随机！</li>
+                </ol>
+
+                <hr>
+
+                <h2 id="toc-cheatsheet">14. 高频套路速查表</h2>
+
+                <table>
+                    <tr><th>问题场景</th><th>核心技术</th></tr>
+                    <tr><td>查第N高工资</td><td>LIMIT OFFSET 或 DENSE_RANK</td></tr>
+                    <tr><td>每组第N高</td><td>ROW_NUMBER + PARTITION BY</td></tr>
+                    <tr><td>查重复记录</td><td>GROUP BY + HAVING COUNT&gt;1</td></tr>
+                    <tr><td>删除重复保留一条</td><td>ROW_NUMBER + DELETE WHERE rn&gt;1</td></tr>
+                    <tr><td>查没有订单的客户</td><td>LEFT JOIN ... IS NULL / NOT EXISTS</td></tr>
+                    <tr><td>连续登录天数</td><td>ROW_NUMBER + 差值分组</td></tr>
+                    <tr><td>累计求和</td><td>SUM() OVER (ORDER BY date)</td></tr>
+                    <tr><td>移动平均</td><td>AVG() OVER (ROWS BETWEEN N PRECEDING AND N FOLLOWING)</td></tr>
+                    <tr><td>留存率</td><td>自连接同表不同日期</td></tr>
+                    <tr><td>中位数</td><td>ROW_NUMBER + COUNT OVER</td></tr>
+                    <tr><td>行列转换</td><td>CASE WHEN + SUM</td></tr>
+                    <tr><td>树形递归</td><td>WITH RECURSIVE</td></tr>
+                    <tr><td>百分比/占比</td><td>col / SUM(col) OVER (PARTITION BY ...)</td></tr>
+                    <tr><td>同时有A和B</td><td>HAVING COUNT(DISTINCT col) = 2</td></tr>
+                </table>
+
+                <hr>
+
+                <blockquote>
+                    <p><strong>最后一条心法：SQL不是"怎么写"，而是"我想要什么结果集"。</strong></p>
+                    <p>先想清楚最终的每一列、每一行应该是什么，再倒推怎么写。执行顺序脑中常驻。</p>
+                </blockquote>
+
+            </div>
+        </div>
+        <aside class="sidebar toc-sidebar">
+            <span class="sidebar-title">目录索引</span>
+            <nav class="toc-nav" id="toc-nav">
+                <a href="#toc-sql-order">1. SQL 执行顺序</a>
+                <a href="#toc-basic-query">2. 基础查询</a>
+                <a href="#toc-aggregation">3. 聚合与分组</a>
+                <a href="#toc-joins">4. 多表连接</a>
+                <a href="#toc-subquery">5. 子查询与CTE</a>
+                <a href="#toc-window">6. 窗口函数</a>
+                <a href="#toc-condition">7. 条件与分支</a>
+                <a href="#toc-functions">8. 字符串/日期/数值函数</a>
+                <a href="#toc-setops">9. 集合运算与高级操作</a>
+                <a href="#toc-index">10. 索引与性能</a>
+                <a href="#toc-dml">11. DML（增删改）</a>
+                <a href="#toc-ddl">12. DDL（表结构定义）</a>
+                <a href="#toc-problems">13. 解题思考模型</a>
+                <a href="#toc-cheatsheet">14. 高频套路速查表</a>
+            </nav>
+        </aside>
+    </div>
+    <script>
+        const nav = document.getElementById('toc-nav');
+        const links = nav.querySelectorAll('a');
+        const headings = [...links].map(a => document.getElementById(a.getAttribute('href').slice(1)));
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            headings.forEach(h => {
+                if (h.getBoundingClientRect().top <= 150) current = h.id;
+            });
+            links.forEach(a => {
+                a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+            });
+        });
+
+        nav.addEventListener('click', e => {
+            if (e.target.tagName === 'A') {
+                e.preventDefault();
+                const target = document.getElementById(e.target.getAttribute('href').slice(1));
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    </script>
+    <script src="../posts.js"></script>
+    <script src="../sidebar.js"></script>
+    <script src="../theme.js"></script>
+    <script src="../mobile-nav.js"></script>
+</body>
+</html>
