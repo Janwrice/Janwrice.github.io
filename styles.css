@@ -127,6 +127,19 @@ body {
 
 [data-theme="dark"] .sun-icon { display: block; }
 [data-theme="dark"] .moon-icon { display: none; }
+[data-theme="dark"] {
+    --blue: #83a598;
+    --blue-dark: #fabd2f;
+    --blue-light: #3c3836;
+    --white: #282828;
+    --black: #ebdbb2;
+    --gray: #a89984;
+    --gray-light: #504945;
+    --nav-bg: #282828;
+    --inline-code-bg: #3c3836;
+    --inline-code-color: #fabd2f;
+}
+
 .page-layout {
     display: flex;
     margin-top: 64px;
