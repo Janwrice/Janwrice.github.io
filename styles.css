@@ -148,6 +148,7 @@ body {
 
 .content-main {
     flex: 1;
+    min-width: 0;
 }
 
 .page-title {
@@ -163,6 +164,7 @@ body {
 
 .sidebar {
     width: 300px;
+    flex-shrink: 0;
     border-left: 1px solid var(--gray-light);
     padding: 40px 28px;
     display: flex;
@@ -223,6 +225,13 @@ body {
 .sidebar-more:hover {
     gap: 8px;
     color: var(--blue-dark);
+}
+
+/* ── 文章正文防止内容溢出 ── */
+.post-body pre,
+.post-body table {
+    overflow-x: auto;
+    max-width: 100%;
 }
 
 /* ═══════════════════════════════════════════════════════
