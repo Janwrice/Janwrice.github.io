@@ -170,6 +170,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 24px;
+    overflow: hidden;
+    transition: width 0.35s ease, opacity 0.35s ease, padding 0.35s ease, border-left-width 0.35s ease;
 }
 
 .sidebar-title {
@@ -227,6 +229,14 @@ body {
     color: var(--blue-dark);
 }
 
+/* ── 桌面端侧边栏切换（滑入滑出动画）── */
+.sidebar-hidden .sidebar {
+    width: 0 !important;
+    padding: 0 !important;
+    border-left-width: 0 !important;
+    opacity: 0 !important;
+}
+
 /* ── 文章正文防止内容溢出 ── */
 .post-body pre,
 .post-body table {
@@ -239,7 +249,7 @@ body {
    ═══════════════════════════════════════════════════════ */
 
 .hamburger-btn {
-    display: none;           /* 桌面端隐藏 */
+    display: flex;
     background: none;
     border: 1px solid var(--gray-light);
     color: var(--gray);
@@ -424,10 +434,6 @@ body {
 
     .navbar-right {
         gap: 12px;
-    }
-
-    .hamburger-btn {
-        display: flex;
     }
 
     /* ── 页面布局 ── */
