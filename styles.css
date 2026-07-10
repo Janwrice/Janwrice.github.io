@@ -466,11 +466,16 @@ body {
 
     .post-body table {
         font-size: 12px;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
     }
 
     .post-body th,
     .post-body td {
         padding: 6px 8px;
+        white-space: nowrap;
     }
 
     .post-body img {
