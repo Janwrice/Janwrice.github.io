@@ -58,7 +58,26 @@
         document.body.style.overflow = '';
     }
 
-    hamburger.addEventListener('click', openDrawer);
+    // ── 桌面端 / 移动端行为分发 ──
+    function isMobile() {
+        return window.matchMedia('(max-width: 768px)').matches;
+    }
+
+    hamburger.addEventListener('click', function () {
+        if (isMobile()) {
+            openDrawer();
+        } else {
+            document.body.classList.toggle('sidebar-hidden');
+        }
+    });
+
+    // 窗口缩放到移动端时，恢复 sidebar 显示（避免桌面隐藏后切移动端丢失）
+    window.addEventListener('resize', function () {
+        if (isMobile()) {
+            document.body.classList.remove('sidebar-hidden');
+        }
+    });
+
     closeBtn.addEventListener('click', closeDrawer);
     overlay.addEventListener('click', closeDrawer);
 
