@@ -71,6 +71,11 @@
         }
     });
 
+    // 初始加载时，移动端自动移除 sidebar-hidden（index.html 默认携带此类）
+    if (isMobile()) {
+        document.body.classList.remove('sidebar-hidden');
+    }
+
     // 窗口缩放到移动端时，恢复 sidebar 显示（避免桌面隐藏后切移动端丢失）
     window.addEventListener('resize', function () {
         if (isMobile()) {

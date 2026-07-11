@@ -463,14 +463,15 @@ body {
         display: none;
     }
 
-    /* 抽屉内的克隆 .sidebar 需要正常显示 */
+    /* 抽屉内的克隆 .sidebar 需要正常显示（!important 覆盖 .sidebar-hidden 的影响） */
     .drawer .sidebar {
         display: flex !important;
         flex-direction: column;
         gap: 24px;
-        width: auto;
+        width: auto !important;
         border-left: none;
-        padding: 0;
+        padding: 0 !important;
+        opacity: 1 !important;
     }
 
     /* ── 目录侧边栏（文章页）── */
