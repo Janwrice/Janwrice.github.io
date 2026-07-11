@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft 基岩版正版验证机制分析与绕过技术 - Janwrice's Blog</title>
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .content-main {
+            padding: 40px 60px 60px;
+        }
+
+        .post-header {
+            margin-bottom: 40px;
+        }
+
+        .post-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--black);
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .post-meta {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .post-body {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--black);
+        }
+
+        .post-body h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--black);
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue-light);
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 32px 0 12px;
+        }
+
+        .post-body h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 24px 0 10px;
+        }
+
+        .post-body p {
+            margin: 12px 0;
+        }
+
+        .post-body blockquote {
+            margin: 16px 0;
+            padding: 12px 20px;
+            border-left: 4px solid var(--blue);
+            background-color: var(--blue-light);
+            color: var(--black);
+            font-size: 15px;
+        }
+
+        .post-body blockquote p {
+            margin: 4px 0;
+        }
+
+        .post-body pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px 24px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 16px 0;
+        }
+
+        .post-body code {
+            font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Consolas", monospace;
+        }
+
+        .post-body :not(pre) > code {
+            background-color: var(--inline-code-bg);
+            color: var(--inline-code-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .post-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        .post-body th,
+        .post-body td {
+            padding: 10px 14px;
+            text-align: left;
+            border: 1px solid var(--gray-light);
+        }
+
+        .post-body th {
+            background-color: var(--blue-light);
+            color: var(--blue-dark);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .post-body td {
+            background-color: var(--white);
+        }
+
+        .post-body ul,
+        .post-body ol {
+            margin: 12px 0;
+            padding-left: 28px;
+        }
+
+        .post-body li {
+            margin: 6px 0;
+        }
+
+        .post-body strong {
+            color: var(--blue-dark);
+        }
+
+        .post-body a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .post-body a:hover {
+            text-decoration: underline;
+        }
+
+        .post-body hr {
+            border: none;
+            border-top: 1px solid var(--gray-light);
+            margin: 48px 0;
+        }
+
+        .section-divider {
+            border: none;
+            border-top: 1px dashed var(--gray-light);
+            margin: 32px 0;
+        }
+
+        .toc-sidebar {
+            position: sticky;
+            top: 64px;
+            height: calc(100vh - 64px);
+            overflow-y: auto;
+        }
+
+        .toc-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .toc-nav a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 14px;
+            font-weight: 400;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .toc-nav a:hover {
+            color: var(--blue);
+            background-color: var(--blue-light);
+        }
+
+        .toc-nav a.active {
+            color: var(--blue);
+            border-left-color: var(--blue);
+            background-color: var(--blue-light);
+            font-weight: 600;
+        }
+
+        /* 警告提示块 */
+        .post-body .warning-blockquote {
+            border-left-color: #dc3545;
+            background-color: #fff5f5;
+        }
+
+        [data-theme="dark"] .post-body .warning-blockquote {
+            border-left-color: #f85149;
+            background-color: #1a1015;
+        }
+
+        @media (max-width: 768px) {
+            .content-main {
+                padding: 24px 16px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="../index.html" class="navbar-brand"><span>J</span>anwrice</a>
+        <div class="navbar-right">
+            <ul class="navbar-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../blog.html" class="active">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="page-layout">
+        <div class="content-main">
+            <div class="post-header">
+                <h1 class="post-title">Minecraft 基岩版正版验证机制分析与绕过技术</h1>
+                <span class="post-meta">2021-08-26 · 修订于 2026-07-11</span>
+            </div>
+            <div class="post-body">
+
+                <blockquote class="warning-blockquote">
+                    <p><strong>⚠ 重要提示：</strong>此教程已不再适用于破解如今使用<strong>谷歌加固（Google pairipcore）</strong>的 Minecraft 版本。本文所述方法仅对未采用谷歌加固的旧版本有效，请读者注意甄别。</p>
+                </blockquote>
+
+                <blockquote>
+                    <p><strong>摘要：</strong>本文从技术角度分析 Minecraft 基岩版（Bedrock Edition）及早期携带版（Pocket Edition）中 Google Play 授权验证机制的实现方式，并整理各版本对应的 Smali 字节码级修改方法。本文仅供安全研究与逆向工程学习之用。</p>
+                </blockquote>
+
+                <hr>
+
+                <h2 id="toc-background">1. 背景概述</h2>
+
+                <p>自 <strong>Minecraft 携带版 Alpha 0.1</strong> 起，Mojang 在 Android 平台的 Minecraft 中引入了正版验证机制。该机制在 <strong>Alpha 0.4 至基岩版 1.2.0.6</strong> 期间曾被移除，随后自 <strong>基岩版 1.2.0.7</strong> 起重新引入并持续至今。验证流程依赖 Google Play 授权服务（Google Play Licensing），未购买正版的玩家将无法通过验证，从而无法正常进入游戏。</p>
+
+                <p>本文记录了对该验证机制的逆向分析过程，以及针对不同版本绕过授权检查的技术方案。</p>
+
+                <hr>
+
+                <h2 id="toc-prepare">2. 准备工作</h2>
+
+                <h3>2.1 所需工具</h3>
+
+                <table>
+                    <tr><th>工具</th><th>用途</th><th>备注</th></tr>
+                    <tr><td><strong>MT 管理器</strong></td><td>修改 APK 内的 DEX 文件（Smali 字节码）</td><td>核心工具。Dex 编辑器++ 功能无需 VIP；去除签名校验需 VIP</td></tr>
+                    <tr><td><strong>NP 管理器</strong></td><td>APK 签名与格式转换</td><td>可选，用于 APKS ↔ APK 转换（推荐）</td></tr>
+                    <tr><td><strong>Apktool M</strong></td><td>APK 反编译与回编译</td><td>可选，免费但转换速度较慢（约 5 分钟）</td></tr>
+                    <tr><td><strong>SAI（Split APKs Installer）</strong></td><td>安装 APKS 分包应用</td><td>处理分包安装场景时使用</td></tr>
+                </table>
+
+                <h3>2.2 APKS 格式处理</h3>
+
+                <p>若下载到的 Minecraft 安装包为 <code>.apks</code> 格式，需要先转换为 <code>.apk</code> 格式再进行修改。有以下几种方案：</p>
+
+                <ol>
+                    <li><strong>推荐：NP 管理器</strong> — 直接转换为 APK 格式，速度快</li>
+                    <li><strong>MT 管理器</strong> — 需 VIP 会员，支持格式转换</li>
+                    <li><strong>Apktool M</strong> — 免费但反编译/回编译耗时较长（约 5 分钟）</li>
+                </ol>
+
+                <p><strong>替代方案：</strong>也可将 <code>.apks</code> 文件解压，对 <code>base.apk</code> 进行修改操作，随后对其它分包重新签名（需与 <code>base.apk</code> 签名一致），最后将所有包重新 ZIP 压缩后使用 SAI 等 APKS 安装器安装。可在分包内添加或删除文件以触发重新签名。</p>
+
+                <hr>
+
+                <h2 id="toc-principle">3. 技术原理分析</h2>
+
+                <p>Minecraft 基岩版的授权验证基于 <strong>Google Play Licensing Service</strong>。核心流程如下：</p>
+
+                <ol>
+                    <li>应用启动时，<code>LicenseChecker</code> 类调用 <code>checkAccess</code> 方法向 Google Play 服务发起授权查询</li>
+                    <li>Google Play 返回授权结果（已授权 / 未授权 / 错误）</li>
+                    <li><code>ServerManagedPolicy</code> 类的 <code>allowAccess</code> 方法根据返回结果决定是否允许用户进入应用</li>
+                </ol>
+
+                <p>绕过授权的核心思路即对上述关键判断逻辑进行修改，使应用在任何情况下均返回"授权通过"的结果。主要涉及以下两个类：</p>
+
+                <table>
+                    <tr><th>目标类</th><th>关键方法</th><th>修改策略</th></tr>
+                    <tr><td><code>com.googleplay.licensing.LicenseChecker</code></td><td><code>checkAccess</code></td><td>移除条件跳转，跳过授权失败分支（方案一）</td></tr>
+                    <tr><td><code>com.googleplay.licensing.ServerManagedPolicy</code></td><td><code>allowAccess</code></td><td>将返回值强制置为 <code>true</code>（方案二，推荐）</td></tr>
+                </table>
+
+                <p>两种方案均能达到绕过验证的目的。方案二更为直接——直接修改授权策略的返回值，因此被广泛采用（如葫芦侠三楼 无垠wy 的破解器即基于此方案）。</p>
+
+                <hr>
+
+                <h2 id="toc-versions">4. 各版本操作指南</h2>
+
+                <p>以下操作均以 <strong>MT 管理器的 "Dex 编辑器++" 功能</strong>为例。若使用普通 "Dex 编辑器"（非 ++ 版本），对应的行号与指令格式已在每节末尾标注。</p>
+
+                <blockquote>
+                    <p><strong>提示：</strong>若有多个 DEX 文件（如 <code>classes2.dex</code>），优先查找 <code>classes.dex</code>。使用 Dex 编辑器++ 时可同时勾选所有 DEX 文件进行搜索。</p>
+                </blockquote>
+
+                <!-- 4.1 -->
+                <h3>4.1 携带版 Alpha 0.1</h3>
+
+                <table>
+                    <tr><th style="width:120px">目标类</th><td><code>com.android.vending.licensing.b</code></td></tr>
+                    <tr><th>目标方法</th><td><code>a(Lcom/android/vending/licensing/t;)V</code></td></tr>
+                </table>
+
+                <p><strong>Dex 编辑器++：</strong></p>
+                <ol>
+                    <li>定位第 <strong>521</strong> 行，找到 <code>if-eqz v0, :cond_15</code></li>
+                    <li>修改为 <code>if-ne v0, v0, :cond_15</code></li>
+                </ol>
+
+                <p><strong>Dex 编辑器（非 ++）：</strong></p>
+                <ol>
+                    <li>定位第 <strong>6</strong> 行，找到 <code>if-eqz v0 :label_21</code></li>
+                    <li>修改为 <code>if-ne v0 v0 :label_21</code></li>
+                </ol>
+
+                <hr class="section-divider">
+
+                <!-- 4.2 -->
+                <h3>4.2 携带版 Alpha 0.2 – 0.3</h3>
+
+                <table>
+                    <tr><th style="width:120px">目标类</th><td><code>com.android.vending.licensing.h</code></td></tr>
+                    <tr><th>目标方法</th><td><code>a(Lcom/android/vending/licensing/l;)V</code></td></tr>
+                </table>
+
+                <p><strong>Dex 编辑器++：</strong></p>
+                <ol>
+                    <li>定位第 <strong>521</strong> 行，找到 <code>if-eqz v0, :cond_15</code></li>
+                    <li>修改为 <code>if-ne v0, v0, :cond_15</code></li>
+                </ol>
+
+                <p><strong>Dex 编辑器（非 ++）：</strong></p>
+                <ol>
+                    <li>定位第 <strong>6</strong> 行，找到 <code>if-eqz v0 :label_21</code></li>
+                    <li>修改为 <code>if-ne v0 v0 :label_21</code></li>
+                </ol>
+
+                <hr class="section-divider">
+
+                <!-- 4.3 -->
+                <h3>4.3 基岩版 1.2.0.7 至 1.16.100.53</h3>
+
+                <h4>方案一：修改 LicenseChecker.checkAccess（移除失败分支）</h4>
+
+                <table>
+                    <tr><th style="width:120px">目标类</th><td><code>com.googleplay.licensing.LicenseChecker</code></td></tr>
+                    <tr><th>目标方法</th><td><code>checkAccess</code></td></tr>
+                </table>
+
+                <p><strong>Dex 编辑器++：</strong></p>
+                <ol>
+                    <li>定位第 <strong>638</strong> 行，找到 <code>if-eqz v1, :cond_17</code></li>
+                    <li><strong>删除</strong>该行代码</li>
+                </ol>
+
+                <p><strong>Dex 编辑器（非 ++）：</strong></p>
+                <ol>
+                    <li>定位第 <strong>6</strong> 行，找到 <code>if-eqz v1 :label_23</code></li>
+                    <li><strong>删除</strong>该行代码</li>
+                </ol>
+
+                <h4>方案二：修改 ServerManagedPolicy.allowAccess（强制返回 true）⭐ 推荐</h4>
+
+                <table>
+                    <tr><th style="width:120px">目标类</th><td><code>com.googleplay.licensing.ServerManagedPolicy</code></td></tr>
+                    <tr><th>目标方法</th><td><code>allowAccess</code></td></tr>
+                </table>
+
+                <p><strong>Dex 编辑器++：</strong></p>
+                <ol>
+                    <li>定位第 <strong>653</strong> 行，找到 <code>const/4 v2, 0x0</code></li>
+                    <li>修改为 <code>const/4 v2, 0x1</code></li>
+                </ol>
+
+                <p><strong>Dex 编辑器（非 ++）：</strong></p>
+                <ol>
+                    <li>定位第 <strong>2</strong> 行，找到 <code>const/4 v2 0</code></li>
+                    <li>修改为 <code>const/4 v2 1</code></li>
+                </ol>
+
+                <hr class="section-divider">
+
+                <!-- 4.4 -->
+                <h3>4.4 基岩版 1.16.100.53 以后</h3>
+
+                <table>
+                    <tr><th style="width:120px">目标类</th><td><code>com.googleplay.licensing.ServerManagedPolicy</code></td></tr>
+                    <tr><th>目标方法</th><td><code>allowAccess</code></td></tr>
+                </table>
+
+                <p><strong>Dex 编辑器++：</strong></p>
+                <ol>
+                    <li>定位第 <strong>578</strong> 行，找到 <code>const/4 v4, 0x0</code></li>
+                    <li>修改为 <code>const/4 v4, 0x1</code></li>
+                </ol>
+
+                <p><strong>Dex 编辑器（非 ++）：</strong></p>
+                <ol>
+                    <li>定位第 <strong>5</strong> 行，找到 <code>const/4 v4 0</code></li>
+                    <li>修改为 <code>const/4 v4 1</code></li>
+                </ol>
+
+                <hr>
+
+                <h2 id="toc-comparison">5. 版本-方案速查表</h2>
+
+                <table>
+                    <tr><th>游戏版本</th><th>目标类</th><th>目标方法</th><th>操作</th></tr>
+                    <tr>
+                        <td>携带版 Alpha 0.1</td>
+                        <td><code>com.android.vending.licensing.b</code></td>
+                        <td><code>a(...t;)V</code></td>
+                        <td><code>if-eqz</code> → <code>if-ne</code></td>
+                    </tr>
+                    <tr>
+                        <td>携带版 Alpha 0.2 – 0.3</td>
+                        <td><code>com.android.vending.licensing.h</code></td>
+                        <td><code>a(...l;)V</code></td>
+                        <td><code>if-eqz</code> → <code>if-ne</code></td>
+                    </tr>
+                    <tr>
+                        <td>基岩版 1.2.0.7 – 1.16.100.53（方案一）</td>
+                        <td><code>LicenseChecker</code></td>
+                        <td><code>checkAccess</code></td>
+                        <td>删除 <code>if-eqz</code></td>
+                    </tr>
+                    <tr>
+                        <td>基岩版 1.2.0.7 – 1.16.100.53（方案二）⭐</td>
+                        <td><code>ServerManagedPolicy</code></td>
+                        <td><code>allowAccess</code></td>
+                        <td><code>const/4 v2, 0x0</code> → <code>0x1</code></td>
+                    </tr>
+                    <tr>
+                        <td>基岩版 1.16.100.53+</td>
+                        <td><code>ServerManagedPolicy</code></td>
+                        <td><code>allowAccess</code></td>
+                        <td><code>const/4 v4, 0x0</code> → <code>0x1</code></td>
+                    </tr>
+                </table>
+
+                <hr>
+
+                <h2 id="toc-troubleshoot">6. 常见问题与解决方案</h2>
+
+                <h3>6.1 代码行号不匹配</h3>
+                <p>不同版本的 Minecraft 安装包中，Smali 代码的行号可能存在差异。若在指定行号找不到对应代码，可尝试以下方法：</p>
+                <ul>
+                    <li>在目标类中定位目标方法，直接在方法体内搜索对应指令</li>
+                    <li>使用 Dex 编辑器++ 的全局搜索功能，搜索目标代码片段</li>
+                    <li>找到后根据上下文确认位置正确，再执行修改</li>
+                </ul>
+
+                <h3>6.2 多个 DEX 文件</h3>
+                <p>较新版本的 Minecraft 可能包含多个 DEX 文件（如 <code>classes2.dex</code>、<code>classes3.dex</code>）。处理建议：</p>
+                <ul>
+                    <li>优先在 <code>classes.dex</code> 中查找目标类</li>
+                    <li>使用 Dex 编辑器++ 时，可同时勾选所有 DEX 文件进行编辑</li>
+                    <li>也可以先合并所有 DEX 文件，再进行统一修改</li>
+                </ul>
+
+                <h3>6.3 签名校验</h3>
+                <p>在 <strong>1.16.20 之前</strong>的版本中，仅修改授权验证还不够——Minecraft 会校验 APK 签名，修改后签名不一致将导致无法登录。需要额外执行<strong>去除签名校验</strong>的步骤（MT 管理器中此功能需 VIP）。</p>
+                <p>自 <strong>1.16.20 起</strong>，Mojang 移除了签名校验逻辑，修改后无需额外处理即可正常登录。</p>
+
+                <h3>6.4 共存版登录问题</h3>
+                <p>共存版（即修改了包名的版本）通常无法直接登录 Xbox Live 账号。经测试，<strong>1.16.201 的共存版可以正常登录</strong>，但其他版本行为可能不一致。</p>
+                <p>一种可行的共存版登录方法：</p>
+                <ol>
+                    <li>在原版 Minecraft 处于"外部存储"状态时完成登录</li>
+                    <li>将共存版也切换为"外部存储"</li>
+                    <li>此时共存版可共享原版的登录数据，从而间接完成登录</li>
+                </ol>
+                <blockquote>
+                    <p><strong>注意：</strong>此方法未经全面测试，不保证在所有版本上均有效。</p>
+                </blockquote>
+
+                <h3>6.5 1.16.100.53+ 版本使用旧破解器闪退</h3>
+                <p>在 1.16.100.53 以后的版本中，使用旧版破解器（如葫芦侠三楼 无垠wy 的破解器）可能导致 Minecraft 闪退。这是因为该类工具采用的是方案二的旧版字节码偏移，与新版本不兼容。建议手动按照 <a href="#toc-versions">第 4.4 节</a> 的方法操作。</p>
+
+                <hr>
+
+                <h2 id="toc-reference">7. 参考资料</h2>
+
+                <ol>
+                    <li>葫芦侠三楼 — 基岩版 1.2.0.7+ 破解教程<br><small><a href="http://bbs.huluxia.com/wap/thread/875715.html" target="_blank" rel="noopener">http://bbs.huluxia.com/wap/thread/875715.html</a></small></li>
+                    <li>葫芦侠三楼 — ServerManagedPolicy 方案详解<br><small><a href="http://bbs.huluxia.com/wap/thread/659805.html" target="_blank" rel="noopener">http://bbs.huluxia.com/wap/thread/659805.html</a></small></li>
+                    <li>葫芦侠三楼 — 去除签名校验与共存版登录讨论（第六页）<br><small><a href="http://bbs.huluxia.com/wap/thread/82471.html" target="_blank" rel="noopener">http://bbs.huluxia.com/wap/thread/82471.html</a></small></li>
+                    <li>葫芦侠三楼 — 无垠wy 破解器原理说明（第九页）<br><small><a href="http://bbs.huluxia.com/wap/thread/469437.html" target="_blank" rel="noopener">http://bbs.huluxia.com/wap/thread/469437.html</a></small></li>
+                </ol>
+
+                <hr>
+
+                <h2 id="toc-disclaimer">8. 免责声明</h2>
+
+                <blockquote>
+                    <p><strong>本文仅供网络安全研究与逆向工程技术学习交流之用。</strong></p>
+                    <p>本文所描述的技术方案仅用于帮助理解 Android 应用授权验证机制的工作原理及 Smali 字节码修改技术。任何个人或组织不得将本文内容用于商业用途或侵犯他人知识产权。</p>
+                    <p>请尊重开发者的劳动成果。若您喜欢 Minecraft，请通过官方渠道购买正版以支持 Mojang Studios 的持续开发。</p>
+                    <p>使用本文所述方法所产生的任何法律后果由操作者自行承担，与本文作者无关。</p>
+                </blockquote>
+
+            </div>
+        </div>
+        <aside class="sidebar toc-sidebar">
+            <span class="sidebar-title">目录索引</span>
+            <nav class="toc-nav" id="toc-nav">
+                <a href="#toc-background">1. 背景概述</a>
+                <a href="#toc-prepare">2. 准备工作</a>
+                <a href="#toc-principle">3. 技术原理分析</a>
+                <a href="#toc-versions">4. 各版本操作指南</a>
+                <a href="#toc-comparison">5. 版本-方案速查表</a>
+                <a href="#toc-troubleshoot">6. 常见问题与解决方案</a>
+                <a href="#toc-reference">7. 参考资料</a>
+                <a href="#toc-disclaimer">8. 免责声明</a>
+            </nav>
+        </aside>
+    </div>
+    <script>
+        const nav = document.getElementById('toc-nav');
+        const links = nav.querySelectorAll('a');
+        const headings = [...links].map(a => document.getElementById(a.getAttribute('href').slice(1)));
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            headings.forEach(h => {
+                if (h.getBoundingClientRect().top <= 150) current = h.id;
+            });
+            links.forEach(a => {
+                a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+            });
+        });
+
+        nav.addEventListener('click', e => {
+            if (e.target.tagName === 'A') {
+                e.preventDefault();
+                const target = document.getElementById(e.target.getAttribute('href').slice(1));
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    </script>
+    <script src="../posts.js"></script>
+    <script src="../sidebar.js"></script>
+    <script src="../theme.js"></script>
+    <script src="../mobile-nav.js"></script>
+</body>
+</html>
