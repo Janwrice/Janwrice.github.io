@@ -11,6 +11,36 @@
             padding: 60px;
         }
 
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 36px;
+        }
+
+        .tag-btn {
+            padding: 6px 18px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid var(--gray-light);
+            border-radius: 20px;
+            background: transparent;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tag-btn:hover {
+            color: var(--blue);
+            border-color: var(--blue);
+        }
+
+        .tag-btn.active {
+            background-color: var(--blue);
+            border-color: var(--blue);
+            color: #fff;
+        }
+
         .post-list {
             list-style: none;
             display: flex;
@@ -19,6 +49,10 @@
 
         .post-list li {
             border-bottom: 1px solid var(--gray-light);
+        }
+
+        .post-list li.hidden {
+            display: none;
         }
 
         .post-list a {
@@ -67,6 +101,7 @@
     <div class="page-layout">
         <div class="content-main">
             <h1 class="page-title">全部<span>文章</span></h1>
+            <div class="tag-filter" id="tag-filter"></div>
             <ul class="post-list" id="all-posts"></ul>
         </div>
         <aside class="sidebar">
