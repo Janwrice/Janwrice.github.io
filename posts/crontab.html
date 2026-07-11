@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux 设置开机启动项 - Janwrice's Blog</title>
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .content-main {
+            padding: 40px 60px 60px;
+        }
+
+        .post-header {
+            margin-bottom: 40px;
+        }
+
+        .post-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--black);
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .post-meta {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .post-body {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--black);
+        }
+
+        .post-body h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--black);
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue-light);
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 32px 0 12px;
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 24px 0 8px;
+        }
+
+        .post-body p {
+            margin: 12px 0;
+        }
+
+        .post-body blockquote {
+            margin: 16px 0;
+            padding: 12px 20px;
+            border-left: 4px solid var(--blue);
+            background-color: var(--blue-light);
+            color: var(--black);
+            font-size: 15px;
+        }
+
+        .post-body blockquote p {
+            margin: 4px 0;
+        }
+
+        .post-body pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px 24px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 16px 0;
+        }
+
+        .post-body pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        .post-body code {
+            font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Consolas", monospace;
+        }
+
+        .post-body :not(pre) > code {
+            background-color: var(--inline-code-bg);
+            color: var(--inline-code-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .post-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        .post-body th,
+        .post-body td {
+            padding: 10px 14px;
+            text-align: left;
+            border: 1px solid var(--gray-light);
+        }
+
+        .post-body th {
+            background-color: var(--blue-light);
+            color: var(--blue-dark);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .post-body td {
+            background-color: var(--white);
+        }
+
+        .post-body ul,
+        .post-body ol {
+            margin: 12px 0;
+            padding-left: 28px;
+        }
+
+        .post-body li {
+            margin: 6px 0;
+        }
+
+        .post-body strong {
+            color: var(--blue-dark);
+        }
+
+        .post-body a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .post-body a:hover {
+            text-decoration: underline;
+        }
+
+        .post-body hr {
+            border: none;
+            border-top: 1px solid var(--gray-light);
+            margin: 48px 0;
+        }
+
+        .post-body img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .toc-sidebar {
+            position: sticky;
+            top: 64px;
+            height: calc(100vh - 64px);
+            overflow-y: auto;
+        }
+
+        .toc-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .toc-nav a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 14px;
+            font-weight: 400;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .toc-nav a:hover {
+            color: var(--blue);
+            background-color: var(--blue-light);
+        }
+
+        .toc-nav a.active {
+            color: var(--blue);
+            border-left-color: var(--blue);
+            background-color: var(--blue-light);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .content-main {
+                padding: 24px 16px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="../index.html" class="navbar-brand"><span>J</span>anwrice</a>
+        <div class="navbar-right">
+            <ul class="navbar-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../blog.html" class="active">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="page-layout">
+        <div class="content-main">
+            <div class="post-header">
+                <h1 class="post-title">Linux 设置开机启动项</h1>
+                <span class="post-meta">2024-10-11</span>
+            </div>
+            <div class="post-body">
+
+                <p>如果你打开搜索引擎搜索"Linux 如何设置开机启动项"时，可能会看到下面这篇文章：</p>
+
+                <blockquote>
+                    <p><a href="https://blog.csdn.net/hualinger/article/details/125321966" target="_blank" rel="noopener">linux设置开机自启动的三种方法</a></p>
+                </blockquote>
+
+                <p>这篇文章中通过配置 <code>/etc/rc.local</code> 的方法来设置开机启动项。</p>
+
+                <p>但如果你使用的是较新的 Linux 如 Debian 12，大概率你会发现你的电脑根本没有 <code>/etc/rc.local</code> 这个文件，创建文件写入文本可能也是不起作用的。</p>
+
+                <p>那么如何简洁地为 Linux 设置开机启动项呢？</p>
+
+                <p>实际上很简单，</p>
+
+                <h2 id="use-crontab">我们可以使用 crontab 功能来实现这点</h2>
+
+                <pre><code>$ su
+$ crontab -e</code></pre>
+
+                <p>执行后，这时可能会问你选什么编辑器，选择后，在打开的文件尾部输入：</p>
+
+                <pre><code>@reboot /home/start.sh</code></pre>
+
+                <p>其中，<code>@reboot</code> 表示重启开机的时候运行一次；<code>/home/start.sh</code> 即你需要自启动的可执行文件。如果需要 root 权限，也可以直接在其前加 <code>root</code> 实现 root 权限执行。</p>
+
+                <p>除了 <code>@reboot</code> 参数，也有其他参数可选：</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>参数</th>
+                            <th>说明</th>
+                            <th>等效 cron 表达式</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>@reboot</code></td>
+                            <td>Run once, at startup.</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><code>@yearly</code></td>
+                            <td>Run once a year</td>
+                            <td><code>0 0 1 1 *</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>@annually</code></td>
+                            <td>(same as @yearly)</td>
+                            <td><code>0 0 1 1 *</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>@monthly</code></td>
+                            <td>Run once a month</td>
+                            <td><code>0 0 1 * *</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>@weekly</code></td>
+                            <td>Run once a week</td>
+                            <td><code>0 0 * * 0</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>@daily</code></td>
+                            <td>Run once a day</td>
+                            <td><code>0 0 * * *</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>@midnight</code></td>
+                            <td>(same as @daily)</td>
+                            <td><code>0 0 * * *</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>@hourly</code></td>
+                            <td>Run once an hour</td>
+                            <td><code>0 * * * *</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <aside class="sidebar toc-sidebar">
+            <span class="sidebar-title">目录索引</span>
+            <nav class="toc-nav" id="toc-nav">
+                <a href="#use-crontab">使用 crontab 实现开机启动</a>
+            </nav>
+        </aside>
+    </div>
+    <script src="../posts.js"></script>
+    <script src="../sidebar.js"></script>
+    <script src="../theme.js"></script>
+    <script src="../mobile-nav.js"></script>
+    <script>
+        // ── 目录滚动高亮 ──
+        (function() {
+            var nav = document.getElementById('toc-nav');
+            if (!nav) return;
+            var links = nav.querySelectorAll('a');
+            var headings = [];
+            links.forEach(function(a) {
+                var id = a.getAttribute('href');
+                if (id && id.startsWith('#')) {
+                    var el = document.getElementById(id.slice(1));
+                    if (el) headings.push(el);
+                }
+            });
+
+            window.addEventListener('scroll', function() {
+                var current = '';
+                headings.forEach(function(h) {
+                    if (h.getBoundingClientRect().top <= 150) current = h.id;
+                });
+                links.forEach(function(a) {
+                    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+                });
+            });
+
+            nav.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    var target = document.getElementById(e.target.getAttribute('href').slice(1));
+                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

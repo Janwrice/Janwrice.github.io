@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KDE Kate 编辑器配置教程 - Janwrice's Blog</title>
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .content-main {
+            padding: 40px 60px 60px;
+        }
+
+        .post-header {
+            margin-bottom: 40px;
+        }
+
+        .post-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--black);
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .post-meta {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .post-body {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--black);
+        }
+
+        .post-body h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--black);
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue-light);
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--black);
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue-light);
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 32px 0 12px;
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 24px 0 8px;
+        }
+
+        .post-body p {
+            margin: 12px 0;
+        }
+
+        .post-body blockquote {
+            margin: 16px 0;
+            padding: 12px 20px;
+            border-left: 4px solid var(--blue);
+            background-color: var(--blue-light);
+            color: var(--black);
+            font-size: 15px;
+        }
+
+        .post-body blockquote p {
+            margin: 4px 0;
+        }
+
+        .post-body pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px 24px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 16px 0;
+        }
+
+        .post-body pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        .post-body code {
+            font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Consolas", monospace;
+        }
+
+        .post-body :not(pre) > code {
+            background-color: var(--inline-code-bg);
+            color: var(--inline-code-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .post-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        .post-body th,
+        .post-body td {
+            padding: 10px 14px;
+            text-align: left;
+            border: 1px solid var(--gray-light);
+        }
+
+        .post-body th {
+            background-color: var(--blue-light);
+            color: var(--blue-dark);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .post-body td {
+            background-color: var(--white);
+        }
+
+        .post-body ul,
+        .post-body ol {
+            margin: 12px 0;
+            padding-left: 28px;
+        }
+
+        .post-body li {
+            margin: 6px 0;
+        }
+
+        .post-body strong {
+            color: var(--blue-dark);
+        }
+
+        .post-body a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .post-body a:hover {
+            text-decoration: underline;
+        }
+
+        .post-body hr {
+            border: none;
+            border-top: 1px solid var(--gray-light);
+            margin: 48px 0;
+        }
+
+        .post-body img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 16px 0;
+            border: 1px solid var(--gray-light);
+        }
+
+        .toc-sidebar {
+            position: sticky;
+            top: 64px;
+            height: calc(100vh - 64px);
+            overflow-y: auto;
+        }
+
+        .toc-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .toc-nav a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 14px;
+            font-weight: 400;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .toc-nav a:hover {
+            color: var(--blue);
+            background-color: var(--blue-light);
+        }
+
+        .toc-nav a.active {
+            color: var(--blue);
+            border-left-color: var(--blue);
+            background-color: var(--blue-light);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .content-main {
+                padding: 24px 16px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="../index.html" class="navbar-brand"><span>J</span>anwrice</a>
+        <div class="navbar-right">
+            <ul class="navbar-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../blog.html" class="active">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="page-layout">
+        <div class="content-main">
+            <div class="post-header">
+                <h1 class="post-title">KDE Kate 编辑器配置教程：从文本编辑器到 IDE</h1>
+                <span class="post-meta">2024-09</span>
+            </div>
+            <div class="post-body">
+
+                <p>相信使用 KDE 桌面的朋友对 <strong>Kate 编辑器</strong>一定不陌生。但你真的会使用 Kate 编辑器吗？</p>
+
+                <p>Kate 是一个支持 Windows、Linux、macOS 的功能强大的文本编辑器，并可以通过配置 LSP 服务器来实现自动补全与语法高亮。在 Linux 上，通过简单的配置它就可以作为一款 IDE 来使用。</p>
+
+                <p>Kate 由 KDE 团队开发支持，是 GNU 自由软件。在 KDE 桌面上它是自带的。</p>
+
+                <ul>
+                    <li><strong>官方网站</strong>：<a href="https://kate-editor.org/zh-cn/" target="_blank" rel="noopener">Kate - 多功能的文本编辑利器</a></li>
+                    <li><strong>Windows 版本</strong>：可以直接在 Microsoft Store 上下载</li>
+                </ul>
+
+                <p>在其他 Debian 系的 Linux 发行版上，我们可以使用以下命令安装：</p>
+
+                <pre><code>sudo apt install kate</code></pre>
+
+                <p>或者可以参考 Kate 的官方网站。对于简单的文本修改，它开箱即用，并不需要做太多的配置。</p>
+
+                <p>鉴于这是个 Linux 论坛（迫真），我们详细介绍一下它在 Linux 上的配置。</p>
+
+                <hr>
+
+                <h2 id="auto-complete">Linux 下配置自动补全与自动编译运行</h2>
+
+                <h3 id="clangd">配置 C++ 自动补全</h3>
+
+                <p>Kate 编辑器配置自动补全很容易，安装一个 <strong>clangd</strong> 的 LSP 服务器即可：</p>
+
+                <pre><code>sudo apt install clangd</code></pre>
+
+                <p>安装完后我们打开 Kate，打开一个 C++ 代码文件。此时不出意外 Kate 会自动检测到 Clangd 的存在并自动配置 LSP 服务器。也就是 Kate 现在已经可以自动补全代码了，如图：</p>
+
+                <img src="https://cdn3.ldstatic.com/original/3X/5/3/53e0b07993c47a8dbe739bdd5a86b00ce08c1543.png" alt="Kate C++ 自动补全示例" loading="lazy">
+
+                <p>并且它也可以自动识别我们代码里的各种变量、函数名，如这个扫雷程序：</p>
+
+                <img src="https://cdn3.ldstatic.com/original/3X/1/5/15b89e1dbd824e900c080094262fa11dfd0e5076.png" alt="Kate 扫雷程序识别" loading="lazy">
+
+                <p>我们选择菜单栏的 <strong>工具 → 外部工具 → 编译运行</strong> 即可完成编译运行，默认会输出在下面的外部工具栏中，比如这个 Hello world 程序：</p>
+
+                <img src="https://cdn3.ldstatic.com/original/3X/7/d/7d8d3a75f0f7282eedcff02a5eb0ff83391c60ec.png" alt="Kate Hello World 运行" loading="lazy">
+
+                <p>如果没有看到输出，可能是你没有安装 <code>g++</code>，apt 安装一个即可：</p>
+
+                <pre><code>sudo apt install g++</code></pre>
+
+                <p>不出意外的话你可以在下面的外部工具输出栏看到输出了。但这个输出栏并不能交互。对于稍微复杂一点的程序这个输出就不能使用了。</p>
+
+                <h3 id="terminal-output">配置终端输出</h3>
+
+                <p>我们可以选择菜单栏的 <strong>工具 → 外部工具 → 配置</strong> 中找到 <strong>编译运行 C++</strong> 这一项选择编辑：</p>
+
+                <img src="https://cdn3.ldstatic.com/original/3X/7/d/7d6def2ac129bb902d63c4f001e00ef9e20d377f.png" alt="Kate 外部工具配置" loading="lazy">
+
+                <p>在 KDE 桌面环境下，可以将 <strong>参数</strong> 一栏更改为：</p>
+
+                <pre><code>-c 'g++ "%{Document:FilePath}" -o "%{Document:FileBaseName}"  && konsole --hold --noclose -e "./%{Document:FileBaseName}"'</code></pre>
+
+                <p>当然如果你使用的是其他桌面，请将 <code>konsole</code> 一词更改为你自己使用的终端。比如你使用的是 GNOME，那么应该改成 <code>gnome-terminal</code>。</p>
+
+                <p>这样再次使用此外部工具时，就可以在我们的终端中运行我们的程序了：</p>
+
+                <img src="https://cdn3.ldstatic.com/original/3X/2/1/21bf0b5594b84494e9aa881ac6ae340917a2da6e.png" alt="Kate 终端运行" loading="lazy">
+
+                <h3 id="shortcut">设置快捷键</h3>
+
+                <p>我们还可以为此工具增加一个快捷键。我们选择菜单栏的 <strong>配置 → 配置键盘快捷键</strong>，在里面找到 <strong>编译运行 C++</strong>，就可以自定义快捷键了。比如我这里设置为 <kbd>Alt+R</kbd>：</p>
+
+                <img src="https://cdn3.ldstatic.com/original/3X/a/6/a6aa1a4e723f8bcfdb617c224ae2ff56891724e0.png" alt="Kate 快捷键设置" loading="lazy">
+
+                <p>这样，我们直接按 <kbd>Alt+R</kbd> 就可以一键编译运行我们的代码了。</p>
+
+                <p>至此，Kate 拥有了 C++ 的代码补全与自动编译运行的功能。</p>
+
+                <hr>
+
+                <h2 id="python">配置 Python 开发环境</h2>
+
+                <p>其他的语言可以以此为参考。比如我们要运行 Python 代码：</p>
+
+                <img src="https://cdn3.ldstatic.com/original/3X/0/2/0253db629dbd27a267b38a97f520a44b75f80d4d.png" alt="Kate Python 配置" loading="lazy">
+
+                <p>我们可以看到它提示我们没有找到 <code>pylsp</code>，我们去安装一个 <code>pylsp</code> 即可：</p>
+
+                <pre><code>sudo apt-get install python3-pylsp</code></pre>
+
+                <p>这样我们就可以在 Python 代码中使用自动补全了。</p>
+
+                <p>要自动编译 Python 代码，在外部工具中选择 <strong>配置 → 添加工具</strong>：</p>
+
+                <ul>
+                    <li><strong>可执行文件</strong>选择 <code>sh</code></li>
+                    <li><strong>参数</strong>填：</li>
+                </ul>
+
+                <pre><code>-c 'konsole --hold --noclose -e "python3 %{Document:FilePath}"'</code></pre>
+
+                <p>保存即可。这样我们就可以在外部工具里运行 Python 代码了。</p>
+
+                <hr>
+
+                <h2 id="summary">总结</h2>
+
+                <p>其他的语言都可以以此作为参考。Kate 支持多种语言，个人认为配置好是要比 VS Code 好用的。</p>
+
+                <blockquote>
+                    <p><strong>提示</strong>：如果你使用的是非 KDE 桌面环境，记得将 <code>konsole</code> 替换为你自己使用的终端模拟器（如 <code>gnome-terminal</code>、<code>xfce4-terminal</code> 等）。</p>
+                </blockquote>
+
+            </div>
+        </div>
+        <aside class="sidebar toc-sidebar">
+            <span class="sidebar-title">目录索引</span>
+            <nav class="toc-nav" id="toc-nav">
+                <a href="#auto-complete">1. C++ 自动补全配置</a>
+                <a href="#terminal-output">2. 终端输出配置</a>
+                <a href="#shortcut">3. 快捷键设置</a>
+                <a href="#python">4. Python 开发环境配置</a>
+                <a href="#summary">5. 总结</a>
+            </nav>
+        </aside>
+    </div>
+    <script src="../posts.js"></script>
+    <script src="../sidebar.js"></script>
+    <script src="../theme.js"></script>
+    <script src="../mobile-nav.js"></script>
+    <script>
+        // ── 目录滚动高亮 ──
+        (function() {
+            var nav = document.getElementById('toc-nav');
+            if (!nav) return;
+            var links = nav.querySelectorAll('a');
+            var headings = [];
+            links.forEach(function(a) {
+                var id = a.getAttribute('href');
+                if (id && id.startsWith('#')) {
+                    var el = document.getElementById(id.slice(1));
+                    if (el) headings.push(el);
+                }
+            });
+
+            window.addEventListener('scroll', function() {
+                var current = '';
+                headings.forEach(function(h) {
+                    if (h.getBoundingClientRect().top <= 150) current = h.id;
+                });
+                links.forEach(function(a) {
+                    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+                });
+            });
+
+            nav.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    var target = document.getElementById(e.target.getAttribute('href').slice(1));
+                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
