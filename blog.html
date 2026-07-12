@@ -41,6 +41,32 @@
             color: #fff;
         }
 
+        .tag-btn.folded {
+            display: none;
+        }
+
+        .tag-filter.expanded .tag-btn.folded {
+            display: inline-block;
+        }
+
+        .tag-toggle {
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px dashed var(--gray-light);
+            border-radius: 20px;
+            background: transparent;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tag-toggle:hover {
+            color: var(--blue);
+            border-color: var(--blue);
+        }
+
         .post-list {
             list-style: none;
             display: flex;

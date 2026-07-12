@@ -136,6 +136,8 @@ body {
     --gray: #a89984;
     --gray-light: #504945;
     --nav-bg: #282828;
+    --code-bg: #1d2021;
+    --code-text: #ebdbb2;
     --inline-code-bg: #3c3836;
     --inline-code-color: #fabd2f;
 }

@@ -25,6 +25,23 @@
                 html += '<button class="tag-btn" data-tag="' + t + '">' + t + '</button>';
             });
             tagFilter.innerHTML = html;
+
+            // ── 折叠多余标签 ──
+            var VISIBLE_COUNT = 6;
+            if (tags.length > VISIBLE_COUNT) {
+                var tagBtns = tagFilter.querySelectorAll('.tag-btn');
+                tagBtns.forEach(function(btn, i) {
+                    if (i > VISIBLE_COUNT) btn.classList.add('folded');
+                });
+                var toggle = document.createElement('button');
+                toggle.className = 'tag-toggle';
+                toggle.textContent = '更多标签 ▼';
+                toggle.addEventListener('click', function() {
+                    var expanded = tagFilter.classList.toggle('expanded');
+                    toggle.textContent = expanded ? '收起 ▲' : '更多标签 ▼';
+                });
+                tagFilter.appendChild(toggle);
+            }
         }
     }
 
