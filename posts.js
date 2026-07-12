@@ -1,5 +1,6 @@
 window.__POSTS__ = [
-  { "title": "高等数学知识点梳理", "date": "2026-07-11", "url": "posts/am-review.html", "tags": ["数学"] },
+  { "title": "一位 C++ 程序员的安卓开发 Java 速通 0x01", "date": "2026-07-12", "url": "posts/learn-java-01.html", "tags": ["Java", "学习笔记"] },
+  { "title": "高等数学知识点梳理", "date": "2026-07-11", "url": "posts/am-review.html", "tags": ["数学", "学习笔记"] },
   { "title": "SQL 全面参考指南", "date": "2026-07-10", "url": "posts/sql-reference.html", "tags": ["数据库", "SQL"] },
   { "title": "Linux 开机启动项设置", "date": "2024-10-11", "url": "posts/crontab.html", "tags": ["Linux", "启动项"] },
   { "title": "Kate 编辑器简单配置", "date": "2024-09", "url": "posts/kate-editor-config.html", "tags": ["Linux", "编辑器"] },
