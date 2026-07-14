@@ -9,18 +9,18 @@ html {
 }
 
 :root {
-    --blue: #268bd2;
-    --blue-dark: #2aa198;
-    --blue-light: #eee8d5;
-    --white: #fdf6e3;
-    --black: #586e75;
-    --gray: #93a1a1;
-    --gray-light: #e6dfcc;
-    --nav-bg: #fdf6e3;
-    --code-bg: #002b36;
-    --code-text: #93a1a1;
-    --inline-code-bg: #eee8d5;
-    --inline-code-color: #2aa198;
+    --blue: #4f46e5;
+    --blue-dark: #3730a3;
+    --blue-light: #eef2ff;
+    --white: #ffffff;
+    --black: #1e293b;
+    --gray: #64748b;
+    --gray-light: #e5e7eb;
+    --nav-bg: #ffffff;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+    --inline-code-bg: #f1f5f9;
+    --inline-code-color: #4f46e5;
 }
 
 [data-theme="dark"] {
