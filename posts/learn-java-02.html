@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java 速通 0x02：一位 C++ 程序员的安卓开发笔记 - Janwrice's Blog</title>
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .content-main {
+            padding: 40px 60px 60px;
+        }
+
+        .post-header {
+            margin-bottom: 40px;
+        }
+
+        .post-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--black);
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .post-meta {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .post-body {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--black);
+        }
+
+        .post-body h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--black);
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue-light);
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--black);
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue-light);
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 32px 0 12px;
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 24px 0 8px;
+        }
+
+        .post-body p {
+            margin: 12px 0;
+        }
+
+        .post-body blockquote {
+            margin: 16px 0;
+            padding: 12px 20px;
+            border-left: 4px solid var(--blue);
+            background-color: var(--blue-light);
+            color: var(--black);
+            font-size: 15px;
+        }
+
+        .post-body blockquote p {
+            margin: 4px 0;
+        }
+
+        .post-body pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px 24px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 16px 0;
+        }
+
+        .post-body pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        .post-body code {
+            font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Consolas", monospace;
+        }
+
+        .post-body :not(pre) > code {
+            background-color: var(--inline-code-bg);
+            color: var(--inline-code-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .post-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        .post-body th,
+        .post-body td {
+            padding: 10px 14px;
+            text-align: left;
+            border: 1px solid var(--gray-light);
+        }
+
+        .post-body th {
+            background-color: var(--blue-light);
+            color: var(--blue-dark);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .post-body td {
+            background-color: var(--white);
+        }
+
+        .post-body ul,
+        .post-body ol {
+            margin: 12px 0;
+            padding-left: 28px;
+        }
+
+        .post-body li {
+            margin: 6px 0;
+        }
+
+        .post-body strong {
+            color: var(--blue-dark);
+        }
+
+        .post-body a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .post-body a:hover {
+            text-decoration: underline;
+        }
+
+        .post-body hr {
+            border: none;
+            border-top: 1px solid var(--gray-light);
+            margin: 48px 0;
+        }
+
+        .post-body .section-divider {
+            border: none;
+            border-top: 1px dashed var(--gray-light);
+            margin: 32px 0;
+        }
+
+        .post-body img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .post-body .topic-badge {
+            display: inline-block;
+            background-color: var(--blue-light);
+            color: var(--blue-dark);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        .post-body .note-box {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 12px 0;
+            background-color: var(--blue-light);
+            border-left: 4px solid var(--blue);
+        }
+
+        .toc-sidebar {
+            position: sticky;
+            top: 64px;
+            height: calc(100vh - 64px);
+            overflow-y: auto;
+        }
+
+        .toc-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .toc-nav a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 14px;
+            font-weight: 400;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .toc-nav a:hover {
+            color: var(--blue);
+            background-color: var(--blue-light);
+        }
+
+        .toc-nav a.active {
+            color: var(--blue);
+            border-left-color: var(--blue);
+            background-color: var(--blue-light);
+            font-weight: 600;
+        }
+
+        .toc-nav .toc-sub {
+            padding-left: 28px !important;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .content-main {
+                padding: 24px 16px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="../index.html" class="navbar-brand"><span>J</span>anwrice</a>
+        <div class="navbar-right">
+            <ul class="navbar-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../blog.html" class="active">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="page-layout">
+        <div class="content-main">
+            <div class="post-header">
+                <h1 class="post-title">一位 C++ 程序员的安卓开发 Java 速通 0x02</h1>
+                <span class="post-meta">2026-07-13</span>
+            </div>
+            <div class="post-body">
+
+                <blockquote>
+                    <p><strong>前言：</strong>上节大致过了一遍 Java 的基础知识，这节补齐 Java 的 OOP 部分。</p>
+                </blockquote>
+
+                <hr>
+
+                <h1 id="access-control">控制访问与包机制</h1>
+
+                <p>Java 有 4 级访问权限，以及包机制。</p>
+
+                <h2 id="package">包机制</h2>
+
+                <p>包机制是一套解决类名冲突、封装代码的工具。是类的命名空间加上一套组织管理单元。</p>
+
+                <p><strong>包的声明与规则</strong>：</p>
+
+                <ul>
+                    <li>Java 的源文件，在第一行必须包含声明所属包</li>
+                    <li>包名与目录结构严格绑定</li>
+                </ul>
+
+                <p>相当于 C++ 的命名空间，但 C++ 的命名空间只按照逻辑结构划分，而 Java 的命名空间必须与目录结构对应。最好按功能分包。</p>
+
+                <h4>导入</h4>
+
+                <p>使用其他包下的类时，需要通过 <code>import</code> 导入类的限定名。</p>
+
+                <pre><code>// 导入单个指定类
+import java.util.ArrayList;
+// 导入包下所有类
+import java.util.*;
+// 静态导入，调用时可以省略类名
+import static java.lang.Math.PI;</code></pre>
+
+                <h2 id="access-modifiers">访问控制修饰符</h2>
+
+                <p>4 种访问权限级别：</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>修饰符</th>
+                            <th>同一类内部</th>
+                            <th>同一个包下</th>
+                            <th>不同包的子类</th>
+                            <th>不同包的非子类</th>
+                            <th>C++ 对应说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>public</code></td>
+                            <td>可访问</td>
+                            <td>可访问</td>
+                            <td>可访问</td>
+                            <td>可访问</td>
+                            <td>与 C++ public 完全一致</td>
+                        </tr>
+                        <tr>
+                            <td><code>protected</code></td>
+                            <td>可访问</td>
+                            <td>可访问</td>
+                            <td>可访问</td>
+                            <td>不可访问</td>
+                            <td>C++ 无对应；C++ 的 protected 仅子类可访问，同命名空间下不可访问</td>
+                        </tr>
+                        <tr>
+                            <td><code>default</code>（无修饰符）</td>
+                            <td>可访问</td>
+                            <td>可访问</td>
+                            <td>不可访问</td>
+                            <td>不可访问</td>
+                            <td>C++ 无对应，属于包级私有</td>
+                        </tr>
+                        <tr>
+                            <td><code>private</code></td>
+                            <td>可访问</td>
+                            <td>不可访问</td>
+                            <td>不可访问</td>
+                            <td>不可访问</td>
+                            <td>与 C++ private 完全一致</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>对于顶级类，只能使用 <code>public</code> 和 <code>default</code> 两种权限，不能使用 <code>private</code> 或 <code>protected</code>。</p>
+
+                <div class="note-box">
+                    <p><strong>📌 理解：</strong>包相当于文件夹，类相当于文件。</p>
+                </div>
+
+                <h2 id="access-android">针对 Android 开发</h2>
+
+                <p>Android 的四大组件，只能声明为 <code>public</code>，因为需要被不同包调度。</p>
+                <p>Android SDK 有很多隐藏的 <code>default</code> 或者 <code>private</code> 权限的 API，有的可以通过反射调用。</p>
+
+                <hr>
+
+                <h2 id="inheritance">类的继承与重写</h2>
+
+                <p>Java 通过 <code>extends</code> 关键字实现类的继承。注意，C++ 一个类可以有多个父类，即多重继承。而 Java 一个类只能有一个父类，是<strong>单继承</strong>的。</p>
+
+                <pre><code>// 父类（超类）
+class Animal {
+    String name;
+    void eat() {
+        System.out.println("eating");
+    }
+}
+
+// 子类（派生类），继承Animal
+class Dog extends Animal {
+    void bark() {
+        System.out.println("barking");
+    }
+}</code></pre>
+
+                <p>子类拥有父类所有非 <code>private</code> 的成员变量与方法。父类的 <code>private</code> 成员子类无法直接调用。同时子类不能继承父类的构造方法，只能通过 <code>super</code> 调用，这点与 C++ 一致。</p>
+
+                <p>Java 中所有类都默认直接或间接继承自 <code>java.lang.Object</code> 类，它是整个 Java 的根类。所有对象都可以用 <code>Object</code> 类型的引用指向。</p>
+
+                <h2 id="super">super 关键字</h2>
+
+                <p><code>super</code> 关键字可用于访问父类成员，代表对父类对象的引用。</p>
+
+                <h4>调用父类的构造方法</h4>
+
+                <ul>
+                    <li><code>super(参数列表)</code> 写在子类构造方法的第一行。如果没有显式调用 <code>super</code>，实际上会自动调用父类的无参构造。</li>
+                    <li><code>super()</code> 与 <code>this()</code>（本类的其他构造方法）不能同时存在。</li>
+                </ul>
+
+                <pre><code>class Animal {
+    Animal(String name) { ... }
+}
+
+class Dog extends Animal {
+    Dog(String name) {
+        super(name); // 调用父类有参构造，必须在第一行
+    }
+}</code></pre>
+
+                <h4>调用父类成员</h4>
+
+                <p>默认可以直接调用，但当子类重写了父类的方法、隐藏了父类的属性时，可以通过 <code>super</code> 来显式地调用父类的实现。</p>
+
+                <h2 id="polymorphism">多态</h2>
+
+                <p>什么是多态？多态就是<strong>同一个指令，因为实际执行的对象不同，产生了不同的行为结果</strong>。</p>
+
+                <p><strong>为什么说"多态的本质是：编译期看父类，运行期看子类"？</strong></p>
+                <p>编译器只检查调用的指令对不对，而不关心实际执行的对象。编译器下指令，对象执行得到结果。</p>
+
+                <h2 id="override">多态：方法重写</h2>
+
+                <p>Java 可以重写父类函数。</p>
+
+                <p><strong><code>@Override</code></strong> 注解，即表示这里的函数是重写过的。重写一个函数时，会覆盖父类的原有实现，是 OOP 多态的核心实现。</p>
+
+                <p><strong>方法的重写规则</strong>：</p>
+
+                <ul>
+                    <li>方法签名必须完全一致：方法名、参数个数、参数类型、参数顺序必须和父类相同</li>
+                    <li>访问权限只能更宽松</li>
+                    <li>返回值类型要兼容</li>
+                    <li>异常只能更严格</li>
+                    <li>父类被 <code>private</code>、<code>static</code>、<code>final</code> 修饰时，无法被重写</li>
+                </ul>
+
+                <h2 id="parent-ref">多态：父类引用指向子类对象</h2>
+
+                <ul>
+                    <li><strong>方法调用</strong>：编译期检查父类是否有该方法，而运行期执行子类重写后的实现。</li>
+                    <li><strong>属性调用</strong>：成员变量不具备多态性，具体的运行情况看父类。</li>
+                </ul>
+
+                <pre><code>class Animal {
+    String name = "动物";          // 父类成员变量
+    public void showName() {
+        System.out.println("我是" + name);
+    }
+}
+
+class Dog extends Animal {
+    String name = "狗";            // 子类同名成员变量
+    @Override
+    public void showName() {
+        System.out.println("我是" + name);
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Animal animal = new Dog(); // 父类引用，指向子类对象
+
+        // 1. 访问成员变量（不具备多态性）
+        System.out.println(animal.name);  // 输出：动物（不是狗！）
+
+        // 2. 调用方法（具备多态性）
+        animal.showName();                // 输出：我是狗（方法重写生效了）
+    }
+}</code></pre>
+
+                <h2 id="object-methods">Object 类的几个方法</h2>
+
+                <p>所有类都继承了 <code>Object</code> 类，都支持以下几个方法：</p>
+
+                <ul>
+                    <li><code>toString()</code> —— 返回对象的字符串表示</li>
+                    <li><code>equals(Object obj)</code> —— 判断两个对象是否相等</li>
+                    <li><code>hashCode()</code> —— 返回对象的哈希值</li>
+                    <li><code>getClass()</code> —— 返回对象的运行时类对象，不可被重写，是反射的基础</li>
+                </ul>
+
+                <h2 id="reflection">反射</h2>
+
+                <p><strong>什么是反射？</strong></p>
+                <p>反射就是 Java 程序在运行期间，能够动态地操作<strong>任意</strong>类的内部信息。即在运行状态下，仅凭类名/对象，就可以获取一个类的所有结构信息。</p>
+                <p>能够在编译时完全不知道类名的情况下，创建对象、调用方法。</p>
+
+                <h2 id="inheritance-android">针对 Android 开发</h2>
+
+                <p>Android 的所有 UI 组件都继承自 <code>View</code>：<strong>View → TextView → Button/ImageView...</strong></p>
+                <p>Activity 的生命周期方法，本质都是重写父类的方法，然后由系统框架回调执行。</p>
+                <p>适配器模式、Base 基类都是 Android 架构中最常用的继承与重写场景。</p>
+
+                <hr>
+
+                <h1 id="abstract-interface">抽象类与接口</h1>
+
+                <h2 id="abstract-class">抽象类</h2>
+
+                <p>包含抽象方法的类必须为抽象类，抽象类可以没有抽象方法。</p>
+
+                <p><strong>抽象方法</strong>：用 <code>abstract</code> 修饰，只有方法声明、没有方法体的方法。必须由子类重写。</p>
+
+                <p>子类继承抽象类后，必须实现所有抽象方法；如果不实现，子类也必须声明为抽象类。</p>
+
+                <pre><code>// 抽象类
+abstract class Animal {
+    String name;
+
+    // 普通方法：公共逻辑直接实现
+    void sleep() {
+        System.out.println("sleeping");
+    }
+
+    // 抽象方法：仅声明，子类必须重写
+    abstract void eat();
+}
+
+// 子类继承抽象类，必须实现所有抽象方法，否则子类也得声明为抽象类
+class Dog extends Animal {
+    @Override
+    void eat() {
+        System.out.println("dog eats food");
+    }
+}</code></pre>
+
+                <h2 id="interface">接口</h2>
+
+                <p>先前说 Java 不具备多继承，只可以单继承。而接口是 Java 实现"多继承"的核心方式。</p>
+
+                <p>接口通过 <code>interface</code> 关键字定义，类通过 <code>implements</code> 关键字实现接口，一个类可以同时实现多个接口。</p>
+
+                <p>接口是"行为契约"，只定义"具备什么能力"。</p>
+
+                <p>简单理解，就是：可以多继承的抽象类。但存在诸多限制，如接口的成员变量不能重写。实际开发过程中与抽象类混合使用。</p>
+
+                <pre><code>// 1. 抽象类：抽取公共代码和状态（省得每个子类重复写）
+public abstract class BaseController {
+    protected Logger log = LoggerFactory.getLogger(getClass()); // 继承状态
+    protected void logRequest() { log.info("收到请求"); }      // 复用逻辑
+}
+
+// 2. 接口：定义外部能力契约（方便替换实现，便于测试）
+public interface PaymentService {
+    void pay(BigDecimal amount);  // 只定义契约
+}
+
+// 3. 最终子类：既复用父类代码，又实现多套能力
+public class AlipayController extends BaseController implements PaymentService, Serializable {
+    @Override
+    public void pay(BigDecimal amount) {
+        logRequest(); // 用父类的
+        // 具体支付宝支付逻辑
+    }
+}</code></pre>
+
+                <h2 id="sam">函数式接口（SAM 接口）</h2>
+
+                <p>有且仅有一个抽象方法的接口，称为函数式接口。安卓开发中使用非常高频。只要是函数式接口，就可以用 Lambda 表达式简化写法，而无需写内部类的结构。</p>
+
+                <p>可以用 <code>@FunctionalInterface</code> 标记。</p>
+
+                <pre><code>@FunctionalInterface
+interface OnClickListener {
+    void onClick();
+}</code></pre>
+
+                <h2 id="abstract-android">针对 Android 开发</h2>
+
+                <p>Android 中创建的 <code>View.OnClickListener</code>、<code>Runnable</code>、<code>Callable</code> 都是函数式接口。所以这些回调可以简化成 Lambda。</p>
+                <p>Android 中所有 UI 点击、滑动、网络请求等全部基于接口实现，匿名内部类 + 接口是 Android 最基础的编程范式。</p>
+                <p>在一些框架中，View 层与逻辑层通过接口交互，解耦实现与依赖。</p>
+
+                <hr>
+
+                <h1 id="inner-class">内部类与匿名内部类</h1>
+
+                <p>Java 中存在 4 种内部类，其差别在于定义规则与内存差异。</p>
+
+                <h2 id="inner-class-overview">内部类</h2>
+
+                <p>定义在另一个类内部的类，统称为内部类。为了实现更强的封装性。内部类可以直接访问外部类的私有成员。</p>
+
+                <p><strong>内部类分为 4 种</strong>：静态内部类、成员内部类、局部内部类、匿名内部类</p>
+
+                <h3 id="static-inner">静态内部类</h3>
+
+                <p>用 <code>static</code> 修饰的内部类，只能访问外部类的静态成员与静态方法，不能访问非静态成员。创建实例时不需要依赖外部类对象。不持有外部类的实例引用。</p>
+
+                <pre><code>class Outer {
+    private static int staticNum = 100;
+    private int normalNum = 200;
+
+    // 静态内部类
+    static class StaticInner {
+        void show() {
+            System.out.println(staticNum); // 可以访问外部类静态成员
+            // System.out.println(normalNum); // 编译报错，不能访问非静态成员
+        }
+    }
+}
+
+// 创建方式
+Outer.StaticInner inner = new Outer.StaticInner();</code></pre>
+
+                <h3 id="member-inner">成员内部类</h3>
+
+                <p>不加任何修饰，直接定义在类内部的类。</p>
+
+                <p>持有外部类所有实例的引用。每个内部成员类对象都绑定一个外部类对象。可以访问外部类的所有成员，包括非静态成员。在其他函数中必须先创建外部类实例，才能创建内部类实例。且在内部类中不能定义静态成员。</p>
+
+                <pre><code>class Outer {
+    private int num = 100;
+
+    // 成员内部类
+    class MemberInner {
+        void show() {
+            System.out.println(num); // 直接访问外部类私有成员
+            System.out.println(Outer.this.num); // 显式调用外部类引用
+        }
+    }
+}
+
+// 创建方式：必须先有外部类对象
+Outer outer = new Outer();
+Outer.MemberInner inner = outer.new MemberInner();</code></pre>
+
+                <h3 id="local-inner">局部内部类</h3>
+
+                <p>定义在方法、构造器、或代码块内部的类，作用域只限于当前代码块，可以访问外部类的所有成员。不能使用任何访问修饰符。</p>
+
+                <h3 id="anonymous-inner">匿名内部类</h3>
+
+                <p>即为没有类名的内部类，必须在创建实例的同时声明它要继承的父类或实现的接口，属于一次性使用的临时类。</p>
+
+                <p>用于 Android 中的事件回调。也可以用 Lambda 实现。</p>
+
+                <p><strong>事件回调</strong>：留一个联系方式给系统，当某件事情发生时，系统主动通过这个接口找到你。</p>
+
+                <pre><code>interface OnClickListener {
+    void onClick();
+}
+
+public class Test {
+    public static void main(String[] args) {
+        // 匿名内部类实现OnClickListener接口
+        OnClickListener listener = new OnClickListener() {
+            @Override
+            public void onClick() {
+                System.out.println("按钮被点击了");
+            }
+        };
+        listener.onClick();
+    }
+}</code></pre>
+
+                <div class="note-box">
+                    <p><strong>⚠ 注意：</strong>访问方法内的局部变量时，变量必须为 <code>final</code>。匿名内部类持有外部类引用会导致 Activity 无法释放，引发内存泄漏。</p>
+                </div>
+
+            </div>
+        </div>
+        <aside class="sidebar toc-sidebar">
+            <span class="sidebar-title">目录索引</span>
+            <nav class="toc-nav" id="toc-nav">
+                <a href="#access-control">控制访问与包机制</a>
+                <a href="#package" class="toc-sub">├─ 包机制</a>
+                <a href="#access-modifiers" class="toc-sub">├─ 访问控制修饰符</a>
+                <a href="#inheritance">类的继承与重写</a>
+                <a href="#super" class="toc-sub">├─ super 关键字</a>
+                <a href="#polymorphism" class="toc-sub">├─ 多态</a>
+                <a href="#override" class="toc-sub">├─ 方法重写</a>
+                <a href="#parent-ref" class="toc-sub">├─ 父类引用指向子类</a>
+                <a href="#object-methods" class="toc-sub">├─ Object 类方法</a>
+                <a href="#reflection" class="toc-sub">├─ 反射</a>
+                <a href="#abstract-interface">抽象类与接口</a>
+                <a href="#abstract-class" class="toc-sub">├─ 抽象类</a>
+                <a href="#interface" class="toc-sub">├─ 接口</a>
+                <a href="#sam" class="toc-sub">├─ 函数式接口</a>
+                <a href="#inner-class">内部类与匿名内部类</a>
+                <a href="#static-inner" class="toc-sub">├─ 静态内部类</a>
+                <a href="#member-inner" class="toc-sub">├─ 成员内部类</a>
+                <a href="#local-inner" class="toc-sub">├─ 局部内部类</a>
+                <a href="#anonymous-inner" class="toc-sub">└─ 匿名内部类</a>
+            </nav>
+        </aside>
+    </div>
+    <script src="../posts.js"></script>
+    <script src="../sidebar.js"></script>
+    <script src="../theme.js"></script>
+    <script src="../mobile-nav.js"></script>
+    <script>
+        (function() {
+            var nav = document.getElementById('toc-nav');
+            if (!nav) return;
+            var links = nav.querySelectorAll('a');
+            var headings = [];
+            links.forEach(function(a) {
+                var id = a.getAttribute('href');
+                if (id && id.startsWith('#')) {
+                    var el = document.getElementById(id.slice(1));
+                    if (el) headings.push(el);
+                }
+            });
+
+            window.addEventListener('scroll', function() {
+                var current = '';
+                headings.forEach(function(h) {
+                    if (h.getBoundingClientRect().top <= 150) current = h.id;
+                });
+                links.forEach(function(a) {
+                    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+                });
+            });
+
+            nav.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    var target = document.getElementById(e.target.getAttribute('href').slice(1));
+                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java 速通 0x03：一位 C++ 程序员的安卓开发笔记 - Janwrice's Blog</title>
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .content-main {
+            padding: 40px 60px 60px;
+        }
+
+        .post-header {
+            margin-bottom: 40px;
+        }
+
+        .post-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--black);
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .post-meta {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .post-body {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--black);
+        }
+
+        .post-body h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--black);
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue-light);
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--black);
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue-light);
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 32px 0 12px;
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 24px 0 8px;
+        }
+
+        .post-body p {
+            margin: 12px 0;
+        }
+
+        .post-body blockquote {
+            margin: 16px 0;
+            padding: 12px 20px;
+            border-left: 4px solid var(--blue);
+            background-color: var(--blue-light);
+            color: var(--black);
+            font-size: 15px;
+        }
+
+        .post-body blockquote p {
+            margin: 4px 0;
+        }
+
+        .post-body pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px 24px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 16px 0;
+        }
+
+        .post-body pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        .post-body code {
+            font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Consolas", monospace;
+        }
+
+        .post-body :not(pre) > code {
+            background-color: var(--inline-code-bg);
+            color: var(--inline-code-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .post-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        .post-body th,
+        .post-body td {
+            padding: 10px 14px;
+            text-align: left;
+            border: 1px solid var(--gray-light);
+        }
+
+        .post-body th {
+            background-color: var(--blue-light);
+            color: var(--blue-dark);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .post-body td {
+            background-color: var(--white);
+        }
+
+        .post-body ul,
+        .post-body ol {
+            margin: 12px 0;
+            padding-left: 28px;
+        }
+
+        .post-body li {
+            margin: 6px 0;
+        }
+
+        .post-body strong {
+            color: var(--blue-dark);
+        }
+
+        .post-body a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .post-body a:hover {
+            text-decoration: underline;
+        }
+
+        .post-body hr {
+            border: none;
+            border-top: 1px solid var(--gray-light);
+            margin: 48px 0;
+        }
+
+        .post-body .section-divider {
+            border: none;
+            border-top: 1px dashed var(--gray-light);
+            margin: 32px 0;
+        }
+
+        .post-body img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .post-body .topic-badge {
+            display: inline-block;
+            background-color: var(--blue-light);
+            color: var(--blue-dark);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        .post-body .note-box {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 12px 0;
+            background-color: var(--blue-light);
+            border-left: 4px solid var(--blue);
+        }
+
+        .toc-sidebar {
+            position: sticky;
+            top: 64px;
+            height: calc(100vh - 64px);
+            overflow-y: auto;
+        }
+
+        .toc-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .toc-nav a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 14px;
+            font-weight: 400;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .toc-nav a:hover {
+            color: var(--blue);
+            background-color: var(--blue-light);
+        }
+
+        .toc-nav a.active {
+            color: var(--blue);
+            border-left-color: var(--blue);
+            background-color: var(--blue-light);
+            font-weight: 600;
+        }
+
+        .toc-nav .toc-sub {
+            padding-left: 28px !important;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .content-main {
+                padding: 24px 16px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="../index.html" class="navbar-brand"><span>J</span>anwrice</a>
+        <div class="navbar-right">
+            <ul class="navbar-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../blog.html" class="active">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="page-layout">
+        <div class="content-main">
+            <div class="post-header">
+                <h1 class="post-title">一位 C++ 程序员的安卓开发 Java 速通 0x03</h1>
+                <span class="post-meta">2026-07-13</span>
+            </div>
+            <div class="post-body">
+
+                <h1 id="collection-framework">集合框架总览</h1>
+
+                <p>Java 的集合框架（JCF）是 Java 标准库中一个专门用来<strong>存储和操作一组对象</strong>的、至关重要的组成部分。</p>
+
+                <p>Java 的集合只能存储对象，不能直接存储基本数据类型，需要装箱为包装类才可以。</p>
+
+                <p>Java 的集合全部位于 <code>java.util</code> 包下，是一套基于接口设计的统一容器体系。解决了"数组定长、功能单一"的痛点，其中有动态数组、链表、哈希表等数据结构。</p>
+
+                <p>分为 <strong>Collection</strong> 与 <strong>Map</strong>。Collection 为单列集合，存储独立的元素。Map 为双列集合，存储键值对。</p>
+
+                <h1 id="collection">Collection</h1>
+
+                <p>Collection 是所有单列集合的根接口，定义了所有集合通用的方法，如 <code>add</code>、<code>remove</code>、<code>contains</code>、<code>size</code>、<code>clear</code>，有三个核心的子接口。</p>
+
+                <h2 id="list">List 接口</h2>
+
+                <p>List 接口有序，可重复，带索引。相当于 C++ STL 中的 <code>vector</code>。</p>
+                <p>具体的实现有 <code>ArrayList</code>、<code>LinkedList</code>。</p>
+
+                <h2 id="set">Set 接口</h2>
+
+                <p>具体的实现有 <code>HashSet</code>、<code>TreeSet</code>、<code>LinkedHashSet</code>，相当于 STL 中的 <code>set</code> 以及 <code>unordered_set</code>。</p>
+
+                <h2 id="queue">Queue 接口</h2>
+
+                <p>队列，先进先出。具体的实现有 <code>LinkedList</code>、<code>PriorityQueue</code>。</p>
+
+                <h1 id="map">Map</h1>
+
+                <p>Map 是独立的根接口，存储键值对，key 不可重复。一个键对应一个值。</p>
+                <p>具体的实现有 <code>HashMap</code>、<code>TreeMap</code>、<code>LinkedHashMap</code> 等。</p>
+
+                <h1 id="iterator">迭代器</h1>
+
+                <p>Java 中所有 Collection 类型的集合都支持统一的迭代方式，<strong>Iterator</strong> 迭代器。</p>
+
+                <pre><code>List&lt;String&gt; list = new ArrayList&lt;&gt;();
+Iterator&lt;String&gt; it = list.iterator();
+
+while (it.hasNext()) {
+    String str = it.next();
+    System.out.println(str);
+}</code></pre>
+
+                <ul>
+                    <li><code>hasNext()</code> —— 判断是否还有下一个元素</li>
+                    <li><code>next()</code> —— 获取下一个元素</li>
+                    <li><code>remove()</code> —— 删除当前迭代到的元素</li>
+                </ul>
+
+                <hr>
+
+                <h1 id="utility">工具类</h1>
+
+                <p>类似于 STL 中的 <code>&lt;algorithm&gt;</code> 库，<code>java.util.Collections</code> 是集合的工具类，提供大量静态方法操作集合。</p>
+
+                <ul>
+                    <li>排序：<code>Collections.sort(list)</code></li>
+                    <li>反转：<code>Collections.reverse(list)</code></li>
+                    <li>查找：<code>Collections.binarySearch(list, key)</code></li>
+                    <li>填充：<code>Collections.fill(list, value)</code></li>
+                </ul>
+
+                <h2 id="collection-android">针对 Android 开发</h2>
+
+                <p>Android 中的列表控件的数据源、网络请求结果、本地数据缓存，都是基于集合实现的。</p>
+                <p>Android SDK 提供了大量适合移动端的优化容器：</p>
+
+                <ul>
+                    <li><strong>SparseArray</strong>：key 为 <code>int</code> 类型，避免自动装箱。比 <code>HashMap</code> 更省内存。</li>
+                    <li><strong>ArrayMap</strong>：内存占用比 <code>HashMap</code> 更低。适合小数据量的键值对场景。</li>
+                </ul>
+
+                <hr>
+
+                <h1 id="generics">泛型</h1>
+
+                <p>Java 的泛型与 C++ 的模板的核心目的一致，参数化类型，让一套逻辑复用多种数据类型，同时保留编译器类型检查。</p>
+
+                <h2 id="generic-class">泛型类</h2>
+
+                <p>类定义时声明类型参数。</p>
+
+                <pre><code>class Box&lt;T&gt; {
+    private T data;
+    public T getData() {
+        return data;
+    }
+    public void setData(T data) {
+        this.data = data;
+    }
+}</code></pre>
+
+                <h2 id="generic-method">泛型方法</h2>
+
+                <p>方法独立声明类型参数，与类的泛型无关。</p>
+
+                <pre><code>public class Utils {
+    public static &lt;T&gt; T getFirst(List&lt;T&gt; list) {
+        return list.get(0);
+    }
+}</code></pre>
+
+                <h2 id="generic-interface">泛型接口</h2>
+
+                <p>接口定义时声明类型参数，实现类的时候指定具体类型。</p>
+
+                <pre><code>interface Callback&lt;T&gt; {
+    void onResult(T result);
+}</code></pre>
+
+                <h2 id="type-erasure">本质 —— 类型擦除</h2>
+
+                <p><strong>什么是类型擦除？</strong>Java 的泛型实现的底层原理是，编译器会在编译阶段把所有泛型类型参数擦除，替换为原始类型。</p>
+
+                <p>无边界的泛型参数会擦除为 <code>Object</code>，而有上界的泛型参数会被擦除为对应的上界类型如 <code>Number</code>。</p>
+
+                <h2 id="generics-android">针对 Android 开发</h2>
+
+                <p>Android 开发中所有集合、回调、数据实体都依赖泛型。</p>
+
+                <hr>
+
+                <h1 id="covariance">如何理解协变和逆变？</h1>
+
+                <blockquote>
+                    <p><strong>有协变和逆变之分，本质上是子类和父类，在数学的集合论概念上说，子类是父类的子集。但从代码的形式上来说，子类有着比父类更多的限制，此时从形式的限制上来看，"父类是子类的子集"，为了调和这种矛盾，引入了协变和逆变。</strong></p>
+                </blockquote>
+
+                <p>考虑一个"动物园喂食系统"的业务场景，假设我们要设计一个方法，功能是既能统计一堆苹果的总重量，又能统计一堆香蕉的总重量。同时还能在喂食框里添加水果。</p>
+
+                <h3>定义水果</h3>
+
+                <pre><code>class Fruit {
+    private double weight;
+    public Fruit(double weight) { this.weight = weight; }
+    public double getWeight() { return weight; }
+}</code></pre>
+
+                <h3>定义苹果和香蕉</h3>
+
+                <pre><code>class Apple extends Fruit {
+    public Apple(double weight) { super(weight); }
+    public void washApple() { System.out.println("洗苹果"); }
+}
+
+class Banana extends Fruit {
+    public Banana(double weight) { super(weight); }
+    public void peelBanana() { System.out.println("剥香蕉皮"); }
+}</code></pre>
+
+                <h2 id="covariance-example">对于第一个业务需求：统计总重量</h2>
+
+                <p>统计一个框里水果的总重量。这个方法需要使用泛型，因为水果可能是苹果，也可能是香蕉。</p>
+
+                <p>如果这样写会出问题：</p>
+
+                <pre><code>public class ZooKeeper {
+    public static double totalWeight(List&lt;Fruit&gt; basket) {
+        double sum = 0;
+        for (Fruit f : basket) {
+            sum += f.getWeight();
+        }
+        return sum;
+    }
+}</code></pre>
+
+                <p>因为 <code>List&lt;Apple&gt;</code> 和 <code>List&lt;Fruit&gt;</code> 是两个完全不同的类型（泛型不变性：不管原始类型之间是什么父子关系，套上泛型后，它们之间就彻底没有任何关系了）。但实际上我们知道，<strong>Apple 是 Fruit 的"子集"</strong>，这个时候看的是<strong>概念上的子集</strong>，此时可以使用<strong>协变</strong>解决。</p>
+
+                <p><strong>用协变解决：</strong></p>
+
+                <pre><code>public class ZooKeeper {
+    public static double totalWeight(List&lt;? extends Fruit&gt; basket) {
+        double sum = 0;
+        for (Fruit f : basket) {
+            sum += f.getWeight();
+        }
+        return sum;
+    }
+}</code></pre>
+
+                <h2 id="contravariance-example">对于第二个业务：往框里加水果</h2>
+
+                <p>给一个框里加水果。这个方法需要泛型，因为水果可能是苹果，也可能是香蕉。</p>
+
+                <p>如果使用协变会出问题：</p>
+
+                <pre><code>public class ZooKeeper {
+    public static void addApples(List&lt;? extends Fruit&gt; basket, int count) {
+        for (int i = 0; i &lt; count; ++i) {
+            basket.add(new Apple(1));
+        }
+    }
+}</code></pre>
+
+                <p>因为这个时候，我们要把 Apple 放到框里，虽然概念上 Apple 是 Fruit 的子集，但限制上 Apple 的属性比 Fruit 要多，因此 Apple 不能直接放入 Fruit 里。从形式的限制上来看，Fruit 此时是 Apple 的子集。</p>
+
+                <p><strong>因此可以用逆变来解决：</strong></p>
+
+                <pre><code>public class ZooKeeper {
+    public static void addApples(List&lt;? super Apple&gt; basket, int count) {
+        for (int i = 0; i &lt; count; ++i) {
+            basket.add(new Apple(1));
+        }
+    }
+}</code></pre>
+
+                <h2 id="cplusplus-diff">为什么 C++ 没有这回事？</h2>
+
+                <p>C++ 没有显式的协变和逆变本质上是因为 C++ 在编译初期就事先生成了所有类型的处理函数，保证了运行时不会出现错误。而 Java 运行时会类型擦除，无法直接区分类型，因此需要通过协变和逆变来保证逻辑上不会出现问题。</p>
+
+                <hr>
+
+                <h1 id="exception">异常处理</h1>
+
+                <p>Java 的异常体系有严格的继承结构，所有可以抛出的对象都必须继承自 <code>java.lang.Throwable</code>，分为两大分支：<strong>Error</strong> 和 <strong>Exception</strong>。</p>
+
+                <p><strong>Error</strong> 是系统性错误，无需捕获，而 <strong>Exception</strong> 是程序级异常，可以正常处理。其中 Exception 分为<strong>受检异常</strong>以及<strong>非受检异常</strong>。C++ 中所有的异常都是"非受检异常"，编译器不会处理这些异常。而 Java 设计了双轨机制。</p>
+
+                <ul>
+                    <li><strong>非受检异常</strong>：<code>RuntimeException</code> 及其所有子类。编译器不强制要求捕获或声明，代码可以直接编译通过。这标识了代码逻辑缺陷导致的错误，比如空指针、数组越界等。这类异常本质上是代码逻辑 bug。</li>
+                    <li><strong>受检异常</strong>：除 <code>RuntimeException</code> 以外的所有子类。编译器要强制处理，是可预期但无法通过代码完全避免的外部异常。</li>
+                </ul>
+
+                <h2 id="try-catch">try-catch-finally 捕获异常</h2>
+
+                <pre><code>try {
+    FileInputStream fis = new FileInputStream("test.txt");
+} catch (FileNotFoundException e) {
+    e.printStackTrace();
+} finally {
+    return;
+}</code></pre>
+
+                <p>可以写多个 <code>catch</code> 块捕获不同异常。要遵循<strong>子类在前父类在后</strong>的逻辑顺序。</p>
+
+                <h2 id="throws">throws 抛出异常</h2>
+
+                <p>写在方法签名末尾，用于声明"这个方法可能会抛出某类异常"。</p>
+
+                <pre><code>public void readFile(String path) throws IOException {
+    FileInputStream fis = new FileInputStream(path);
+}</code></pre>
+
+                <h2 id="throw">throw 抛出异常</h2>
+
+                <p>用于在方法内部主动抛出一个异常对象。</p>
+
+                <pre><code>public void setAge(int age) {
+    if (age &lt; 0 || age &gt; 150) {
+        throw new IllegalArgumentException("年龄不合法");
+    }
+    this.age = age;
+}</code></pre>
+
+                <h2 id="try-with-resources">try-with-resources</h2>
+
+                <p>专门用于解决 <code>finally</code> 里需要手动关流代码的问题。会自动调用 <code>close()</code> 释放资源。</p>
+
+                <hr>
+
+                <h1 id="null-safety">空安全工具</h1>
+
+                <h2 id="objects">Objects 空安全工具类</h2>
+
+                <p>即 <code>java.util.Objects</code>，是解决空指针异常的核心工具。是 Android 编码规范强制推荐使用的类。</p>
+
+                <h4>空对象的安全比较</h4>
+
+                <pre><code>// 危险写法：若str为null直接崩溃
+boolean result = str.equals("test");
+// 安全写法：推荐替代所有字符串/对象比较
+boolean safeResult = Objects.equals(str, "test");</code></pre>
+
+                <h4>强制非空校验</h4>
+
+                <p>对象为空时会直接抛出空指针异常：</p>
+
+                <pre><code>public void setData(String data) {
+    // 参数为null直接抛异常，避免后续隐性bug
+    this.data = Objects.requireNonNull(data, "data不能为null");
+}</code></pre>
+
+                <h2 id="optional">Optional 空安全容器</h2>
+
+                <p>是一个可以容纳 <code>null</code> 对象的容器类。</p>
+
+                <h4>创建 Optional</h4>
+
+                <pre><code>// 值一定非空，传null直接报错
+Optional&lt;String&gt; opt1 = Optional.of("hello");
+// 值可能为空，最常用
+Optional&lt;String&gt; opt2 = Optional.ofNullable(null);
+// 空的Optional
+Optional&lt;String&gt; opt3 = Optional.empty();</code></pre>
+
+            </div>
+        </div>
+        <aside class="sidebar toc-sidebar">
+            <span class="sidebar-title">目录索引</span>
+            <nav class="toc-nav" id="toc-nav">
+                <a href="#collection-framework">集合框架总览</a>
+                <a href="#collection">Collection</a>
+                <a href="#list" class="toc-sub">├─ List 接口</a>
+                <a href="#set" class="toc-sub">├─ Set 接口</a>
+                <a href="#queue" class="toc-sub">├─ Queue 接口</a>
+                <a href="#map">Map</a>
+                <a href="#iterator">迭代器</a>
+                <a href="#utility">工具类</a>
+                <a href="#generics">泛型</a>
+                <a href="#generic-class" class="toc-sub">├─ 泛型类</a>
+                <a href="#generic-method" class="toc-sub">├─ 泛型方法</a>
+                <a href="#generic-interface" class="toc-sub">├─ 泛型接口</a>
+                <a href="#type-erasure" class="toc-sub">├─ 类型擦除</a>
+                <a href="#covariance">协变和逆变</a>
+                <a href="#covariance-example" class="toc-sub">├─ 协变示例</a>
+                <a href="#contravariance-example" class="toc-sub">├─ 逆变示例</a>
+                <a href="#cplusplus-diff" class="toc-sub">├─ 与 C++ 的区别</a>
+                <a href="#exception">异常处理</a>
+                <a href="#try-catch" class="toc-sub">├─ try-catch</a>
+                <a href="#throws" class="toc-sub">├─ throws</a>
+                <a href="#throw" class="toc-sub">├─ throw</a>
+                <a href="#try-with-resources" class="toc-sub">├─ try-with-resources</a>
+                <a href="#null-safety">空安全工具</a>
+                <a href="#objects" class="toc-sub">├─ Objects 工具类</a>
+                <a href="#optional" class="toc-sub">└─ Optional 容器</a>
+            </nav>
+        </aside>
+    </div>
+    <script src="../posts.js"></script>
+    <script src="../sidebar.js"></script>
+    <script src="../theme.js"></script>
+    <script src="../mobile-nav.js"></script>
+    <script>
+        (function() {
+            var nav = document.getElementById('toc-nav');
+            if (!nav) return;
+            var links = nav.querySelectorAll('a');
+            var headings = [];
+            links.forEach(function(a) {
+                var id = a.getAttribute('href');
+                if (id && id.startsWith('#')) {
+                    var el = document.getElementById(id.slice(1));
+                    if (el) headings.push(el);
+                }
+            });
+
+            window.addEventListener('scroll', function() {
+                var current = '';
+                headings.forEach(function(h) {
+                    if (h.getBoundingClientRect().top <= 150) current = h.id;
+                });
+                links.forEach(function(a) {
+                    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+                });
+            });
+
+            nav.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    var target = document.getElementById(e.target.getAttribute('href').slice(1));
+                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

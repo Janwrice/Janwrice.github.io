@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java 速通 0x04：一位 C++ 程序员的安卓开发笔记 - Janwrice's Blog</title>
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .content-main {
+            padding: 40px 60px 60px;
+        }
+
+        .post-header {
+            margin-bottom: 40px;
+        }
+
+        .post-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--black);
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .post-meta {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .post-body {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--black);
+        }
+
+        .post-body h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--black);
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue-light);
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--black);
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue-light);
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 32px 0 12px;
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 24px 0 8px;
+        }
+
+        .post-body p {
+            margin: 12px 0;
+        }
+
+        .post-body blockquote {
+            margin: 16px 0;
+            padding: 12px 20px;
+            border-left: 4px solid var(--blue);
+            background-color: var(--blue-light);
+            color: var(--black);
+            font-size: 15px;
+        }
+
+        .post-body blockquote p {
+            margin: 4px 0;
+        }
+
+        .post-body pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px 24px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 16px 0;
+        }
+
+        .post-body pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        .post-body code {
+            font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Consolas", monospace;
+        }
+
+        .post-body :not(pre) > code {
+            background-color: var(--inline-code-bg);
+            color: var(--inline-code-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .post-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        .post-body th,
+        .post-body td {
+            padding: 10px 14px;
+            text-align: left;
+            border: 1px solid var(--gray-light);
+        }
+
+        .post-body th {
+            background-color: var(--blue-light);
+            color: var(--blue-dark);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .post-body td {
+            background-color: var(--white);
+        }
+
+        .post-body ul,
+        .post-body ol {
+            margin: 12px 0;
+            padding-left: 28px;
+        }
+
+        .post-body li {
+            margin: 6px 0;
+        }
+
+        .post-body strong {
+            color: var(--blue-dark);
+        }
+
+        .post-body a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .post-body a:hover {
+            text-decoration: underline;
+        }
+
+        .post-body hr {
+            border: none;
+            border-top: 1px solid var(--gray-light);
+            margin: 48px 0;
+        }
+
+        .post-body .section-divider {
+            border: none;
+            border-top: 1px dashed var(--gray-light);
+            margin: 32px 0;
+        }
+
+        .post-body img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .post-body .topic-badge {
+            display: inline-block;
+            background-color: var(--blue-light);
+            color: var(--blue-dark);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        .post-body .note-box {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 12px 0;
+            background-color: var(--blue-light);
+            border-left: 4px solid var(--blue);
+        }
+
+        .toc-sidebar {
+            position: sticky;
+            top: 64px;
+            height: calc(100vh - 64px);
+            overflow-y: auto;
+        }
+
+        .toc-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .toc-nav a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 14px;
+            font-weight: 400;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .toc-nav a:hover {
+            color: var(--blue);
+            background-color: var(--blue-light);
+        }
+
+        .toc-nav a.active {
+            color: var(--blue);
+            border-left-color: var(--blue);
+            background-color: var(--blue-light);
+            font-weight: 600;
+        }
+
+        .toc-nav .toc-sub {
+            padding-left: 28px !important;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .content-main {
+                padding: 24px 16px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="../index.html" class="navbar-brand"><span>J</span>anwrice</a>
+        <div class="navbar-right">
+            <ul class="navbar-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../blog.html" class="active">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="page-layout">
+        <div class="content-main">
+            <div class="post-header">
+                <h1 class="post-title">一位 C++ 程序员的安卓开发 Java 速通 0x04</h1>
+                <span class="post-meta">2026-07-14</span>
+            </div>
+            <div class="post-body">
+
+                <blockquote>
+                    <p><strong>前言：</strong>最后熟悉一下 Java 的高级用法。</p>
+                </blockquote>
+
+                <hr>
+
+                <h1 id="lambda">Lambda 表达式</h1>
+
+                <p>Java 的 Lambda 必须依赖于函数式接口。Java 实际上没有 Lambda，只是函数式接口的一种语法糖。</p>
+
+                <pre><code>// 1. 完整匿名内部类写法
+button.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(MainActivity.this, "点击了", Toast.LENGTH_SHORT).show();
+    }
+});
+
+// 2. Lambda简化写法
+button.setOnClickListener(v -> Toast.makeText(MainActivity.this, "点击了", Toast.LENGTH_SHORT).show());</code></pre>
+
+                <h3>语法简化</h3>
+
+                <pre><code>// 完整写法
+(String a, String b) -> {
+    return a.length() - b.length();
+};
+
+// 最简写法
+(a, b) -> a.length() - b.length();</code></pre>
+
+                <hr>
+
+                <h1 id="multithreading">Java 多线程基础</h1>
+
+                <p>Java 的线程有两种创建方式。提供生命周期状态转换、<code>synchronized</code> 内置锁的同步机制。</p>
+
+                <p>Java 线程采用 <strong>1:1 内核线程模型</strong>，每个 Java 线程直接映射成操作系统的原生内核线程，由操作系统统一调度。</p>
+
+                <h2 id="thread-creation">多线程的创建</h2>
+
+                <h3 id="extend-thread">方式一：继承 Thread 类</h3>
+
+                <pre><code>class MyThread extends Thread {
+    @Override
+    public void run() {
+        // 线程执行的任务代码
+        System.out.println("子线程运行中: " + getName());
+    }
+}
+
+// 启动线程
+public class Test {
+    public static void main(String[] args) {
+        MyThread t = new MyThread();
+        t.start(); // 启动新线程，不能直接调用run()
+    }
+}</code></pre>
+
+                <h3 id="runnable">方式二：实现 Runnable 接口</h3>
+
+                <pre><code>class MyTask implements Runnable {
+    @Override
+    public void run() {
+        System.out.println("子线程运行中");
+    }
+}
+
+// 启动线程
+public class Test {
+    public static void main(String[] args) {
+        Thread t = new Thread(new MyTask());
+        t.start();
+    }
+}</code></pre>
+
+                <div class="note-box">
+                    <p><strong>📌 推荐：</strong>优先使用 <code>Runnable</code>，Java 单继承限制，实现接口更灵活。仅当需要重写 <code>Thread</code> 的其他方法时，才考虑继承 <code>Thread</code>。</p>
+                </div>
+
+                <h2 id="lifecycle">线程的生命周期</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>状态</th>
+                            <th>含义</th>
+                            <th>触发条件</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>NEW 新建</strong></td>
+                            <td>线程对象已创建，但尚未调用 <code>start()</code></td>
+                            <td><code>new Thread()</code> 之后</td>
+                        </tr>
+                        <tr>
+                            <td><strong>RUNNABLE 可运行</strong></td>
+                            <td>线程已启动，正在执行或等待 CPU 调度</td>
+                            <td>调用 <code>start()</code> 后，包含就绪、运行两个子状态，由 OS 切换</td>
+                        </tr>
+                        <tr>
+                            <td><strong>BLOCKED 阻塞</strong></td>
+                            <td>线程等待获取 <code>synchronized</code> 锁，被阻塞在锁外</td>
+                            <td>进入同步代码块 / 方法时，锁被其他线程持有</td>
+                        </tr>
+                        <tr>
+                            <td><strong>WAITING 无限等待</strong></td>
+                            <td>线程主动等待，需被其他线程唤醒</td>
+                            <td>调用 <code>wait()</code>、<code>join()</code>、<code>LockSupport.park()</code> 且无超时时间</td>
+                        </tr>
+                        <tr>
+                            <td><strong>TIMED_WAITING 计时等待</strong></td>
+                            <td>等待指定时间后自动唤醒</td>
+                            <td>调用 <code>sleep()</code>、<code>wait(time)</code>、<code>join(time)</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>TERMINATED 终止</strong></td>
+                            <td>线程执行完毕，或因异常退出</td>
+                            <td><code>run()</code> 方法执行结束、未捕获异常终止</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 id="sync">线程同步</h2>
+
+                <p>多线程同时操作共享变量时，会产生竞态条件，导致数据不一致。Java 最基础的同步手段是 <code>synchronized</code> 关键字，基于每个对象自带的内置监视器锁实现。</p>
+
+                <h2 id="thread-methods">常用线程方法</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>方法</th>
+                            <th>作用</th>
+                            <th>关键特性</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Thread.sleep(long ms)</code></td>
+                            <td>当前线程休眠指定毫秒，进入计时等待</td>
+                            <td><strong>不会释放锁</strong>，只是让出 CPU，时间到自动恢复</td>
+                        </tr>
+                        <tr>
+                            <td><code>Thread.yield()</code></td>
+                            <td>主动让出 CPU，回到就绪状态</td>
+                            <td>不释放锁，仅给调度器提示，不保证立即让出</td>
+                        </tr>
+                        <tr>
+                            <td><code>t.join()</code></td>
+                            <td>当前线程等待 t 线程执行完毕再继续</td>
+                            <td>可设置超时时间，常用于等待子线程任务完成</td>
+                        </tr>
+                        <tr>
+                            <td><code>wait()</code> / <code>notify()</code> / <code>notifyAll()</code></td>
+                            <td>Object 类方法，用于线程间通信</td>
+                            <td>必须在同步代码块中调用；<code>wait</code> 会释放锁，<code>notify</code> 唤醒一个等待线程</td>
+                        </tr>
+                        <tr>
+                            <td><code>setDaemon(boolean)</code></td>
+                            <td>设置为守护线程</td>
+                            <td>所有非守护线程结束后，JVM 自动退出，守护线程强制终止</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 id="threading-android">针对 Android 开发</h2>
+
+                <ul>
+                    <li><strong>主线程（UI 线程）模型</strong>：应用启动时系统创建唯一主线程，负责 UI 绘制、事件分发，是唯一可以直接更新 UI 的线程。本质是一个运行消息循环的 Thread，不断从消息队列取消息执行。</li>
+                    <li>当主线程被阻塞，超过 5 秒就会触发 ANR（应用未响应）。</li>
+                    <li>子线程不能直接操作 UI，必须通过 Handler、runOnUiThread 等机制切回主线程。</li>
+                </ul>
+
+                <hr>
+
+                <h1 id="annotations">注解</h1>
+
+                <h2 id="builtin-annotations">Java 内置注解</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>注解</th>
+                            <th>作用目标</th>
+                            <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>@Override</code></td>
+                            <td>方法</td>
+                            <td>编译期检查方法是否正确重写父类 / 接口方法，签名不匹配时报错</td>
+                        </tr>
+                        <tr>
+                            <td><code>@Deprecated</code></td>
+                            <td>类、方法、字段</td>
+                            <td>标记元素已废弃，编译器给出使用警告</td>
+                        </tr>
+                        <tr>
+                            <td><code>@SuppressWarnings</code></td>
+                            <td>类、方法、字段</td>
+                            <td>抑制指定类型的编译警告，如 <code>"unchecked"</code>、<code>"deprecation"</code>、<code>"rawtypes"</code>、<code>"all"</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>@FunctionalInterface</code></td>
+                            <td>接口</td>
+                            <td>标记函数式接口（仅一个抽象方法），编译期校验</td>
+                        </tr>
+                        <tr>
+                            <td><code>@SafeVarargs</code></td>
+                            <td>方法、构造器</td>
+                            <td>抑制泛型可变参数的堆污染警告，仅用于 final / static / private 构造器</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 id="meta-annotations">Java 元注解</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>注解</th>
+                            <th>说明</th>
+                            <th>常用取值</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>@Target</code></td>
+                            <td>限制注解可作用的元素类型</td>
+                            <td><code>ElementType.FIELD</code>、<code>METHOD</code>、<code>TYPE</code>、<code>PARAMETER</code>、<code>CONSTRUCTOR</code> 等</td>
+                        </tr>
+                        <tr>
+                            <td><code>@Retention</code></td>
+                            <td>指定注解保留周期</td>
+                            <td><code>RetentionPolicy.SOURCE</code> 源码期、<code>CLASS</code> 编译期、<code>RUNTIME</code> 运行期</td>
+                        </tr>
+                        <tr>
+                            <td><code>@Documented</code></td>
+                            <td>标记注解将被包含在 Javadoc 文档中</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><code>@Inherited</code></td>
+                            <td>允许子类继承父类上的该注解</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><code>@Repeatable</code></td>
+                            <td>允许同一位置重复使用该注解</td>
+                            <td>—</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 id="androidx-annotations">AndroidX 官方注解</h2>
+
+                <h3 id="res-annotations">资源类型注解</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>注解</th>
+                            <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>@StringRes</code></td>
+                            <td>标记 int 参数必须是字符串资源 ID（R.string.xxx）</td>
+                        </tr>
+                        <tr>
+                            <td><code>@DrawableRes</code></td>
+                            <td>标记 int 参数必须是图片资源 ID</td>
+                        </tr>
+                        <tr>
+                            <td><code>@LayoutRes</code></td>
+                            <td>标记 int 参数必须是布局资源 ID</td>
+                        </tr>
+                        <tr>
+                            <td><code>@IdRes</code></td>
+                            <td>标记 int 参数必须是 View ID</td>
+                        </tr>
+                        <tr>
+                            <td><code>@ColorRes</code></td>
+                            <td>标记 int 参数必须是颜色资源 ID</td>
+                        </tr>
+                        <tr>
+                            <td><code>@ColorInt</code></td>
+                            <td>标记 int 参数必须是颜色值（AARRGGBB），而非资源 ID</td>
+                        </tr>
+                        <tr>
+                            <td><code>@DimenRes</code></td>
+                            <td>标记 int 参数必须是尺寸资源 ID</td>
+                        </tr>
+                        <tr>
+                            <td><code>@RawRes</code></td>
+                            <td>标记 int 参数必须是 raw 资源 ID</td>
+                        </tr>
+                        <tr>
+                            <td><code>@AnyRes</code></td>
+                            <td>标记 int 参数可以是任意类型资源 ID</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 id="thread-annotations">线程注解</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>注解</th>
+                            <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>@MainThread</code></td>
+                            <td>标记方法 / 类必须在主线程调用</td>
+                        </tr>
+                        <tr>
+                            <td><code>@UiThread</code></td>
+                            <td>标记必须在 UI 线程调用（多数场景与主线程等价）</td>
+                        </tr>
+                        <tr>
+                            <td><code>@WorkerThread</code></td>
+                            <td>标记必须在工作线程（子线程）调用</td>
+                        </tr>
+                        <tr>
+                            <td><code>@BinderThread</code></td>
+                            <td>标记必须在 Binder 线程调用</td>
+                        </tr>
+                        <tr>
+                            <td><code>@AnyThread</code></td>
+                            <td>标记可在任意线程调用</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 id="null-annotations">空安全注解</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>注解</th>
+                            <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>@NonNull</code></td>
+                            <td>标记参数 / 返回值不能为 null</td>
+                        </tr>
+                        <tr>
+                            <td><code>@Nullable</code></td>
+                            <td>标记参数 / 返回值可以为 null</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 id="constraint-annotations">取值范围与其他约束</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>注解</th>
+                            <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>@IntRange(from, to)</code></td>
+                            <td>限制 int 参数取值范围</td>
+                        </tr>
+                        <tr>
+                            <td><code>@FloatRange(from, to)</code></td>
+                            <td>限制 float 参数取值范围</td>
+                        </tr>
+                        <tr>
+                            <td><code>@Size</code></td>
+                            <td>限制数组 / 集合 / 字符串长度，如 <code>@Size(min=1, max=10)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>@Keep</code></td>
+                            <td>标记类 / 方法 / 字段在 ProGuard 混淆时不被移除</td>
+                        </tr>
+                        <tr>
+                            <td><code>@CallSuper</code></td>
+                            <td>标记重写该方法时必须调用 super 方法</td>
+                        </tr>
+                        <tr>
+                            <td><code>@CheckResult</code></td>
+                            <td>标记方法返回值必须被使用，不能忽略</td>
+                        </tr>
+                        <tr>
+                            <td><code>@VisibleForTesting</code></td>
+                            <td>标记元素因测试需要放宽可见性，生产代码不应调用</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <aside class="sidebar toc-sidebar">
+            <span class="sidebar-title">目录索引</span>
+            <nav class="toc-nav" id="toc-nav">
+                <a href="#lambda">Lambda 表达式</a>
+                <a href="#multithreading">Java 多线程基础</a>
+                <a href="#thread-creation" class="toc-sub">├─ 多线程的创建</a>
+                <a href="#extend-thread" class="toc-sub">├─ 继承 Thread</a>
+                <a href="#runnable" class="toc-sub">├─ 实现 Runnable</a>
+                <a href="#lifecycle" class="toc-sub">├─ 生命周期</a>
+                <a href="#sync" class="toc-sub">├─ 线程同步</a>
+                <a href="#thread-methods" class="toc-sub">├─ 常用方法</a>
+                <a href="#threading-android" class="toc-sub">├─ Android 开发</a>
+                <a href="#annotations">注解</a>
+                <a href="#builtin-annotations" class="toc-sub">├─ Java 内置注解</a>
+                <a href="#meta-annotations" class="toc-sub">├─ Java 元注解</a>
+                <a href="#androidx-annotations" class="toc-sub">├─ AndroidX 注解</a>
+                <a href="#res-annotations" class="toc-sub">└─ 资源类型注解</a>
+            </nav>
+        </aside>
+    </div>
+    <script src="../posts.js"></script>
+    <script src="../sidebar.js"></script>
+    <script src="../theme.js"></script>
+    <script src="../mobile-nav.js"></script>
+    <script>
+        (function() {
+            var nav = document.getElementById('toc-nav');
+            if (!nav) return;
+            var links = nav.querySelectorAll('a');
+            var headings = [];
+            links.forEach(function(a) {
+                var id = a.getAttribute('href');
+                if (id && id.startsWith('#')) {
+                    var el = document.getElementById(id.slice(1));
+                    if (el) headings.push(el);
+                }
+            });
+
+            window.addEventListener('scroll', function() {
+                var current = '';
+                headings.forEach(function(h) {
+                    if (h.getBoundingClientRect().top <= 150) current = h.id;
+                });
+                links.forEach(function(a) {
+                    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+                });
+            });
+
+            nav.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    var target = document.getElementById(e.target.getAttribute('href').slice(1));
+                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
