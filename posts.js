@@ -1,4 +1,7 @@
 window.__POSTS__ = [
+  { "title": "一位 C++ 程序员的安卓开发 Java 速通 0x04", "date": "2026-07-14", "url": "posts/learn-java-04.html", "tags": ["Java", "学习笔记"] },
+  { "title": "一位 C++ 程序员的安卓开发 Java 速通 0x03", "date": "2026-07-13", "url": "posts/learn-java-03.html", "tags": ["Java", "学习笔记"] },
+  { "title": "一位 C++ 程序员的安卓开发 Java 速通 0x02", "date": "2026-07-13", "url": "posts/learn-java-02.html", "tags": ["Java", "学习笔记"] },
   { "title": "一位 C++ 程序员的安卓开发 Java 速通 0x01", "date": "2026-07-12", "url": "posts/learn-java-01.html", "tags": ["Java", "学习笔记"] },
   { "title": "高等数学知识点梳理", "date": "2026-07-11", "url": "posts/am-review.html", "tags": ["数学", "学习笔记"] },
   { "title": "SQL 全面参考指南", "date": "2026-07-10", "url": "posts/sql-reference.html", "tags": ["数据库", "SQL"] },
