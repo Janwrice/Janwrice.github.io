@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>速通 Kotlin：Java 之后的上手笔记 - Janwrice's Blog</title>
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .content-main {
+            padding: 40px 60px 60px;
+        }
+
+        .post-header {
+            margin-bottom: 40px;
+        }
+
+        .post-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--black);
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .post-meta {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .post-body {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--black);
+        }
+
+        .post-body h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--black);
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue-light);
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--black);
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue-light);
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 32px 0 12px;
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 24px 0 8px;
+        }
+
+        .post-body p {
+            margin: 12px 0;
+        }
+
+        .post-body blockquote {
+            margin: 16px 0;
+            padding: 12px 20px;
+            border-left: 4px solid var(--blue);
+            background-color: var(--blue-light);
+            color: var(--black);
+            font-size: 15px;
+        }
+
+        .post-body blockquote p {
+            margin: 4px 0;
+        }
+
+        .post-body pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px 24px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 16px 0;
+        }
+
+        .post-body pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        .post-body code {
+            font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Consolas", monospace;
+        }
+
+        .post-body :not(pre) > code {
+            background-color: var(--inline-code-bg);
+            color: var(--inline-code-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .post-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        .post-body th,
+        .post-body td {
+            padding: 10px 14px;
+            text-align: left;
+            border: 1px solid var(--gray-light);
+        }
+
+        .post-body th {
+            background-color: var(--blue-light);
+            color: var(--blue-dark);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .post-body td {
+            background-color: var(--white);
+        }
+
+        .post-body ul,
+        .post-body ol {
+            margin: 12px 0;
+            padding-left: 28px;
+        }
+
+        .post-body li {
+            margin: 6px 0;
+        }
+
+        .post-body strong {
+            color: var(--blue-dark);
+        }
+
+        .post-body a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .post-body a:hover {
+            text-decoration: underline;
+        }
+
+        .post-body hr {
+            border: none;
+            border-top: 1px solid var(--gray-light);
+            margin: 48px 0;
+        }
+
+        .post-body .section-divider {
+            border: none;
+            border-top: 1px dashed var(--gray-light);
+            margin: 32px 0;
+        }
+
+        .post-body img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .post-body .topic-badge {
+            display: inline-block;
+            background-color: var(--blue-light);
+            color: var(--blue-dark);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        .post-body .note-box {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 12px 0;
+            background-color: var(--blue-light);
+            border-left: 4px solid var(--blue);
+        }
+
+        .toc-sidebar {
+            position: sticky;
+            top: 64px;
+            height: calc(100vh - 64px);
+            overflow-y: auto;
+        }
+
+        .toc-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .toc-nav a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 14px;
+            font-weight: 400;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .toc-nav a:hover {
+            color: var(--blue);
+            background-color: var(--blue-light);
+        }
+
+        .toc-nav a.active {
+            color: var(--blue);
+            border-left-color: var(--blue);
+            background-color: var(--blue-light);
+            font-weight: 600;
+        }
+
+        .toc-nav .toc-sub {
+            padding-left: 28px !important;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .content-main {
+                padding: 24px 16px !important;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="../index.html" class="navbar-brand"><span>J</span>anwrice</a>
+        <div class="navbar-right">
+            <ul class="navbar-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../blog.html" class="active">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="page-layout">
+        <div class="content-main">
+            <div class="post-header">
+                <h1 class="post-title">速通 Kotlin：Java 之后的上手笔记</h1>
+                <span class="post-meta">2026-07-19</span>
+            </div>
+            <div class="post-body">
+
+                <blockquote>
+                    <p><strong>前言：</strong>速通 Java 后，简单上手一下 Kotlin。</p>
+                </blockquote>
+
+                <hr>
+
+                <h1 id="basics">Kotlin 基础语法</h1>
+
+                <p>Kotlin 跑在 JVM 上，编译成字节码。Kotlin 里没有指针、头文件、运算符重载、析构函数等。</p>
+
+                <h2 id="variables">变量</h2>
+
+                <p>Kotlin 里有两种变量：<code>var</code> 是变量，<code>val</code> 是常量（不可变引用）。</p>
+
+                <p>声明方式：</p>
+
+                <pre><code class="language-kotlin">var x = 52
+var y: Int = 52</code></pre>
+
+                <p>类型推断与显式类型声明两种方式都可以。Kotlin 的哲学中，<strong>能用 <code>val</code> 就不要用 <code>var</code></strong>。</p>
+
+                <h2 id="functions">函数</h2>
+
+                <p>一种特殊的返回类型 <code>Unit</code>，相当于 C++ 的 <code>void</code>。</p>
+
+                <pre><code class="language-kotlin">fun greet(name: String): String {
+    return "Hello, $name"
+}
+
+// 单表达式函数可以简写
+fun greet(name: String) = "Hello, $name"
+
+fun log(msg: String): Unit {
+    println(msg)
+}</code></pre>
+
+                <h2 id="control-flow">控制流</h2>
+
+                <p><strong>if 表达式：</strong>Kotlin 里的 <code>if</code> 类似于 C++ 中的三元条件表达式——它本身有返回值。</p>
+
+                <pre><code class="language-kotlin">val max = if (a > b) a else b</code></pre>
+
+                <p><strong>when 表达式：</strong>相当于 <code>switch</code> 的增强版。</p>
+
+                <pre><code class="language-kotlin">when (x) {
+    1 -> println("one")
+    2, 3 -> println("two or three")     // 多个值
+    in 4..10 -> println("4 to 10")      // 范围匹配
+    is String -> println("got string")  // 类型匹配
+    else -> println("something else")   // 默认（类似 default）
+}</code></pre>
+
+                <p><strong>for 循环：</strong>Kotlin 只有 foreach 风格的 for 循环，没有传统的三段式 <code>for(int i = 0; i &lt; n; ++i)</code> 语法。</p>
+
+                <pre><code class="language-kotlin">for (i in 1..5) {           // 包含 5：1, 2, 3, 4, 5
+    println(i)
+}
+
+for (i in 0 until 5) {      // 不包含 5：0, 1, 2, 3, 4
+    println(i)
+}
+
+for (i in 5 downTo 1) {     // 递减：5, 4, 3, 2, 1
+    println(i)
+}
+
+for (i in 0..10 step 2) {   // 步长：0, 2, 4, 6, 8, 10
+    println(i)
+}</code></pre>
+
+                <h2 id="classes">类</h2>
+
+                <p>Kotlin 的类声明非常简洁，构造参数直接写在类名后面：</p>
+
+                <pre><code class="language-kotlin">class Person(val name: String, var age: Int) {
+    fun greet() = "Hi, I'm $name, $age years old"
+}
+
+// 这里类的参数相当于构造函数里的参数初始化</code></pre>
+
+                <p><strong>构造函数：</strong>通过 <code>init</code> 块执行初始化逻辑。</p>
+
+                <pre><code class="language-kotlin">class Person(val name: String, var age: Int) {
+    init {
+        require(age >= 0) { "Age can't be negative" }
+        println("Person created: $name")
+    }
+}</code></pre>
+
+                <h2 id="inheritance">继承</h2>
+
+                <p>Kotlin 中类和函数默认都是 <code>final</code> 的，需要显式标记 <code>open</code> 才能被继承或重写。</p>
+
+                <pre><code class="language-kotlin">open class Animal(val name: String) {   // open = 允许被继承
+    open fun sound() = "..."            // open = 允许被重写
+}
+
+class Dog(name: String) : Animal(name) {
+    override fun sound() = "Woof!"
+}</code></pre>
+
+                <div class="note-box">
+                    <p><strong>📌 与 Java 的区别：</strong>Java 中方法默认可以重写（除非标记 <code>final</code>），Kotlin 则反过来——默认不可重写，需主动标记 <code>open</code>。这种设计减少了意外重写带来的问题。</p>
+                </div>
+
+                <hr>
+
+                <h1 id="null-safety">处理可为 Null 的对象</h1>
+
+                <p>如果一个变量可以为 null，且需要访问它的属性：</p>
+
+                <pre><code class="language-kotlin">fun main() {
+    var favoriteActor: String? = "Sandra Oh"
+    println(favoriteActor.length)
+}</code></pre>
+
+                <p>此时编译器会报错。因为 Kotlin 通过语法规则强制实现 null 安全——保证不会意外调用可能为 null 的变量。但这不表示变量不能为 null，只是说当你声明了一个可空类型（<code>String?</code>），就必须显式处理 null 的情况。</p>
+
+                <h2 id="safe-call">使用 <code>?.</code> 安全调用运算符</h2>
+
+                <pre><code class="language-kotlin">fun main() {
+    var favoriteActor: String? = "Sandra Oh"
+    println(favoriteActor?.length)
+}</code></pre>
+
+                <p>此时如果 <code>favoriteActor</code> 被赋值为 null，整个表达式会短路并输出 <code>null</code>，而不会抛出异常。</p>
+
+                <h2 id="not-null-assertion">使用 <code>!!</code> 非 null 断言运算符</h2>
+
+                <p>还可以使用非 null 断言来访问可能为 null 的变量。但此时如果变量真的是 null，程序会抛出 <code>NullPointerException</code>。也就是说，使用非 null 断言时需要自行确保 null 安全，或适当处理异常。</p>
+
+                <pre><code class="language-kotlin">fun main() {
+    var favoriteActor: String? = "Sandra Oh"
+    println(favoriteActor!!.length)
+}</code></pre>
+
+                <h2 id="if-null-check">使用 <code>if</code> / <code>else</code> 条件检查</h2>
+
+                <p>可以用 <code>if</code> 来检查对象是否为 null：</p>
+
+                <pre><code class="language-kotlin">fun main() {
+    var favoriteActor: String? = "Sandra Oh"
+
+    if (favoriteActor != null) {
+        println("The number of characters in your favorite actor's name is ${favoriteActor.length}.")
+    }
+}</code></pre>
+
+                <p><strong><code>if</code> / <code>else</code> 表达式：</strong></p>
+
+                <pre><code class="language-kotlin">fun main() {
+    var favoriteActor: String? = "Sandra Oh"
+
+    val lengthOfName = if (favoriteActor != null) {
+        favoriteActor.length
+    } else {
+        0
+    }
+
+    println("The number of characters in your favorite actor's name is $lengthOfName.")
+}</code></pre>
+
+                <h2 id="elvis-operator">使用 <code>?:</code> Elvis 运算符</h2>
+
+                <p><code>?:</code> 是 Elvis 运算符，可以与 <code>?.</code> 安全调用运算符搭配使用。如果左侧为 null，则取右侧的默认值：</p>
+
+                <pre><code class="language-kotlin">fun main() {
+    var favoriteActor: String? = "Sandra Oh"
+
+    val lengthOfName = favoriteActor?.length ?: 0
+
+    println("The number of characters in your favorite actor's name is $lengthOfName.")
+}</code></pre>
+
+                <p>这基本等价于上面 <code>if/else</code> 表达式的写法，但简洁很多。实际开发中 <code>?. + ?:</code> 是最常用的组合。</p>
+
+                <hr>
+
+                <h1 id="lambda">Lambda 表达式</h1>
+
+                <p>Lambda 真正的设计理念，实际上是为了实现一个"我写了一段代码，但我不关心它具体在哪里运行，只要把它交给需要这个函数的接口就好"的功能。</p>
+
+                <p>所以 Kotlin 这些语言会搞出"尾随 Lambda"这种奇怪的语法，就是深刻体现了这个思想——这个语法明确地表示：给要调用的函数实现一段逻辑。</p>
+
+                <pre><code class="language-kotlin">fun trickOrTreat(isTrick: Boolean, extraTreat: (Int) -> String): () -> Unit {
+    if (isTrick) {
+        return trick
+    } else {
+        println(extraTreat(5))
+        return treat
+    }
+}
+
+fun main() {
+    val coins: (Int) -> String = { quantity ->
+        "$quantity quarters"
+    }
+
+    val cupcake: (Int) -> String = {
+        "Have a cupcake!"
+    }
+
+    val treatFunction = trickOrTreat(false, coins)
+    val trickFunction = trickOrTreat(true, cupcake)
+    treatFunction()
+    trickFunction()
+}</code></pre>
+
+                <h2 id="lambda-syntax-sugar">Lambda 的简写</h2>
+
+                <p>Kotlin 提供了很多 Lambda 的「语法糖」，比如尾随 Lambda、以及可以直接把一段代码当变量传给函数，不需要中间变量，实现真正的「匿名函数」：</p>
+
+                <pre><code class="language-kotlin">fun main() {
+    val treatFunction = trickOrTreat(false, { "$it quarters" })
+    val trickFunction = trickOrTreat(true, null)
+    treatFunction()
+    trickFunction()
+}</code></pre>
+
+                <p>当 Lambda 只有一个参数时，可以用隐式名称 <code>it</code> 代替显式参数声明。</p>
+
+                <h2 id="repeat-function">repeat 函数</h2>
+
+                <p>如果一个函数会返回或者接收另一个函数作为实参，该函数就称之为<strong>高阶函数</strong>。上文的 <code>trickOrTreat</code> 就是一个高阶函数。高阶函数与 Lambda 密不可分。</p>
+
+                <p><code>repeat</code> 是一个常用的高阶函数，它使用函数表达 for 循环的间接方式：</p>
+
+                <pre><code class="language-kotlin">for (i in 1..5) {
+    println("第 $i 次")
+}
+
+repeat(5) { i ->
+    println("第 ${i + 1} 次")  // 注意：i 从 0 开始
+}</code></pre>
+
+                <hr>
+
+                <p><em>写于 2026 年 7 月</em></p>
+
+            </div>
+        </div>
+        <aside class="sidebar toc-sidebar">
+            <span class="sidebar-title">目录索引</span>
+            <nav class="toc-nav" id="toc-nav">
+                <a href="#basics">Kotlin 基础语法</a>
+                <a href="#variables" class="toc-sub">├─ 变量</a>
+                <a href="#functions" class="toc-sub">├─ 函数</a>
+                <a href="#control-flow" class="toc-sub">├─ 控制流</a>
+                <a href="#classes" class="toc-sub">├─ 类</a>
+                <a href="#inheritance" class="toc-sub">└─ 继承</a>
+                <a href="#null-safety">处理可为 Null 的对象</a>
+                <a href="#safe-call" class="toc-sub">├─ ?. 安全调用</a>
+                <a href="#not-null-assertion" class="toc-sub">├─ !! 非 null 断言</a>
+                <a href="#if-null-check" class="toc-sub">├─ if/else 检查</a>
+                <a href="#elvis-operator" class="toc-sub">└─ ?: Elvis 运算符</a>
+                <a href="#lambda">Lambda 表达式</a>
+                <a href="#lambda-syntax-sugar" class="toc-sub">├─ Lambda 简写</a>
+                <a href="#repeat-function" class="toc-sub">└─ repeat 函数</a>
+            </nav>
+        </aside>
+    </div>
+    <script src="../posts.js"></script>
+    <script src="../sidebar.js"></script>
+    <script src="../theme.js"></script>
+    <script src="../mobile-nav.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script>
+        // ── 目录滚动高亮 ──
+        (function() {
+            var nav = document.getElementById('toc-nav');
+            if (!nav) return;
+            var links = nav.querySelectorAll('a');
+            var headings = [];
+            links.forEach(function(a) {
+                var id = a.getAttribute('href');
+                if (id && id.startsWith('#')) {
+                    var el = document.getElementById(id.slice(1));
+                    if (el) headings.push(el);
+                }
+            });
+
+            window.addEventListener('scroll', function() {
+                var current = '';
+                headings.forEach(function(h) {
+                    if (h.getBoundingClientRect().top <= 150) current = h.id;
+                });
+                links.forEach(function(a) {
+                    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+                });
+            });
+
+            nav.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    var target = document.getElementById(e.target.getAttribute('href').slice(1));
+                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

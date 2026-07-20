@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编程杂谈：Lambda、协变逆变、面向对象与封装 - Janwrice's Blog</title>
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .content-main {
+            padding: 40px 60px 60px;
+        }
+
+        .post-header {
+            margin-bottom: 40px;
+        }
+
+        .post-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--black);
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .post-meta {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .post-body {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--black);
+        }
+
+        .post-body h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--black);
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue-light);
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--black);
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue-light);
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 32px 0 12px;
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 24px 0 8px;
+        }
+
+        .post-body p {
+            margin: 12px 0;
+        }
+
+        .post-body blockquote {
+            margin: 16px 0;
+            padding: 12px 20px;
+            border-left: 4px solid var(--blue);
+            background-color: var(--blue-light);
+            color: var(--black);
+            font-size: 15px;
+        }
+
+        .post-body blockquote p {
+            margin: 4px 0;
+        }
+
+        .post-body pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px 24px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 16px 0;
+        }
+
+        .post-body pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        .post-body code {
+            font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Consolas", monospace;
+        }
+
+        .post-body :not(pre) > code {
+            background-color: var(--inline-code-bg);
+            color: var(--inline-code-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .post-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        .post-body th,
+        .post-body td {
+            padding: 10px 14px;
+            text-align: left;
+            border: 1px solid var(--gray-light);
+        }
+
+        .post-body th {
+            background-color: var(--blue-light);
+            color: var(--blue-dark);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .post-body td {
+            background-color: var(--white);
+        }
+
+        .post-body ul,
+        .post-body ol {
+            margin: 12px 0;
+            padding-left: 28px;
+        }
+
+        .post-body li {
+            margin: 6px 0;
+        }
+
+        .post-body strong {
+            color: var(--blue-dark);
+        }
+
+        .post-body a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .post-body a:hover {
+            text-decoration: underline;
+        }
+
+        .post-body hr {
+            border: none;
+            border-top: 1px solid var(--gray-light);
+            margin: 48px 0;
+        }
+
+        .post-body .section-divider {
+            border: none;
+            border-top: 1px dashed var(--gray-light);
+            margin: 32px 0;
+        }
+
+        .post-body img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .post-body .topic-badge {
+            display: inline-block;
+            background-color: var(--blue-light);
+            color: var(--blue-dark);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        .post-body .note-box {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 12px 0;
+            background-color: var(--blue-light);
+            border-left: 4px solid var(--blue);
+        }
+
+        .toc-sidebar {
+            position: sticky;
+            top: 64px;
+            height: calc(100vh - 64px);
+            overflow-y: auto;
+        }
+
+        .toc-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .toc-nav a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 14px;
+            font-weight: 400;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .toc-nav a:hover {
+            color: var(--blue);
+            background-color: var(--blue-light);
+        }
+
+        .toc-nav a.active {
+            color: var(--blue);
+            border-left-color: var(--blue);
+            background-color: var(--blue-light);
+            font-weight: 600;
+        }
+
+        .toc-nav .toc-sub {
+            padding-left: 28px !important;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .content-main {
+                padding: 24px 16px !important;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="../index.html" class="navbar-brand"><span>J</span>anwrice</a>
+        <div class="navbar-right">
+            <ul class="navbar-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../blog.html" class="active">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="page-layout">
+        <div class="content-main">
+            <div class="post-header">
+                <h1 class="post-title">编程杂谈：Lambda、协变逆变、面向对象与封装</h1>
+                <span class="post-meta">2026-07-20</span>
+            </div>
+            <div class="post-body">
+
+                <h1 id="lambda">对 Lambda 的一些理解</h1>
+
+                <p>Lambda 真正的设计理念，实际上是为了实现一个"我写了一段代码，但我不关心它具体在哪里运行，只要把它交给需要这个函数的接口就好"的功能。</p>
+
+                <p>换句话说，Lambda 把"行为"变成了一种可以传递的值。以前我们要传递行为，得先定义一个类、实例化、再传进去——也就是匿名内部类那一套。Lambda 把这整坨样板代码全部省掉了，只留下真正有意义的那段逻辑。</p>
+
+                <p>所以 Kotlin 这些语言会搞出"尾随 Lambda"这种奇怪的语法，本质上就是深刻体现了这个思想：<strong>最后一个参数如果是一个函数，那它大概率就是你给这个方法"补充"的一段逻辑，把它放在括号外面，读起来就像是你在给这个调用写一段代码块</strong>。语法形式服务于设计意图，这个语法就是在明确地表示——"嘿，我给你一段逻辑，你拿去用"。</p>
+
+                <pre><code class="language-kotlin">// 尾随 Lambda：最后一个参数是函数时，可以写到括号外面
+button.setOnClickListener { view ->
+    // 这段逻辑交给 setOnClickListener，我不关心它何时被调用
+    println("clicked")
+}</code></pre>
+
+                <p>Java 的函数式接口（SAM 接口）也是同样的思路——有且仅有一个抽象方法的接口，就可以用 Lambda 来简写。本质上就是要传递"一段逻辑"，而那个接口唯一的方法就是这段逻辑的载体。</p>
+
+                <hr>
+
+                <h1 id="covariance">如何理解协变和逆变？</h1>
+
+                <p>协变和逆变有"协"和"逆"之分，本质上是子类和父类的关系问题。从数学的集合论角度来看，子类是父类的子集。但从代码的形式限制上来看，<strong>子类有着比父类更多的属性和方法，所以从"约束"的角度来看，父类反而是子类的子集</strong>。为了调和这两种视角的矛盾，编程语言引入了协变和逆变。</p>
+
+                <blockquote>
+                    <p><strong>协变</strong>解决的是"概念上子类是父类的子集"的场景——我要从一堆东西里<strong>读</strong>出来用。<br>
+                    <strong>逆变</strong>解决的是"形式上父类的约束更少"的场景——我要往一堆东西里<strong>写</strong>进去。</p>
+                </blockquote>
+
+                <p>考虑一个"动物园喂食系统"的业务场景。我们要设计两个功能：一是统计一堆水果的总重量，二是往框里添加水果。</p>
+
+                <h2 id="define-fruit">定义水果类</h2>
+
+                <pre><code class="language-java">class Fruit {
+    private double weight;
+    public Fruit(double weight) { this.weight = weight; }
+    public double getWeight() { return weight; }
+}
+
+class Apple extends Fruit {
+    public Apple(double weight) { super(weight); }
+    public void washApple() { System.out.println("洗苹果"); }
+}
+
+class Banana extends Fruit {
+    public Banana(double weight) { super(weight); }
+    public void peelBanana() { System.out.println("剥香蕉皮"); }
+}</code></pre>
+
+                <h2 id="covariance-read">业务一：统计总重量 —— 协变登场</h2>
+
+                <p>需求：统计一个框里水果的总重量。这个方法需要支持泛型，因为框里的水果可能是苹果，也可能是香蕉。</p>
+
+                <p>直觉上我们会这样写：</p>
+
+                <pre><code class="language-java">public class ZooKeeper {
+    public static double totalWeight(List&lt;Fruit&gt; basket) {
+        double sum = 0;
+        for (Fruit f : basket) {
+            sum += f.getWeight();
+        }
+        return sum;
+    }
+}</code></pre>
+
+                <p>但这段代码有问题：你传入 <code>List&lt;Apple&gt;</code> 时编译器会直接报错。</p>
+
+                <p>为什么？因为 Java 的泛型是<strong>不变性（Invariance）</strong>的——不管原始类型 <code>Apple</code> 和 <code>Fruit</code> 之间有怎样的父子继承关系，套上泛型之后，<code>List&lt;Apple&gt;</code> 和 <code>List&lt;Fruit&gt;</code> 就是两个完全无关的类型。编译器不认它们之间的任何关系。</p>
+
+                <p>但在逻辑上我们知道，<code>Apple</code> 是 <code>Fruit</code> 的子类，苹果框凭什么不能用来统计总重量？这就是从<strong>概念上的子集</strong>来看问题。此时使用<strong>协变（Covariance）</strong>来解决：</p>
+
+                <pre><code class="language-java">public class ZooKeeper {
+    public static double totalWeight(List&lt;? extends Fruit&gt; basket) {
+        double sum = 0;
+        for (Fruit f : basket) {
+            sum += f.getWeight();
+        }
+        return sum;
+    }
+}</code></pre>
+
+                <p><code>? extends Fruit</code> 的意思是："这个泛型参数可以是 <code>Fruit</code> 的任意子类"。编译器理解了这层关系，<code>List&lt;Apple&gt;</code> 就能传进去了。</p>
+
+                <p><strong>但代价是什么？</strong> 使用了 <code>? extends Fruit</code> 之后，你就<strong>不能往这个 list 里添加任何元素</strong>（除了 <code>null</code>）。因为编译器只知道里面的东西"至少是 <code>Fruit</code>"，但具体是什么它不确定——往里放 <code>Apple</code> 不行（万一是 <code>List&lt;Banana&gt;</code> 呢？），往里放 <code>Fruit</code> 也不行（万一是 <code>List&lt;Apple&gt;</code> 呢？）。这个限制是合理的：你能安全地<strong>读</strong>出来，但不能<strong>写</strong>进去。</p>
+
+                <p>这就是著名的 <strong>PECS 原则中的 PE（Producer Extends）</strong>——如果泛型容器只用来<strong>生产/提供</strong>数据给你用，就用 <code>extends</code>。</p>
+
+                <h2 id="contravariance-write">业务二：往框里加水果 —— 逆变登场</h2>
+
+                <p>需求：给一个框里添加苹果。</p>
+
+                <p>直觉上这样写：</p>
+
+                <pre><code class="language-java">public class ZooKeeper {
+    public static void addApples(List&lt;? extends Fruit&gt; basket, int count) {
+        for (int i = 0; i &lt; count; i++) {
+            basket.add(new Apple(1.0));  // 编译错误！
+        }
+    }
+}</code></pre>
+
+                <p>这行不通。原因上面说了：用了 <code>extends</code> 就不能往里写。</p>
+
+                <p>换个角度想：我们要把 <code>Apple</code> 放进框里。概念上 <code>Apple</code> 是 <code>Fruit</code> 的子集没错，但从<strong>形式的限制</strong>上来看，<code>Apple</code> 比 <code>Fruit</code> 多了 <code>washApple()</code> 等方法，约束更多；而 <code>Fruit</code> 的约束更少。如果此时看"谁的约束更少，谁就是子集"，那 <code>Fruit</code> 反而是 <code>Apple</code> 的"子集"——这就是从形式约束来看的父子关系反转。</p>
+
+                <p>此时需要用<strong>逆变（Contravariance）</strong>来解决：</p>
+
+                <pre><code class="language-java">public class ZooKeeper {
+    public static void addApples(List&lt;? super Apple&gt; basket, int count) {
+        for (int i = 0; i &lt; count; i++) {
+            basket.add(new Apple(1.0));
+        }
+    }
+}</code></pre>
+
+                <p><code>? super Apple</code> 的意思是："这个泛型参数可以是 <code>Apple</code> 的任意父类"。你传 <code>List&lt;Fruit&gt;</code> 可以，传 <code>List&lt;Object&gt;</code> 也可以。把 <code>Apple</code> 放进去是安全的——因为无论这个 list 的元素类型是 <code>Fruit</code> 还是 <code>Object</code>，<code>Apple</code> 都能赋值给它。</p>
+
+                <p><strong>代价呢？</strong> 从 <code>List&lt;? super Apple&gt;</code> 里<strong>读</strong>出来的东西，编译器只能确定它是 <code>Object</code>（因为最坏情况下它只是 <code>List&lt;Object&gt;</code>）。你丢失了类型信息。</p>
+
+                <p>这就是 <strong>PECS 原则中的 CS（Consumer Super）</strong>——如果泛型容器只用来<strong>消费/接收</strong>数据，就用 <code>super</code>。</p>
+
+                <h2 id="summary">一句话总结</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>场景</th>
+                            <th>关键字</th>
+                            <th>能做什么</th>
+                            <th>不能做什么</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>协变 <code>? extends T</code></td>
+                            <td>从容器<strong>读</strong>数据，当做 <code>T</code> 来用</td>
+                            <td>读</td>
+                            <td>写（除 null）</td>
+                        </tr>
+                        <tr>
+                            <td>逆变 <code>? super T</code></td>
+                            <td>往容器<strong>写</strong>数据，写入 <code>T</code> 类型</td>
+                            <td>写</td>
+                            <td>读（只能读到 Object）</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>所以协变和逆变不是什么玄学概念，它本质上是编译器帮你保证类型安全的一套规则。"概念上的子集"用协变，"形式约束上的子集"用逆变——两种视角，两种泛型声明方式。</p>
+
+                <h2 id="cpp-comparison">为什么 C++ 没有这回事？</h2>
+
+                <p>C++ 没有显式的协变和逆变声明，本质是因为 <strong>C++ 的模板在编译时会为每一种具体类型组合独立生成代码（模板实例化/单态化）</strong>。<code>vector&lt;Apple&gt;</code> 和 <code>vector&lt;Fruit&gt;</code> 编译之后就完全是两个不同的类，各自有各自的机器码，运行时不存在类型模糊的问题——任何类型不匹配在编译期就已经被揪出来了。</p>
+
+                <p>而 Java 为了向下兼容，采用了<strong>类型擦除（Type Erasure）</strong>——泛型信息只在编译期存在，编译完就被擦掉了，运行时的 <code>List&lt;Apple&gt;</code> 和 <code>List&lt;Fruit&gt;</code> 底层都是同一个 <code>List</code>（原始类型）。正因为运行时无法区分具体类型，所以 Java 必须在编译期通过 <code>extends</code> 和 <code>super</code> 这些声明，来确保你不会写出运行时才会暴露出来的类型错误。</p>
+
+                <p>简单说：<strong>C++ 用"编译期多生成几份代码"来解决问题，Java 用"编译期多写几个声明"来解决问题</strong>。两条路，同一个目的。</p>
+
+                <hr>
+
+                <h1 id="oop">对面向对象的理解</h1>
+
+                <h2 id="what-is-oop">所以面向对象到底是个什么东西？</h2>
+
+                <p>市面上的教科书喜欢说"面向过程是自下而上的思维，面向对象是自上而下的思维"，或者说"面向对象的三大特性是封装、继承、多态"。听完感觉什么都没说——这些定义对于没写过几万行代码的人来说，跟没有一样。</p>
+
+                <p>我直接用 Python + matplotlib 来举例子。</p>
+
+                <h2 id="procedural">面向过程的写法</h2>
+
+                <pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 10, 100)
+y = np.sin(x)
+
+# 面向过程：直接调用 plt 模块的函数
+plt.figure(figsize=(10, 6))          # 创建画布（隐式的当前画布）
+plt.plot(x, y, label='sin(x)')       # 在当前画布上绘图
+plt.xlabel('X 轴')                   # 设置当前坐标轴标签
+plt.ylabel('Y 轴')
+plt.legend()
+plt.grid(True)
+plt.show()</code></pre>
+
+                <p>你会发现它非常简单，所有代码都在为一个隐式的"当前图表"服务。</p>
+
+                <p>但缺点也非常明显：如果同时需要操作多个图表，根本没办法确定 <code>plt.xlabel()</code> 到底修饰的是哪一个。因为 <code>plt</code> 模块内部维护了一个全局状态——"当前图表"是哪个就是哪个。你当然可以强行用创建多个 figure 编号来区分，或者创建一个图表数组，但代码很快就会变成一坨全局状态的混战。</p>
+
+                <p>更让人头疼的是，实际项目中经常会出现"几个图表长得基本一样，只是颜色不同"或者"只有标题不一样"的情况。面向过程的写法下，你只能复制粘贴然后修改几行，或者写一堆参数复杂的工具函数。可以跑，但灵活性和可维护性非常差。</p>
+
+                <p>这种情况在真实的编程生产中到处都是：QQ 群列表、植物大战僵尸中的僵尸群、电商的商品列表……都是"有一堆类似但不完全相同的东西需要管理"。</p>
+
+                <h2 id="oop-style">面向对象的写法</h2>
+
+                <p>那么很自然地会想：有没有一种范式，能让每个图表自己管理自己？于是就有了面向对象：</p>
+
+                <pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 10, 100)
+y = np.sin(x)
+
+# 面向对象：显式创建 Figure 和 Axes 对象
+fig, ax = plt.subplots(figsize=(10, 6))  # ax 就是一个"图表对象"
+
+ax.plot(x, y, label='sin(x)')            # 调用这个对象的方法
+ax.set_xlabel('X 轴')
+ax.set_ylabel('Y 轴')
+ax.set_title('面向对象写法')
+ax.legend()
+ax.grid(True)
+plt.show()</code></pre>
+
+                <p>一个图表就是一个对象。如果你需要十个图表，就创建十个对象，每个管好自己的事。即使后期出现了一个"只多了一个颜色属性"的图表变体，继承一下基类、改两个方法就搞定了。而且对象可以放进任何容器里统一管理——<code>list[Chart]</code> 里每个元素都对自己的行为负责，遍历、批量操作都非常自然。</p>
+
+                <h2 id="oop-essence">面向对象的本质</h2>
+
+                <p><strong>面向对象本质上只是一种设计思想/编程范式。</strong> 只不过如果语言提供了 <code>class</code> 关键字，我们可以更方便地践行这种范式。如果语言没有提供类——比如 C 语言——用结构体加函数指针，照样可以模拟出类的效果。尽管 Linux 内核完全使用 C 语言开发（暂不考虑 Rust 的引入），但它的虚拟文件系统（VFS）、设备驱动模型等设计，思想内核就是深刻面向对象的。</p>
+
+                <p>另外要注意，<strong>面向对象和面向过程并不是互斥的</strong>。一个对象的某个方法内部，必然还是要用面向过程的方式一步步实现。它们的分工是：面向对象负责组织程序的<strong>结构</strong>——谁管什么数据、谁提供什么行为；面向过程负责实现具体的<strong>逻辑</strong>——拿到数据之后，第一步做什么、第二步做什么。</p>
+
+                <p>维护一个简单的脚本，用面向过程足够了。但面对一个庞然巨物般的工程项目，面向对象所提供的那套组织方式是必需的。</p>
+
+                <hr>
+
+                <h1 id="encapsulation">对封装的理解</h1>
+
+                <p>封装本质上和 Rust 的所有权系统一样——<strong>它是一种限制，而且是一种对你有好处的限制</strong>。</p>
+
+                <p>Rust 通过限制对象的所有权和借用规则，强迫程序员在写代码时就考虑清楚内存的归属和生命周期，从而在编译期消灭了 use-after-free、double-free、数据竞争等问题。</p>
+
+                <p>封装也是一样：它强迫程序员用一个完整的类来实现一个完整的对象设计。外部不能随意访问内部状态，只能通过你暴露出来的公开接口来交互。这种限制换来的是：</p>
+
+                <ol>
+                    <li><strong>你可以随意修改内部实现，而外部代码一行都不用改。</strong> 只要接口不变，内部的改动对外部来说就是无感的。</li>
+                    <li><strong>内部状态的一致性由这个类自己保证。</strong> 外部不可能把你的数据改成非法状态，因为它根本没权限碰你的私有字段。</li>
+                    <li><strong>代码的可读性和维护边界变得清晰。</strong> 每个类就是一个自包含的模块，出问题的时候你知道去哪个类里找。</li>
+                </ol>
+
+                <p>所以封装不是"把变量前面加个 <code>private</code> 就叫封装了"。封装是一种设计约束——有意识地决定哪些东西对外可见、哪些东西藏起来自己用。每多暴露一个 public 方法，就意味着你多承诺了一个"这个接口以后不能随便改了"的契约。</p>
+
+                <hr>
+
+                <p><em>写于 2026 年 7 月</em></p>
+
+            </div>
+        </div>
+        <aside class="sidebar toc-sidebar">
+            <span class="sidebar-title">目录索引</span>
+            <nav class="toc-nav" id="toc-nav">
+                <a href="#lambda">对 Lambda 的一些理解</a>
+                <a href="#covariance">如何理解协变和逆变？</a>
+                <a href="#define-fruit" class="toc-sub">├─ 定义水果类</a>
+                <a href="#covariance-read" class="toc-sub">├─ 协变登场</a>
+                <a href="#contravariance-write" class="toc-sub">├─ 逆变登场</a>
+                <a href="#summary" class="toc-sub">├─ 一句话总结</a>
+                <a href="#cpp-comparison" class="toc-sub">└─ 为什么 C++ 没有？</a>
+                <a href="#oop">对面向对象的理解</a>
+                <a href="#what-is-oop" class="toc-sub">├─ 面向对象是什么？</a>
+                <a href="#procedural" class="toc-sub">├─ 面向过程的写法</a>
+                <a href="#oop-style" class="toc-sub">├─ 面向对象的写法</a>
+                <a href="#oop-essence" class="toc-sub">└─ 面向对象的本质</a>
+                <a href="#encapsulation">对封装的理解</a>
+            </nav>
+        </aside>
+    </div>
+    <script src="../posts.js"></script>
+    <script src="../sidebar.js"></script>
+    <script src="../theme.js"></script>
+    <script src="../mobile-nav.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script>
+        // ── 目录滚动高亮 ──
+        (function() {
+            var nav = document.getElementById('toc-nav');
+            if (!nav) return;
+            var links = nav.querySelectorAll('a');
+            var headings = [];
+            links.forEach(function(a) {
+                var id = a.getAttribute('href');
+                if (id && id.startsWith('#')) {
+                    var el = document.getElementById(id.slice(1));
+                    if (el) headings.push(el);
+                }
+            });
+
+            window.addEventListener('scroll', function() {
+                var current = '';
+                headings.forEach(function(h) {
+                    if (h.getBoundingClientRect().top <= 150) current = h.id;
+                });
+                links.forEach(function(a) {
+                    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+                });
+            });
+
+            nav.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    var target = document.getElementById(e.target.getAttribute('href').slice(1));
+                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

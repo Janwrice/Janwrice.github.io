@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android 15 状态栏处理：Edge-to-Edge 实践指南 - Janwrice's Blog</title>
+    <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .content-main {
+            padding: 40px 60px 60px;
+        }
+
+        .post-header {
+            margin-bottom: 40px;
+        }
+
+        .post-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--black);
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .post-meta {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .post-body {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--black);
+        }
+
+        .post-body h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--black);
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue-light);
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--black);
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue-light);
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 32px 0 12px;
+            scroll-margin-top: 84px;
+        }
+
+        .post-body h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--black);
+            margin: 24px 0 8px;
+        }
+
+        .post-body p {
+            margin: 12px 0;
+        }
+
+        .post-body blockquote {
+            margin: 16px 0;
+            padding: 12px 20px;
+            border-left: 4px solid var(--blue);
+            background-color: var(--blue-light);
+            color: var(--black);
+            font-size: 15px;
+        }
+
+        .post-body blockquote p {
+            margin: 4px 0;
+        }
+
+        .post-body pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px 24px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 16px 0;
+        }
+
+        .post-body pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        .post-body code {
+            font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Consolas", monospace;
+        }
+
+        .post-body :not(pre) > code {
+            background-color: var(--inline-code-bg);
+            color: var(--inline-code-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .post-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        .post-body th,
+        .post-body td {
+            padding: 10px 14px;
+            text-align: left;
+            border: 1px solid var(--gray-light);
+        }
+
+        .post-body th {
+            background-color: var(--blue-light);
+            color: var(--blue-dark);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .post-body td {
+            background-color: var(--white);
+        }
+
+        .post-body ul,
+        .post-body ol {
+            margin: 12px 0;
+            padding-left: 28px;
+        }
+
+        .post-body li {
+            margin: 6px 0;
+        }
+
+        .post-body strong {
+            color: var(--blue-dark);
+        }
+
+        .post-body a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .post-body a:hover {
+            text-decoration: underline;
+        }
+
+        .post-body hr {
+            border: none;
+            border-top: 1px solid var(--gray-light);
+            margin: 48px 0;
+        }
+
+        .post-body .section-divider {
+            border: none;
+            border-top: 1px dashed var(--gray-light);
+            margin: 32px 0;
+        }
+
+        .post-body img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .post-body .topic-badge {
+            display: inline-block;
+            background-color: var(--blue-light);
+            color: var(--blue-dark);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        .post-body .note-box {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 12px 0;
+            background-color: var(--blue-light);
+            border-left: 4px solid var(--blue);
+        }
+
+        .post-body .img-wrapper {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .post-body .img-wrapper img {
+            display: inline-block;
+            margin: 0;
+        }
+
+        .toc-sidebar {
+            position: sticky;
+            top: 64px;
+            height: calc(100vh - 64px);
+            overflow-y: auto;
+        }
+
+        .toc-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .toc-nav a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 14px;
+            font-weight: 400;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .toc-nav a:hover {
+            color: var(--blue);
+            background-color: var(--blue-light);
+        }
+
+        .toc-nav a.active {
+            color: var(--blue);
+            border-left-color: var(--blue);
+            background-color: var(--blue-light);
+            font-weight: 600;
+        }
+
+        .toc-nav .toc-sub {
+            padding-left: 28px !important;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .content-main {
+                padding: 24px 16px !important;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="../index.html" class="navbar-brand"><span>J</span>anwrice</a>
+        <div class="navbar-right">
+            <ul class="navbar-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../blog.html" class="active">博客</a></li>
+                <li><a href="../about.html">关于</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="page-layout">
+        <div class="content-main">
+            <div class="post-header">
+                <h1 class="post-title">Android 15 状态栏处理：Edge-to-Edge 实践指南</h1>
+                <span class="post-meta">2026-07-18</span>
+            </div>
+            <div class="post-body">
+
+                <div class="note-box">
+                    <p><strong>📌 术语约定：</strong>本文中，「下层 / 上层」表示两个组件「覆盖」在一起时的层次效果；「下面 / 上面」表示两个组件在屏幕上的上下排列。</p>
+                </div>
+
+                <p>在 Android 15 上，谷歌官方强制让应用启用了 <strong>Edge-to-Edge</strong> 的沉浸式设计。也就是说，在 Android 15 上，应用的状态栏不再具有淡灰色的背景了，而是采用完全透明的设计，让图标直接显示在界面上层。</p>
+
+                <p>而且更进一步地，状态栏无法直接感知到 Compose 可组合项的颜色，也就无法自动对应地更改状态栏图标的颜色。</p>
+
+                <p>由此，本文讨论一下 Android 15 上状态栏的几种常用处理方式。</p>
+
+                <hr>
+
+                <h1 id="keep-statusbar">保留状态栏</h1>
+
+                <p>在 Android 15 上，默认所有情况下——日间模式下状态栏图标色就是黑色的，夜间模式下就是白色的。而且如果不加以配置 <code>Modifier</code>，默认所有的组件都是顶头显示的（即显示在状态栏的下层）。</p>
+
+                <h2 id="inner-padding">方式一：使用 innerPadding 避开状态栏</h2>
+
+                <p>如果想要让界面的 Compose 元素显示在状态栏的<strong>下面</strong>（即上下排列，不被状态栏覆盖），就需要让界面的 <code>Modifier</code> 接收一个 <code>innerPadding</code> 参数。</p>
+
+                <pre><code class="language-kotlin">class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            HappyBirthdayTheme {
+                Scaffold(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    modifier = Modifier.fillMaxSize()
+                ) { innerPadding ->
+                    View_1(
+                        painterResource(R.drawable.bg_compose_background),
+                        title = stringResource(R.string.jetpack_compose_tutorial_title),
+                        content_01 = stringResource(R.string.jetpack_compose_tutorial_content_01),
+                        content_02 = stringResource(R.string.jetpack_compose_tutorial_content_02),
+                        Modifier.padding(innerPadding)
+                    )
+                }
+            }
+        }
+    }
+}</code></pre>
+
+                <p>如上代码的 <code>View_1</code> 是一个很简单的组件。使用以上的代码，将 <code>View_1</code> 的 <code>Modifier</code> 的 <code>padding</code> 设置为 <code>Scaffold</code> 提供的 <code>innerPadding</code>，<code>View_1</code> 就正常显示在状态栏下面了。</p>
+
+                <div class="img-wrapper">
+                    <img src="/pic/Pasted image 20260719153229.png" alt="使用 innerPadding 后状态栏显示效果" style="width:207px;">
+                </div>
+
+                <h2 id="without-padding">方式二：不加 innerPadding + 手动设置图标颜色</h2>
+
+                <p>而如果不接受这个 <code>innerPadding</code> 参数，我们的组件自然就显示在状态栏的<strong>下层</strong>了（即被状态栏覆盖）：</p>
+
+                <pre><code class="language-kotlin">class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // 设置状态栏的图标色为白色
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(
+                scrim = android.graphics.Color.TRANSPARENT
+            )
+        )
+        setContent {
+           HappyBirthdayTheme {
+               Scaffold(
+                   containerColor = MaterialTheme.colorScheme.background,
+                   modifier = Modifier.fillMaxSize()
+               ) { _ ->
+                   View_1(
+                       painterResource(R.drawable.bg_compose_background),
+                       title = stringResource(R.string.jetpack_compose_tutorial_title),
+                       content_01 = stringResource(R.string.jetpack_compose_tutorial_content_01),
+                       content_02 = stringResource(R.string.jetpack_compose_tutorial_content_02)
+                   )
+               }
+           }
+       }
+    }
+}</code></pre>
+
+                <p>但此时如果背景是深色的，需要手动定义状态栏图标的颜色（如上通过 <code>SystemBarStyle.dark()</code> 将图标设为白色）。</p>
+
+                <div class="img-wrapper">
+                    <img src="/pic/Pasted image 20260719153905.png" alt="不加 innerPadding 状态栏图标显示效果" style="width:244px;">
+                </div>
+
+                <h2 id="fake-statusbar">方式三：手动绘制半透明状态栏背景</h2>
+
+                <p>可以看到即使手动设置了图标颜色，深色背景上直接叠加白色图标，显示效果也不是很好。能不能直接给状态栏上一个半透明的背景呢？也是可以的。</p>
+
+                <p>谷歌在 Android 15 移除了状态栏原生背景的设计，但通过下面这个接口，把状态栏的高度信息完全暴露出来了：</p>
+
+                <pre><code class="language-kotlin">Modifier.windowInsetsTopHeight(WindowInsets.statusBars)</code></pre>
+
+                <p>因此可以通过它，在我们的界面上层画一个"假状态栏"背景：</p>
+
+                <pre><code class="language-kotlin">class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(
+                scrim = android.graphics.Color.TRANSPARENT
+            )
+        )
+        setContent {
+            HappyBirthdayTheme {
+                Scaffold(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    modifier = Modifier.fillMaxSize()
+                ) { _ ->
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        View_1(
+                            painterResource(R.drawable.bg_compose_background),
+                            title = stringResource(R.string.jetpack_compose_tutorial_title),
+                            content_01 = stringResource(R.string.jetpack_compose_tutorial_content_01),
+                            content_02 = stringResource(R.string.jetpack_compose_tutorial_content_02)
+                        )
+                        // 顶层：画一个深色半透明的"假状态栏"
+                        Spacer(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                // 神奇的 API：自动获取当前手机状态栏的高度
+                                .windowInsetsTopHeight(WindowInsets.statusBars)
+                                // 设置为你想要的颜色和透明度（这里是 30% 不透明度的黑色）
+                                .background(Color.Black.copy(alpha = 0.3f))
+                        )
+                    }
+                }
+            }
+        }
+    }
+}</code></pre>
+
+                <p>核心思路：用一个 <code>Box</code> 包裹，底层放内容，上层放一个高度等于状态栏、颜色半透明的 <code>Spacer</code>。这样就模拟出了旧版 Android 中状态栏背景的效果，同时图标保持清晰可辨。</p>
+
+                <div class="img-wrapper">
+                    <img src="/pic/Pasted image 20260719155319.png" alt="半透明状态栏背景效果" style="width:272px;">
+                </div>
+
+                <hr>
+
+                <h1 id="hide-statusbar">不保留状态栏</h1>
+
+                <p>如果认为状态栏的存在很不方便，可以使用以下方式直接隐藏状态栏。用户需要时向下滑动屏幕即可召唤出状态栏：</p>
+
+                <pre><code class="language-kotlin">class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(
+                scrim = android.graphics.Color.TRANSPARENT
+            )
+        )
+
+        // 关键代码：隐藏状态栏
+        val controller = WindowCompat.getInsetsController(window, window.decorView)
+
+        controller.hide(WindowInsetsCompat.Type.statusBars())
+
+        controller.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+
+        setContent {
+            HappyBirthdayTheme {
+                Scaffold(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    modifier = Modifier.fillMaxSize()
+                ) { _ ->
+                    View_1(
+                        painterResource(R.drawable.bg_compose_background),
+                        title = stringResource(R.string.jetpack_compose_tutorial_title),
+                        content_01 = stringResource(R.string.jetpack_compose_tutorial_content_01),
+                        content_02 = stringResource(R.string.jetpack_compose_tutorial_content_02)
+                    )
+                }
+            }
+        }
+    }
+}</code></pre>
+
+                <p>关键点：</p>
+                <ul>
+                    <li><code>controller.hide()</code> 直接隐藏状态栏，界面获得完整的屏幕空间</li>
+                    <li><code>BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE</code> 允许用户通过向下滑动手势临时唤出状态栏，几秒后自动再次隐藏</li>
+                </ul>
+
+                <hr>
+
+                <p><em>写于 2026 年 7 月</em></p>
+
+            </div>
+        </div>
+        <aside class="sidebar toc-sidebar">
+            <span class="sidebar-title">目录索引</span>
+            <nav class="toc-nav" id="toc-nav">
+                <a href="#keep-statusbar">保留状态栏</a>
+                <a href="#inner-padding" class="toc-sub">├─ 使用 innerPadding 避开</a>
+                <a href="#without-padding" class="toc-sub">├─ 手动设置图标颜色</a>
+                <a href="#fake-statusbar" class="toc-sub">└─ 手动绘制半透明背景</a>
+                <a href="#hide-statusbar">不保留状态栏</a>
+            </nav>
+        </aside>
+    </div>
+    <script src="../posts.js"></script>
+    <script src="../sidebar.js"></script>
+    <script src="../theme.js"></script>
+    <script src="../mobile-nav.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script>
+        // ── 目录滚动高亮 ──
+        (function() {
+            var nav = document.getElementById('toc-nav');
+            if (!nav) return;
+            var links = nav.querySelectorAll('a');
+            var headings = [];
+            links.forEach(function(a) {
+                var id = a.getAttribute('href');
+                if (id && id.startsWith('#')) {
+                    var el = document.getElementById(id.slice(1));
+                    if (el) headings.push(el);
+                }
+            });
+
+            window.addEventListener('scroll', function() {
+                var current = '';
+                headings.forEach(function(h) {
+                    if (h.getBoundingClientRect().top <= 150) current = h.id;
+                });
+                links.forEach(function(a) {
+                    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+                });
+            });
+
+            nav.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    var target = document.getElementById(e.target.getAttribute('href').slice(1));
+                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
