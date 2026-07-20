@@ -1,4 +1,7 @@
 window.__POSTS__ = [
+  { "title": "编程杂谈：Lambda、协变逆变、面向对象与封装", "date": "2026-07-20", "url": "posts/programming-thoughts.html", "tags": ["编程语言", "Java", "设计思想"] },
+  { "title": "速通 Kotlin：Java 之后的上手笔记", "date": "2026-07-19", "url": "posts/learn-kotlin-01.html", "tags": ["Kotlin", "学习笔记"] },
+  { "title": "Android 15 状态栏处理：Edge-to-Edge 实践指南", "date": "2026-07-18", "url": "posts/android15-statusbar.html", "tags": ["Android", "Kotlin", "Jetpack Compose"] },
   { "title": "一位 C++ 程序员的安卓开发 Java 速通 0x04", "date": "2026-07-14", "url": "posts/learn-java-04.html", "tags": ["Java", "学习笔记"] },
   { "title": "一位 C++ 程序员的安卓开发 Java 速通 0x03", "date": "2026-07-13", "url": "posts/learn-java-03.html", "tags": ["Java", "学习笔记"] },
   { "title": "一位 C++ 程序员的安卓开发 Java 速通 0x02", "date": "2026-07-13", "url": "posts/learn-java-02.html", "tags": ["Java", "学习笔记"] },
