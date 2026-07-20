@@ -250,6 +250,16 @@ body {
     max-width: 100%;
 }
 
+/* ── highlight.js 代码注释提亮 ── */
+.hljs-comment {
+    color: #9ca3af !important;
+    font-style: italic;
+}
+
+[data-theme="dark"] .hljs-comment {
+    color: #a89984 !important;
+}
+
 /* ═══════════════════════════════════════════════════════
    移动端：汉堡菜单 + 右侧抽屉
    ═══════════════════════════════════════════════════════ */
